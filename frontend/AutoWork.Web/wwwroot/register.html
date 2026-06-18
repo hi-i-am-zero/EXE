@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Đăng ký — AutoWork</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-card">
+      <h1>⚡ AutoWork</h1>
+      <p class="subtitle">Tạo tài khoản miễn phí</p>
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="firstName">Họ</label>
+          <input type="text" id="firstName" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label for="lastName">Tên</label>
+          <input type="text" id="lastName" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Mật khẩu</label>
+          <input type="password" id="password" class="form-control" minlength="8" required />
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Xác nhận mật khẩu</label>
+          <input type="password" id="confirmPassword" class="form-control" minlength="8" required />
+        </div>
+        <div class="form-group">
+          <label for="referralCode">Mã giới thiệu (tuỳ chọn)</label>
+          <input type="text" id="referralCode" class="form-control" />
+        </div>
+        <button type="submit" class="btn-primary w-100" id="btnSubmit">Đăng ký</button>
+        <div id="error" class="form-error" style="display:none;"></div>
+      </form>
+      <p class="auth-footer">Đã có tài khoản? <a href="/login.html">Đăng nhập</a></p>
+    </div>
+  </div>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    Auth.redirectIfLoggedIn();
+
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btnSubmit');
+      const err = document.getElementById('error');
+      const password = document.getElementById('password').value;
+      const confirm = document.getElementById('confirmPassword').value;
+
+      if (password !== confirm) {
+        err.textContent = 'Mật khẩu xác nhận không khớp';
+        err.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Đang đăng ký...';
+      err.style.display = 'none';
+
+      const referral = document.getElementById('referralCode').value;
+      try {
+        const json = await apiPost('/api/auth/register', {
+          firstName: document.getElementById('firstName').value,
+          lastName: document.getElementById('lastName').value,
+          email: document.getElementById('email').value,
+          password,
+          confirmPassword: confirm,
+          referralCode: referral || null
+        });
+
+        if (json.success && json.data) {
+          Auth.saveSession(json.data);
+          window.location.href = '/app/dashboard.html';
+        } else {
+          err.textContent = json.message || (json.errors?.join(', ') ?? 'Đăng ký thất bại');
+          err.style.display = 'block';
+        }
+      } catch {
+        err.textContent = 'Không kết nối được API. Hãy chạy AutoWork.API trước.';
+        err.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Đăng ký';
+      }
+    });
+  </script>
+</body>
+</html>

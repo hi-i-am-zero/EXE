@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Đăng nhập — AutoWork</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-card">
+      <h1>⚡ AutoWork</h1>
+      <p class="subtitle">Đăng nhập vào tài khoản của bạn</p>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" class="form-control" placeholder="admin@autowork.com" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Mật khẩu</label>
+          <input type="password" id="password" class="form-control" placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="btn-primary w-100" id="btnSubmit">Đăng nhập</button>
+        <div id="error" class="form-error" style="display:none;"></div>
+      </form>
+      <p class="auth-footer">Chưa có tài khoản? <a href="/register.html">Đăng ký miễn phí</a></p>
+    </div>
+  </div>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    Auth.redirectIfLoggedIn();
+    const params = new URLSearchParams(location.search);
+    const returnUrl = params.get('return') || '/app/dashboard.html';
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btnSubmit');
+      const err = document.getElementById('error');
+      btn.disabled = true;
+      btn.textContent = 'Đang đăng nhập...';
+      err.style.display = 'none';
+
+      try {
+        const json = await apiPost('/api/auth/login', {
+          email: document.getElementById('email').value,
+          password: document.getElementById('password').value
+        });
+
+        if (json.success && json.data) {
+          Auth.saveSession(json.data);
+          window.location.href = returnUrl;
+        } else {
+          err.textContent = json.message || 'Email hoặc mật khẩu không đúng';
+          err.style.display = 'block';
+        }
+      } catch {
+        err.textContent = 'Không kết nối được API. Hãy chạy AutoWork.API trước.';
+        err.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Đăng nhập';
+      }
+    });
+  </script>
+</body>
+</html>

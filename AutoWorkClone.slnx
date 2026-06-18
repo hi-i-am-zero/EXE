@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/frontend/">
+    <Project Path="frontend/AutoWork.Web/AutoWork.Web.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/AutoWork.API/AutoWork.API.csproj" />
+    <Project Path="src/AutoWork.Application/AutoWork.Application.csproj" />
+    <Project Path="src/AutoWork.Domain/AutoWork.Domain.csproj" />
+    <Project Path="src/AutoWork.Infrastructure/AutoWork.Infrastructure.csproj" />
+    <Project Path="src/AutoWork.Persistence/AutoWork.Persistence.csproj" />
+    <Project Path="src/AutoWork.Shared/AutoWork.Shared.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AutoWork.IntegrationTests/AutoWork.IntegrationTests.csproj" />
+    <Project Path="tests/AutoWork.UnitTests/AutoWork.UnitTests.csproj" />
+  </Folder>
+</Solution>

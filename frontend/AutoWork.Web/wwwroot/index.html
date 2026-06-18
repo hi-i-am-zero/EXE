@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AutoWork — Nền tảng Marketing tự động hóa bằng AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <nav class="landing-nav">
+    <div class="container">
+      <a href="/" class="nav-brand"><span>⚡</span> AutoWork</a>
+      <div class="nav-links">
+        <a href="#features">Tính năng</a>
+        <a href="#pricing">Bảng giá</a>
+        <a href="/login.html">Đăng nhập</a>
+        <a href="/register.html" class="btn-primary btn-sm">Dùng thử miễn phí</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Marketing thông minh<br/>với sức mạnh AI</h1>
+    <p>Tạo nội dung, lên lịch đăng bài tự động lên Facebook, WordPress, Zalo — tiết kiệm thời gian, tăng hiệu quả chiến dịch.</p>
+    <div class="hero-actions">
+      <a href="/register.html" class="btn-primary">Bắt đầu miễn phí</a>
+      <a href="#features" class="btn-outline">Tìm hiểu thêm</a>
+    </div>
+  </section>
+
+  <section id="features" class="section">
+    <h2 class="section-title">Tất cả trong một nền tảng</h2>
+    <p class="section-subtitle">Công cụ toàn diện cho marketer và doanh nghiệp</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon"><i class="bi bi-robot"></i></div>
+        <h3>AI Content Generator</h3>
+        <p>Tạo bài viết, caption, hashtag chuẩn SEO với OpenAI, Gemini, Claude.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="bi bi-calendar-check"></i></div>
+        <h3>Lên lịch đăng bài</h3>
+        <p>Đăng tự động theo lịch trên nhiều kênh social cùng lúc.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="bi bi-facebook"></i></div>
+        <h3>Facebook & Zalo</h3>
+        <p>Kết nối fanpage, OA Zalo và quản lý nội dung tập trung.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="bi bi-wordpress"></i></div>
+        <h3>WordPress</h3>
+        <p>Đồng bộ và đăng bài lên website WordPress của bạn.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="bi bi-graph-up"></i></div>
+        <h3>Dashboard Analytics</h3>
+        <p>Theo dõi hiệu suất bài viết, credits và hoạt động AI.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="bi bi-people"></i></div>
+        <h3>Affiliate Program</h3>
+        <p>Kiếm hoa hồng khi giới thiệu người dùng mới.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" class="section" style="background:#fff;">
+    <h2 class="section-title">Bảng giá linh hoạt</h2>
+    <p class="section-subtitle">Chọn gói phù hợp với quy mô doanh nghiệp</p>
+    <div id="pricingGrid" class="pricing-grid">
+      <div class="empty-state">Đang tải bảng giá...</div>
+    </div>
+  </section>
+
+  <footer class="landing-footer">
+    <p>© 2026 AutoWork. Nền tảng Marketing Automation.</p>
+  </footer>
+
+  <script src="/js/api.js"></script>
+  <script>
+    (async () => {
+      await apiReady;
+      try {
+        const res = await fetch(`${API_BASE}/api/plans`);
+        const json = await res.json();
+        const plans = json.data || [];
+        const grid = document.getElementById('pricingGrid');
+
+        if (!plans.length) {
+          grid.innerHTML = '<div class="empty-state">Chưa có gói dịch vụ. Vui lòng chạy API để seed dữ liệu.</div>';
+          return;
+        }
+
+        grid.innerHTML = plans.map((p, i) => `
+          <div class="plan-card ${i === 1 ? 'featured' : ''}">
+            ${i === 1 ? '<span class="plan-badge">Phổ biến</span>' : ''}
+            <div class="plan-name">${p.name}</div>
+            <div class="plan-price">${formatCurrency(p.price)} <span>/ tháng</span></div>
+            <div class="plan-desc">${p.description || ''}</div>
+            <ul class="plan-features">
+              <li>${p.creditsIncluded} credits/tháng</li>
+              <li>Tối đa ${p.maxProjects} dự án</li>
+              <li>${p.maxChannels} kênh kết nối</li>
+              <li>${p.maxPostsPerMonth} bài/tháng</li>
+            </ul>
+            <a href="/register.html" class="btn-primary w-100" style="text-align:center;display:block;">Đăng ký ngay</a>
+          </div>`).join('');
+      } catch {
+        document.getElementById('pricingGrid').innerHTML =
+          '<div class="empty-state">Không kết nối được API. Hãy chạy <strong>AutoWork.API</strong> trước.</div>';
+      }
+    })();
+  </script>
+</body>
+</html>

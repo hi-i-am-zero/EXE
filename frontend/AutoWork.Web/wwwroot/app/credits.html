@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Credits — AutoWork</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/layout.js"></script>
+  <script>
+    if (!Auth.requireAuth()) throw new Error('auth');
+    renderAppLayout('/app/credits.html');
+    setPageTitle('Credits');
+
+    (async () => {
+      setPageContent('<div class="empty-state">Đang tải...</div>');
+      try {
+        const [creditJson, txJson] = await Promise.all([
+          apiGet('/api/credits'),
+          apiGet('/api/credits/transactions?page=1&pageSize=20')
+        ]);
+
+        const c = creditJson.data || {};
+        const txs = txJson.data?.items || txJson.data?.data || [];
+
+        setPageContent(`
+          <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+            <div class="stat-card">
+              <div class="stat-label">Số dư hiện tại</div>
+              <div class="stat-value" style="color:var(--color-primary)">${c.balance ?? 0}</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Tổng đã nhận</div>
+              <div class="stat-value">${c.totalEarned ?? 0}</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Tổng đã dùng</div>
+              <div class="stat-value">${c.totalUsed ?? 0}</div>
+            </div>
+          </div>
+          <div class="data-card">
+            <div style="padding:16px 20px;border-bottom:1px solid var(--color-border);font-weight:600">Lịch sử giao dịch</div>
+            <table class="data-table">
+              <thead><tr><th>Loại</th><th>Số lượng</th><th>Mô tả</th><th>Thời gian</th></tr></thead>
+              <tbody>
+                ${txs.length ? txs.map(t => `
+                  <tr>
+                    <td><span class="badge ${t.amount >= 0 ? 'badge-success' : 'badge-danger'}">${t.type || (t.amount >= 0 ? 'Cộng' : 'Trừ')}</span></td>
+                    <td><strong>${t.amount >= 0 ? '+' : ''}${t.amount}</strong></td>
+                    <td>${t.description || '—'}</td>
+                    <td>${formatDate(t.createdAt)}</td>
+                  </tr>`).join('') : '<tr><td colspan="4" class="empty-state">Chưa có giao dịch</td></tr>'}
+              </tbody>
+            </table>
+          </div>`);
+      } catch (e) {
+        setPageContent(`<div class="empty-state">Lỗi: ${e.message}</div>`);
+      }
+    })();
+  </script>
+</body>
+</html>

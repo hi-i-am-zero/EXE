@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "frontend\\AutoWork.Web\\AutoWork.Web.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "src\\AutoWork.API\\AutoWork.API.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

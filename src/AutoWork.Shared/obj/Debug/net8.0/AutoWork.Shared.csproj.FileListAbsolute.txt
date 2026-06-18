@@ -1,0 +1,11 @@
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Shared\bin\Debug\net8.0\AutoWork.Shared.deps.json
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Shared\bin\Debug\net8.0\AutoWork.Shared.dll
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Shared\bin\Debug\net8.0\AutoWork.Shared.pdb
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Shared\obj\Debug\net8.0\AutoWork.Shared.GeneratedMSBuildEditorConfig.editorconfig
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Shared\obj\Debug\net8.0\AutoWork.Shared.AssemblyInfoInputs.cache
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Shared\obj\Debug\net8.0\AutoWork.Shared.AssemblyInfo.cs
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Shared\obj\Debug\net8.0\AutoWork.Shared.csproj.CoreCompileInputs.cache
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Shared\obj\Debug\net8.0\AutoWork.Shared.dll
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Shared\obj\Debug\net8.0\refint\AutoWork.Shared.dll
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Shared\obj\Debug\net8.0\AutoWork.Shared.pdb
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Shared\obj\Debug\net8.0\ref\AutoWork.Shared.dll

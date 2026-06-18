@@ -1,0 +1,413 @@
+2026-06-19 00:39:01.912 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:39:02.699 +07:00 [INF] Executed DbCommand (26ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:39:02.774 +07:00 [INF] Executed DbCommand (39ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:39:02.780 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:39:02.785 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:39:02.810 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-06-19 00:39:02.833 +07:00 [INF] No migrations were applied. The database is already up to date.
+2026-06-19 00:39:03.059 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Roles] AS [r]
+        WHERE [r].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:39:03.085 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Permissions] AS [p]
+        WHERE [p].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:39:03.095 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Plans] AS [p]
+        WHERE [p].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:39:03.106 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Channels] AS [c]
+        WHERE [c].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:39:03.118 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Settings] AS [s]
+        WHERE [s].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:39:03.132 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [AiPrompts] AS [a]
+        WHERE [a].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:39:03.155 +07:00 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Users] AS [u]
+        WHERE [u].[IsDeleted] = CAST(0 AS bit) AND [u].[Email] = N'admin@autowork.com') THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:39:03.197 +07:00 [INF] Database seed completed successfully.
+2026-06-19 00:39:03.411 +07:00 [INF] Start installing Hangfire SQL objects...
+2026-06-19 00:39:03.604 +07:00 [INF] Hangfire SQL objects installed.
+2026-06-19 00:39:03.897 +07:00 [WRN] The WebRootPath was not found: D:\EXE01\AIMarketingAssistant\src\AutoWork.API\wwwroot. Static files may be unavailable.
+2026-06-19 00:39:04.238 +07:00 [ERR] Hosting failed to start
+System.IO.IOException: Failed to bind to address http://127.0.0.1:5241: address already in use.
+ ---> Microsoft.AspNetCore.Connections.AddressInUseException: Only one usage of each socket address (protocol/network address/port) is normally permitted.
+ ---> System.Net.Sockets.SocketException (10048): Only one usage of each socket address (protocol/network address/port) is normally permitted.
+   at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportOptions.CreateDefaultBoundListenSocket(EndPoint endpoint)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, EndpointConfig endpointConfig, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.<>c__DisplayClass28_0`1.<<StartAsync>g__OnBind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindAsync(ListenOptions[] listenOptions, AddressBindContext context, Func`2 useHttps, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__15_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+2026-06-19 00:40:06.554 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:40:07.455 +07:00 [INF] Executed DbCommand (28ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:40:07.502 +07:00 [INF] Executed DbCommand (29ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:40:07.510 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:40:07.516 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:40:07.541 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-06-19 00:40:07.564 +07:00 [INF] No migrations were applied. The database is already up to date.
+2026-06-19 00:40:07.798 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Roles] AS [r]
+        WHERE [r].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:40:07.824 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Permissions] AS [p]
+        WHERE [p].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:40:07.835 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Plans] AS [p]
+        WHERE [p].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:40:07.846 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Channels] AS [c]
+        WHERE [c].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:40:07.857 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Settings] AS [s]
+        WHERE [s].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:40:07.867 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [AiPrompts] AS [a]
+        WHERE [a].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:40:07.884 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Users] AS [u]
+        WHERE [u].[IsDeleted] = CAST(0 AS bit) AND [u].[Email] = N'admin@autowork.com') THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:40:07.903 +07:00 [INF] Database seed completed successfully.
+2026-06-19 00:40:08.093 +07:00 [INF] Start installing Hangfire SQL objects...
+2026-06-19 00:40:08.326 +07:00 [INF] Hangfire SQL objects installed.
+2026-06-19 00:40:08.627 +07:00 [WRN] The WebRootPath was not found: D:\EXE01\AIMarketingAssistant\src\AutoWork.API\wwwroot. Static files may be unavailable.
+2026-06-19 00:40:09.066 +07:00 [ERR] Hosting failed to start
+System.IO.IOException: Failed to bind to address http://127.0.0.1:5241: address already in use.
+ ---> Microsoft.AspNetCore.Connections.AddressInUseException: Only one usage of each socket address (protocol/network address/port) is normally permitted.
+ ---> System.Net.Sockets.SocketException (10048): Only one usage of each socket address (protocol/network address/port) is normally permitted.
+   at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportOptions.CreateDefaultBoundListenSocket(EndPoint endpoint)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, EndpointConfig endpointConfig, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.<>c__DisplayClass28_0`1.<<StartAsync>g__OnBind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindAsync(ListenOptions[] listenOptions, AddressBindContext context, Func`2 useHttps, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__15_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+2026-06-19 00:42:33.120 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:42:33.625 +07:00 [INF] Executed DbCommand (28ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:42:33.677 +07:00 [INF] Executed DbCommand (26ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:42:33.684 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:42:33.687 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:42:33.706 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-06-19 00:42:33.725 +07:00 [INF] No migrations were applied. The database is already up to date.
+2026-06-19 00:42:34.013 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Roles] AS [r]
+        WHERE [r].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:42:34.043 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Permissions] AS [p]
+        WHERE [p].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:42:34.055 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Plans] AS [p]
+        WHERE [p].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:42:34.066 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Channels] AS [c]
+        WHERE [c].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:42:34.077 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Settings] AS [s]
+        WHERE [s].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:42:34.091 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [AiPrompts] AS [a]
+        WHERE [a].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:42:34.107 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Users] AS [u]
+        WHERE [u].[IsDeleted] = CAST(0 AS bit) AND [u].[Email] = N'admin@autowork.com') THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:42:34.127 +07:00 [INF] Database seed completed successfully.
+2026-06-19 00:42:34.344 +07:00 [INF] Start installing Hangfire SQL objects...
+2026-06-19 00:42:34.756 +07:00 [INF] Hangfire SQL objects installed.
+2026-06-19 00:42:35.189 +07:00 [WRN] The WebRootPath was not found: D:\EXE01\AIMarketingAssistant\src\AutoWork.API\wwwroot. Static files may be unavailable.
+2026-06-19 00:42:35.298 +07:00 [INF] Now listening on: https://localhost:7165
+2026-06-19 00:42:35.299 +07:00 [INF] Now listening on: http://localhost:5241
+2026-06-19 00:42:35.382 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: localhost@AutoWorkDb_Dev'
+2026-06-19 00:42:35.384 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:15.
+2026-06-19 00:42:35.386 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2026-06-19 00:42:35.405 +07:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-06-19 00:42:35.406 +07:00 [INF] Hosting environment: Development
+2026-06-19 00:42:35.407 +07:00 [INF] Content root path: D:\EXE01\AIMarketingAssistant\src\AutoWork.API
+2026-06-19 00:42:35.425 +07:00 [INF] Server laptop-g044c7b0:6380:c362b593 successfully announced in 19.0102 ms
+2026-06-19 00:42:35.434 +07:00 [INF] Server laptop-g044c7b0:6380:c362b593 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2026-06-19 00:42:35.518 +07:00 [INF] Server laptop-g044c7b0:6380:c362b593 all the dispatchers started
+2026-06-19 00:42:37.440 +07:00 [INF] Executed DbCommand (12ms) [Parameters=[@__before_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[CreatedAt], [p].[CreatedBy], [p].[ExecutedAt], [p].[FailureReason], [p].[IsDeleted], [p].[PostId], [p].[RetryCount], [p].[ScheduledAt], [p].[Status], [p].[UpdatedAt], [p].[UpdatedBy], [t].[Id], [t].[ChannelAccountId], [t].[CreatedAt], [t].[CreatedBy], [t].[ExternalPostId], [t].[IsDeleted], [t].[ProjectId], [t].[PublishedAt], [t].[PublishedUrl], [t].[Status], [t].[Title], [t].[UpdatedAt], [t].[UpdatedBy], [t0].[Id], [t0].[Content], [t0].[ContentType], [t0].[CreatedAt], [t0].[CreatedBy], [t0].[IsDeleted], [t0].[MediaFileId], [t0].[PostId], [t0].[SortOrder], [t0].[UpdatedAt], [t0].[UpdatedBy]
+FROM [PostSchedules] AS [p]
+INNER JOIN (
+    SELECT [p0].[Id], [p0].[ChannelAccountId], [p0].[CreatedAt], [p0].[CreatedBy], [p0].[ExternalPostId], [p0].[IsDeleted], [p0].[ProjectId], [p0].[PublishedAt], [p0].[PublishedUrl], [p0].[Status], [p0].[Title], [p0].[UpdatedAt], [p0].[UpdatedBy]
+    FROM [Posts] AS [p0]
+    WHERE [p0].[IsDeleted] = CAST(0 AS bit)
+) AS [t] ON [p].[PostId] = [t].[Id]
+LEFT JOIN (
+    SELECT [p1].[Id], [p1].[Content], [p1].[ContentType], [p1].[CreatedAt], [p1].[CreatedBy], [p1].[IsDeleted], [p1].[MediaFileId], [p1].[PostId], [p1].[SortOrder], [p1].[UpdatedAt], [p1].[UpdatedBy]
+    FROM [PostContents] AS [p1]
+    WHERE [p1].[IsDeleted] = CAST(0 AS bit)
+) AS [t0] ON [t].[Id] = [t0].[PostId]
+WHERE [p].[IsDeleted] = CAST(0 AS bit) AND [p].[Status] = 0 AND [p].[ScheduledAt] <= @__before_0
+ORDER BY [p].[ScheduledAt], [p].[Id], [t].[Id]
+2026-06-19 00:43:06.076 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__before_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[CreatedAt], [p].[CreatedBy], [p].[ExecutedAt], [p].[FailureReason], [p].[IsDeleted], [p].[PostId], [p].[RetryCount], [p].[ScheduledAt], [p].[Status], [p].[UpdatedAt], [p].[UpdatedBy], [t].[Id], [t].[ChannelAccountId], [t].[CreatedAt], [t].[CreatedBy], [t].[ExternalPostId], [t].[IsDeleted], [t].[ProjectId], [t].[PublishedAt], [t].[PublishedUrl], [t].[Status], [t].[Title], [t].[UpdatedAt], [t].[UpdatedBy], [t0].[Id], [t0].[Content], [t0].[ContentType], [t0].[CreatedAt], [t0].[CreatedBy], [t0].[IsDeleted], [t0].[MediaFileId], [t0].[PostId], [t0].[SortOrder], [t0].[UpdatedAt], [t0].[UpdatedBy]
+FROM [PostSchedules] AS [p]
+INNER JOIN (
+    SELECT [p0].[Id], [p0].[ChannelAccountId], [p0].[CreatedAt], [p0].[CreatedBy], [p0].[ExternalPostId], [p0].[IsDeleted], [p0].[ProjectId], [p0].[PublishedAt], [p0].[PublishedUrl], [p0].[Status], [p0].[Title], [p0].[UpdatedAt], [p0].[UpdatedBy]
+    FROM [Posts] AS [p0]
+    WHERE [p0].[IsDeleted] = CAST(0 AS bit)
+) AS [t] ON [p].[PostId] = [t].[Id]
+LEFT JOIN (
+    SELECT [p1].[Id], [p1].[Content], [p1].[ContentType], [p1].[CreatedAt], [p1].[CreatedBy], [p1].[IsDeleted], [p1].[MediaFileId], [p1].[PostId], [p1].[SortOrder], [p1].[UpdatedAt], [p1].[UpdatedBy]
+    FROM [PostContents] AS [p1]
+    WHERE [p1].[IsDeleted] = CAST(0 AS bit)
+) AS [t0] ON [t].[Id] = [t0].[PostId]
+WHERE [p].[IsDeleted] = CAST(0 AS bit) AND [p].[Status] = 0 AND [p].[ScheduledAt] <= @__before_0
+ORDER BY [p].[ScheduledAt], [p].[Id], [t].[Id]
+2026-06-19 00:44:06.097 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[@__before_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[CreatedAt], [p].[CreatedBy], [p].[ExecutedAt], [p].[FailureReason], [p].[IsDeleted], [p].[PostId], [p].[RetryCount], [p].[ScheduledAt], [p].[Status], [p].[UpdatedAt], [p].[UpdatedBy], [t].[Id], [t].[ChannelAccountId], [t].[CreatedAt], [t].[CreatedBy], [t].[ExternalPostId], [t].[IsDeleted], [t].[ProjectId], [t].[PublishedAt], [t].[PublishedUrl], [t].[Status], [t].[Title], [t].[UpdatedAt], [t].[UpdatedBy], [t0].[Id], [t0].[Content], [t0].[ContentType], [t0].[CreatedAt], [t0].[CreatedBy], [t0].[IsDeleted], [t0].[MediaFileId], [t0].[PostId], [t0].[SortOrder], [t0].[UpdatedAt], [t0].[UpdatedBy]
+FROM [PostSchedules] AS [p]
+INNER JOIN (
+    SELECT [p0].[Id], [p0].[ChannelAccountId], [p0].[CreatedAt], [p0].[CreatedBy], [p0].[ExternalPostId], [p0].[IsDeleted], [p0].[ProjectId], [p0].[PublishedAt], [p0].[PublishedUrl], [p0].[Status], [p0].[Title], [p0].[UpdatedAt], [p0].[UpdatedBy]
+    FROM [Posts] AS [p0]
+    WHERE [p0].[IsDeleted] = CAST(0 AS bit)
+) AS [t] ON [p].[PostId] = [t].[Id]
+LEFT JOIN (
+    SELECT [p1].[Id], [p1].[Content], [p1].[ContentType], [p1].[CreatedAt], [p1].[CreatedBy], [p1].[IsDeleted], [p1].[MediaFileId], [p1].[PostId], [p1].[SortOrder], [p1].[UpdatedAt], [p1].[UpdatedBy]
+    FROM [PostContents] AS [p1]
+    WHERE [p1].[IsDeleted] = CAST(0 AS bit)
+) AS [t0] ON [t].[Id] = [t0].[PostId]
+WHERE [p].[IsDeleted] = CAST(0 AS bit) AND [p].[Status] = 0 AND [p].[ScheduledAt] <= @__before_0
+ORDER BY [p].[ScheduledAt], [p].[Id], [t].[Id]
+2026-06-19 00:45:06.168 +07:00 [INF] Executed DbCommand (10ms) [Parameters=[@__before_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[CreatedAt], [p].[CreatedBy], [p].[ExecutedAt], [p].[FailureReason], [p].[IsDeleted], [p].[PostId], [p].[RetryCount], [p].[ScheduledAt], [p].[Status], [p].[UpdatedAt], [p].[UpdatedBy], [t].[Id], [t].[ChannelAccountId], [t].[CreatedAt], [t].[CreatedBy], [t].[ExternalPostId], [t].[IsDeleted], [t].[ProjectId], [t].[PublishedAt], [t].[PublishedUrl], [t].[Status], [t].[Title], [t].[UpdatedAt], [t].[UpdatedBy], [t0].[Id], [t0].[Content], [t0].[ContentType], [t0].[CreatedAt], [t0].[CreatedBy], [t0].[IsDeleted], [t0].[MediaFileId], [t0].[PostId], [t0].[SortOrder], [t0].[UpdatedAt], [t0].[UpdatedBy]
+FROM [PostSchedules] AS [p]
+INNER JOIN (
+    SELECT [p0].[Id], [p0].[ChannelAccountId], [p0].[CreatedAt], [p0].[CreatedBy], [p0].[ExternalPostId], [p0].[IsDeleted], [p0].[ProjectId], [p0].[PublishedAt], [p0].[PublishedUrl], [p0].[Status], [p0].[Title], [p0].[UpdatedAt], [p0].[UpdatedBy]
+    FROM [Posts] AS [p0]
+    WHERE [p0].[IsDeleted] = CAST(0 AS bit)
+) AS [t] ON [p].[PostId] = [t].[Id]
+LEFT JOIN (
+    SELECT [p1].[Id], [p1].[Content], [p1].[ContentType], [p1].[CreatedAt], [p1].[CreatedBy], [p1].[IsDeleted], [p1].[MediaFileId], [p1].[PostId], [p1].[SortOrder], [p1].[UpdatedAt], [p1].[UpdatedBy]
+    FROM [PostContents] AS [p1]
+    WHERE [p1].[IsDeleted] = CAST(0 AS bit)
+) AS [t0] ON [t].[Id] = [t0].[PostId]
+WHERE [p].[IsDeleted] = CAST(0 AS bit) AND [p].[Status] = 0 AND [p].[ScheduledAt] <= @__before_0
+ORDER BY [p].[ScheduledAt], [p].[Id], [t].[Id]
+2026-06-19 00:45:40.509 +07:00 [INF] HTTP POST /api/auth/login started
+2026-06-19 00:45:40.724 +07:00 [INF] Handling LoginCommand {"Request":{"Email":"admin@autowork.com","Password":"Admin@123!","$type":"LoginRequest"},"$type":"LoginCommand"}
+2026-06-19 00:45:40.775 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__email_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[AvatarUrl], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FacebookId], [u].[FirstName], [u].[GoogleId], [u].[IsActive], [u].[IsDeleted], [u].[LastLoginAt], [u].[LastName], [u].[PasswordHash], [u].[Phone], [u].[ReferralCode], [u].[ReferredByUserId], [u].[UpdatedAt], [u].[UpdatedBy]
+FROM [Users] AS [u]
+WHERE [u].[IsDeleted] = CAST(0 AS bit) AND [u].[Email] = @__email_0
+2026-06-19 00:45:41.003 +07:00 [INF] Executed DbCommand (15ms) [Parameters=[@__id_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AvatarUrl], [t].[CreatedAt], [t].[CreatedBy], [t].[Email], [t].[FacebookId], [t].[FirstName], [t].[GoogleId], [t].[IsActive], [t].[IsDeleted], [t].[LastLoginAt], [t].[LastName], [t].[PasswordHash], [t].[Phone], [t].[ReferralCode], [t].[ReferredByUserId], [t].[UpdatedAt], [t].[UpdatedBy], [t0].[Id], [t0].[CreatedAt], [t0].[CreatedBy], [t0].[IsDeleted], [t0].[RoleId], [t0].[UpdatedAt], [t0].[UpdatedBy], [t0].[UserId], [t0].[Id0], [t0].[CreatedAt0], [t0].[CreatedBy0], [t0].[Description], [t0].[IsDeleted0], [t0].[IsSystem], [t0].[Name], [t0].[UpdatedAt0], [t0].[UpdatedBy0]
+FROM (
+    SELECT TOP(1) [u].[Id], [u].[AvatarUrl], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FacebookId], [u].[FirstName], [u].[GoogleId], [u].[IsActive], [u].[IsDeleted], [u].[LastLoginAt], [u].[LastName], [u].[PasswordHash], [u].[Phone], [u].[ReferralCode], [u].[ReferredByUserId], [u].[UpdatedAt], [u].[UpdatedBy]
+    FROM [Users] AS [u]
+    WHERE [u].[IsDeleted] = CAST(0 AS bit) AND [u].[Id] = @__id_0
+) AS [t]
+LEFT JOIN (
+    SELECT [u0].[Id], [u0].[CreatedAt], [u0].[CreatedBy], [u0].[IsDeleted], [u0].[RoleId], [u0].[UpdatedAt], [u0].[UpdatedBy], [u0].[UserId], [t1].[Id] AS [Id0], [t1].[CreatedAt] AS [CreatedAt0], [t1].[CreatedBy] AS [CreatedBy0], [t1].[Description], [t1].[IsDeleted] AS [IsDeleted0], [t1].[IsSystem], [t1].[Name], [t1].[UpdatedAt] AS [UpdatedAt0], [t1].[UpdatedBy] AS [UpdatedBy0]
+    FROM [UserRoles] AS [u0]
+    INNER JOIN (
+        SELECT [r].[Id], [r].[CreatedAt], [r].[CreatedBy], [r].[Description], [r].[IsDeleted], [r].[IsSystem], [r].[Name], [r].[UpdatedAt], [r].[UpdatedBy]
+        FROM [Roles] AS [r]
+        WHERE [r].[IsDeleted] = CAST(0 AS bit)
+    ) AS [t1] ON [u0].[RoleId] = [t1].[Id]
+    WHERE [u0].[IsDeleted] = CAST(0 AS bit)
+) AS [t0] ON [t].[Id] = [t0].[UserId]
+ORDER BY [t].[Id], [t0].[Id]
+2026-06-19 00:45:41.312 +07:00 [INF] Executed DbCommand (19ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime2), @p2='?' (DbType = Guid), @p3='?' (Size = 4000), @p4='?' (DbType = DateTime2), @p5='?' (DbType = Boolean), @p6='?' (Size = 512), @p7='?' (DbType = DateTime2), @p8='?' (Size = 512), @p9='?' (DbType = DateTime2), @p10='?' (DbType = Guid), @p11='?' (DbType = Guid), @p29='?' (DbType = Guid), @p12='?' (Size = 500), @p13='?' (DbType = DateTime2), @p14='?' (DbType = Guid), @p15='?' (Size = 256), @p16='?' (Size = 128), @p17='?' (Size = 100), @p18='?' (Size = 128), @p19='?' (DbType = Boolean), @p20='?' (DbType = Boolean), @p21='?' (DbType = DateTime2), @p22='?' (Size = 100), @p23='?' (Size = 512), @p24='?' (Size = 20), @p25='?' (Size = 32), @p26='?' (DbType = Guid), @p27='?' (DbType = DateTime2), @p28='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SET NOCOUNT ON;
+INSERT INTO [RefreshTokens] ([Id], [CreatedAt], [CreatedBy], [CreatedByIp], [ExpiresAt], [IsRevoked], [ReplacedByToken], [RevokedAt], [Token], [UpdatedAt], [UpdatedBy], [UserId])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11);
+UPDATE [Users] SET [AvatarUrl] = @p12, [CreatedAt] = @p13, [CreatedBy] = @p14, [Email] = @p15, [FacebookId] = @p16, [FirstName] = @p17, [GoogleId] = @p18, [IsActive] = @p19, [IsDeleted] = @p20, [LastLoginAt] = @p21, [LastName] = @p22, [PasswordHash] = @p23, [Phone] = @p24, [ReferralCode] = @p25, [ReferredByUserId] = @p26, [UpdatedAt] = @p27, [UpdatedBy] = @p28
+OUTPUT 1
+WHERE [Id] = @p29;
+2026-06-19 00:45:41.347 +07:00 [INF] Handled LoginCommand in 614ms
+2026-06-19 00:45:41.396 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 892.0155ms
+2026-06-19 00:46:06.262 +07:00 [INF] Executed DbCommand (8ms) [Parameters=[@__before_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[CreatedAt], [p].[CreatedBy], [p].[ExecutedAt], [p].[FailureReason], [p].[IsDeleted], [p].[PostId], [p].[RetryCount], [p].[ScheduledAt], [p].[Status], [p].[UpdatedAt], [p].[UpdatedBy], [t].[Id], [t].[ChannelAccountId], [t].[CreatedAt], [t].[CreatedBy], [t].[ExternalPostId], [t].[IsDeleted], [t].[ProjectId], [t].[PublishedAt], [t].[PublishedUrl], [t].[Status], [t].[Title], [t].[UpdatedAt], [t].[UpdatedBy], [t0].[Id], [t0].[Content], [t0].[ContentType], [t0].[CreatedAt], [t0].[CreatedBy], [t0].[IsDeleted], [t0].[MediaFileId], [t0].[PostId], [t0].[SortOrder], [t0].[UpdatedAt], [t0].[UpdatedBy]
+FROM [PostSchedules] AS [p]
+INNER JOIN (
+    SELECT [p0].[Id], [p0].[ChannelAccountId], [p0].[CreatedAt], [p0].[CreatedBy], [p0].[ExternalPostId], [p0].[IsDeleted], [p0].[ProjectId], [p0].[PublishedAt], [p0].[PublishedUrl], [p0].[Status], [p0].[Title], [p0].[UpdatedAt], [p0].[UpdatedBy]
+    FROM [Posts] AS [p0]
+    WHERE [p0].[IsDeleted] = CAST(0 AS bit)
+) AS [t] ON [p].[PostId] = [t].[Id]
+LEFT JOIN (
+    SELECT [p1].[Id], [p1].[Content], [p1].[ContentType], [p1].[CreatedAt], [p1].[CreatedBy], [p1].[IsDeleted], [p1].[MediaFileId], [p1].[PostId], [p1].[SortOrder], [p1].[UpdatedAt], [p1].[UpdatedBy]
+    FROM [PostContents] AS [p1]
+    WHERE [p1].[IsDeleted] = CAST(0 AS bit)
+) AS [t0] ON [t].[Id] = [t0].[PostId]
+WHERE [p].[IsDeleted] = CAST(0 AS bit) AND [p].[Status] = 0 AND [p].[ScheduledAt] <= @__before_0
+ORDER BY [p].[ScheduledAt], [p].[Id], [t].[Id]
+2026-06-19 00:47:06.414 +07:00 [INF] Executed DbCommand (10ms) [Parameters=[@__before_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[CreatedAt], [p].[CreatedBy], [p].[ExecutedAt], [p].[FailureReason], [p].[IsDeleted], [p].[PostId], [p].[RetryCount], [p].[ScheduledAt], [p].[Status], [p].[UpdatedAt], [p].[UpdatedBy], [t].[Id], [t].[ChannelAccountId], [t].[CreatedAt], [t].[CreatedBy], [t].[ExternalPostId], [t].[IsDeleted], [t].[ProjectId], [t].[PublishedAt], [t].[PublishedUrl], [t].[Status], [t].[Title], [t].[UpdatedAt], [t].[UpdatedBy], [t0].[Id], [t0].[Content], [t0].[ContentType], [t0].[CreatedAt], [t0].[CreatedBy], [t0].[IsDeleted], [t0].[MediaFileId], [t0].[PostId], [t0].[SortOrder], [t0].[UpdatedAt], [t0].[UpdatedBy]
+FROM [PostSchedules] AS [p]
+INNER JOIN (
+    SELECT [p0].[Id], [p0].[ChannelAccountId], [p0].[CreatedAt], [p0].[CreatedBy], [p0].[ExternalPostId], [p0].[IsDeleted], [p0].[ProjectId], [p0].[PublishedAt], [p0].[PublishedUrl], [p0].[Status], [p0].[Title], [p0].[UpdatedAt], [p0].[UpdatedBy]
+    FROM [Posts] AS [p0]
+    WHERE [p0].[IsDeleted] = CAST(0 AS bit)
+) AS [t] ON [p].[PostId] = [t].[Id]
+LEFT JOIN (
+    SELECT [p1].[Id], [p1].[Content], [p1].[ContentType], [p1].[CreatedAt], [p1].[CreatedBy], [p1].[IsDeleted], [p1].[MediaFileId], [p1].[PostId], [p1].[SortOrder], [p1].[UpdatedAt], [p1].[UpdatedBy]
+    FROM [PostContents] AS [p1]
+    WHERE [p1].[IsDeleted] = CAST(0 AS bit)
+) AS [t0] ON [t].[Id] = [t0].[PostId]
+WHERE [p].[IsDeleted] = CAST(0 AS bit) AND [p].[Status] = 0 AND [p].[ScheduledAt] <= @__before_0
+ORDER BY [p].[ScheduledAt], [p].[Id], [t].[Id]

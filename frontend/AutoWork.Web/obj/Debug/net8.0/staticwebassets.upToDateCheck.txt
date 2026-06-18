@@ -1,0 +1,11 @@
+wwwroot\app\credits.html
+wwwroot\app\dashboard.html
+wwwroot\app\plans.html
+wwwroot\app\posts.html
+wwwroot\css\app.css
+wwwroot\index.html
+wwwroot\js\api.js
+wwwroot\js\auth.js
+wwwroot\js\layout.js
+wwwroot\login.html
+wwwroot\register.html

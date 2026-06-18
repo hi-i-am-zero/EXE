@@ -1,0 +1,2629 @@
+2026-06-19 00:16:28.731 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:16:30.126 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:16:30.515 +07:00 [INF] Executed DbCommand (263ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+CREATE DATABASE [AutoWorkDb_Dev];
+2026-06-19 00:16:30.793 +07:00 [INF] Executed DbCommand (267ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [AutoWorkDb_Dev] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+2026-06-19 00:16:30.824 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:16:30.914 +07:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [__EFMigrationsHistory] (
+    [MigrationId] nvarchar(150) NOT NULL,
+    [ProductVersion] nvarchar(32) NOT NULL,
+    CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+);
+2026-06-19 00:16:30.919 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:16:30.950 +07:00 [INF] Executed DbCommand (23ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:16:30.966 +07:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-06-19 00:16:30.986 +07:00 [INF] No migrations were applied. The database is already up to date.
+2026-06-19 00:16:31.322 +07:00 [ERR] Failed executing DbCommand (62ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Roles] AS [r]
+        WHERE [r].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:16:31.418 +07:00 [ERR] An exception occurred while iterating over the results of a query for context type 'AutoWork.Persistence.Context.ApplicationDbContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid object name 'Roles'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:06d6c849-badd-44fd-bf52-2f66dda3d875
+Error Number:208,State:1,Class:16
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid object name 'Roles'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:06d6c849-badd-44fd-bf52-2f66dda3d875
+Error Number:208,State:1,Class:16
+2026-06-19 00:23:44.896 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:23:46.153 +07:00 [INF] Executed DbCommand (57ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:23:46.233 +07:00 [INF] Executed DbCommand (44ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:23:46.242 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:23:46.250 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:23:46.296 +07:00 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-06-19 00:23:46.351 +07:00 [INF] No migrations were applied. The database is already up to date.
+2026-06-19 00:23:46.879 +07:00 [ERR] Failed executing DbCommand (77ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Roles] AS [r]
+        WHERE [r].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:23:46.987 +07:00 [ERR] An exception occurred while iterating over the results of a query for context type 'AutoWork.Persistence.Context.ApplicationDbContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid object name 'Roles'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:eab29d02-77d5-4212-a0ee-5e9d8f110c36
+Error Number:208,State:1,Class:16
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid object name 'Roles'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:eab29d02-77d5-4212-a0ee-5e9d8f110c36
+Error Number:208,State:1,Class:16
+2026-06-19 00:25:53.698 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:25:54.662 +07:00 [INF] Executed DbCommand (56ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:25:54.761 +07:00 [INF] Executed DbCommand (55ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:25:54.772 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:25:54.781 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:25:54.821 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-06-19 00:25:54.856 +07:00 [INF] No migrations were applied. The database is already up to date.
+2026-06-19 00:25:55.331 +07:00 [ERR] Failed executing DbCommand (77ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Roles] AS [r]
+        WHERE [r].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:25:55.430 +07:00 [ERR] An exception occurred while iterating over the results of a query for context type 'AutoWork.Persistence.Context.ApplicationDbContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid object name 'Roles'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:22068cc9-fb38-4eda-b330-352f8c3b0b41
+Error Number:208,State:1,Class:16
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid object name 'Roles'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:22068cc9-fb38-4eda-b330-352f8c3b0b41
+Error Number:208,State:1,Class:16
+2026-06-19 00:28:35.455 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:28:36.470 +07:00 [INF] Executed DbCommand (23ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:28:36.511 +07:00 [INF] Executed DbCommand (24ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:28:36.518 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:28:36.522 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:28:36.542 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-06-19 00:28:36.561 +07:00 [INF] No migrations were applied. The database is already up to date.
+2026-06-19 00:28:36.857 +07:00 [ERR] Failed executing DbCommand (78ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Roles] AS [r]
+        WHERE [r].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:28:36.986 +07:00 [ERR] An exception occurred while iterating over the results of a query for context type 'AutoWork.Persistence.Context.ApplicationDbContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid object name 'Roles'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:fa561450-5c0c-4e95-9e6c-b4ba05108eb5
+Error Number:208,State:1,Class:16
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid object name 'Roles'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:fa561450-5c0c-4e95-9e6c-b4ba05108eb5
+Error Number:208,State:1,Class:16
+2026-06-19 00:29:11.632 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:29:12.306 +07:00 [INF] Executed DbCommand (37ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:29:12.372 +07:00 [INF] Executed DbCommand (39ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:29:12.379 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:29:12.382 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:29:12.406 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-06-19 00:29:12.427 +07:00 [INF] No migrations were applied. The database is already up to date.
+2026-06-19 00:29:12.793 +07:00 [ERR] Failed executing DbCommand (90ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Roles] AS [r]
+        WHERE [r].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:29:12.880 +07:00 [ERR] An exception occurred while iterating over the results of a query for context type 'AutoWork.Persistence.Context.ApplicationDbContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid object name 'Roles'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:83b36440-3bad-46df-b6f5-1e6a27150800
+Error Number:208,State:1,Class:16
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid object name 'Roles'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:83b36440-3bad-46df-b6f5-1e6a27150800
+Error Number:208,State:1,Class:16
+2026-06-19 00:30:35.705 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:30:36.252 +07:00 [INF] Executed DbCommand (28ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:30:36.294 +07:00 [INF] Executed DbCommand (23ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:30:36.301 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:30:36.307 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:30:36.328 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-06-19 00:30:36.356 +07:00 [INF] No migrations were applied. The database is already up to date.
+2026-06-19 00:30:36.723 +07:00 [ERR] Failed executing DbCommand (67ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Roles] AS [r]
+        WHERE [r].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:30:36.817 +07:00 [ERR] An exception occurred while iterating over the results of a query for context type 'AutoWork.Persistence.Context.ApplicationDbContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid object name 'Roles'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:b0b26a52-4ed9-4c16-86a3-48cb044c96c9
+Error Number:208,State:1,Class:16
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid object name 'Roles'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:b0b26a52-4ed9-4c16-86a3-48cb044c96c9
+Error Number:208,State:1,Class:16
+2026-06-19 00:32:08.640 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:32:09.168 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:32:36.875 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:32:37.431 +07:00 [INF] Executed DbCommand (21ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:32:37.467 +07:00 [INF] Executed DbCommand (24ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:32:37.470 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:32:37.471 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:32:37.504 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-06-19 00:32:37.536 +07:00 [INF] Applying migration '20260618173209_InitialCreate'.
+2026-06-19 00:32:37.824 +07:00 [INF] Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Channels] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(100) NOT NULL,
+    [Code] nvarchar(50) NOT NULL,
+    [Description] nvarchar(500) NULL,
+    [IconUrl] nvarchar(500) NULL,
+    [IsActive] bit NOT NULL,
+    [SortOrder] int NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Channels] PRIMARY KEY ([Id])
+);
+2026-06-19 00:32:37.829 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Permissions] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(200) NOT NULL,
+    [Code] nvarchar(100) NOT NULL,
+    [Description] nvarchar(500) NULL,
+    [Module] nvarchar(100) NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Permissions] PRIMARY KEY ([Id])
+);
+2026-06-19 00:32:37.832 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Plans] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(100) NOT NULL,
+    [Description] nvarchar(1000) NULL,
+    [Code] nvarchar(50) NOT NULL,
+    [Price] decimal(18,2) NOT NULL,
+    [BillingPeriod] int NOT NULL,
+    [MaxProjects] int NOT NULL,
+    [MaxChannels] int NOT NULL,
+    [MaxPostsPerMonth] int NOT NULL,
+    [CreditsIncluded] int NOT NULL,
+    [IsActive] bit NOT NULL,
+    [SortOrder] int NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Plans] PRIMARY KEY ([Id])
+);
+2026-06-19 00:32:37.835 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Roles] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(100) NOT NULL,
+    [Description] nvarchar(500) NULL,
+    [IsSystem] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Roles] PRIMARY KEY ([Id])
+);
+2026-06-19 00:32:37.838 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Settings] (
+    [Id] uniqueidentifier NOT NULL,
+    [Key] nvarchar(200) NOT NULL,
+    [Value] nvarchar(max) NOT NULL,
+    [Category] nvarchar(100) NULL,
+    [Description] nvarchar(500) NULL,
+    [IsPublic] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Settings] PRIMARY KEY ([Id])
+);
+2026-06-19 00:32:37.843 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Users] (
+    [Id] uniqueidentifier NOT NULL,
+    [Email] nvarchar(256) NOT NULL,
+    [PasswordHash] nvarchar(512) NOT NULL,
+    [FirstName] nvarchar(100) NOT NULL,
+    [LastName] nvarchar(100) NOT NULL,
+    [AvatarUrl] nvarchar(500) NULL,
+    [Phone] nvarchar(20) NULL,
+    [IsActive] bit NOT NULL,
+    [LastLoginAt] datetime2 NULL,
+    [GoogleId] nvarchar(128) NULL,
+    [FacebookId] nvarchar(128) NULL,
+    [ReferralCode] nvarchar(32) NULL,
+    [ReferredByUserId] uniqueidentifier NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Users] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Users_Users_ReferredByUserId] FOREIGN KEY ([ReferredByUserId]) REFERENCES [Users] ([Id]) ON DELETE NO ACTION
+);
+2026-06-19 00:32:37.846 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [RolePermissions] (
+    [Id] uniqueidentifier NOT NULL,
+    [RoleId] uniqueidentifier NOT NULL,
+    [PermissionId] uniqueidentifier NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_RolePermissions] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_RolePermissions_Permissions_PermissionId] FOREIGN KEY ([PermissionId]) REFERENCES [Permissions] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_RolePermissions_Roles_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [Roles] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:32:37.853 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Affiliates] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Code] nvarchar(32) NOT NULL,
+    [CommissionRate] decimal(5,4) NOT NULL,
+    [TotalEarnings] decimal(18,2) NOT NULL,
+    [IsActive] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Affiliates] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Affiliates_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:32:37.858 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AuditLogs] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NULL,
+    [Action] nvarchar(100) NOT NULL,
+    [EntityType] nvarchar(200) NOT NULL,
+    [EntityId] uniqueidentifier NOT NULL,
+    [OldValues] nvarchar(max) NULL,
+    [NewValues] nvarchar(max) NULL,
+    [IpAddress] nvarchar(45) NULL,
+    [UserAgent] nvarchar(500) NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_AuditLogs] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_AuditLogs_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE SET NULL
+);
+2026-06-19 00:32:37.862 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Credits] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Balance] int NOT NULL,
+    [TotalEarned] int NOT NULL,
+    [TotalUsed] int NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Credits] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Credits_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:32:37.865 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [FacebookAccounts] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [FacebookUserId] nvarchar(128) NOT NULL,
+    [Name] nvarchar(200) NOT NULL,
+    [Email] nvarchar(256) NULL,
+    [ProfilePictureUrl] nvarchar(500) NULL,
+    [IsActive] bit NOT NULL,
+    [TokenExpiresAt] datetime2 NULL,
+    [LastSyncedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_FacebookAccounts] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_FacebookAccounts_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:32:37.868 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Notifications] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Title] nvarchar(200) NOT NULL,
+    [Message] nvarchar(2000) NOT NULL,
+    [Type] int NOT NULL,
+    [IsRead] bit NOT NULL,
+    [ReadAt] datetime2 NULL,
+    [ReferenceType] nvarchar(100) NULL,
+    [ReferenceId] uniqueidentifier NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Notifications] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Notifications_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:32:37.872 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [PasswordResetTokens] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Token] nvarchar(512) NOT NULL,
+    [OtpCode] nvarchar(max) NOT NULL,
+    [ExpiresAt] datetime2 NOT NULL,
+    [UsedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_PasswordResetTokens] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_PasswordResetTokens_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:32:37.875 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Projects] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Name] nvarchar(200) NOT NULL,
+    [Description] nvarchar(2000) NULL,
+    [LogoUrl] nvarchar(500) NULL,
+    [IsActive] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Projects] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Projects_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:32:37.878 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [RefreshTokens] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Token] nvarchar(512) NOT NULL,
+    [ExpiresAt] datetime2 NOT NULL,
+    [RevokedAt] datetime2 NULL,
+    [ReplacedByToken] nvarchar(512) NULL,
+    [CreatedByIp] nvarchar(max) NULL,
+    [IsRevoked] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_RefreshTokens] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_RefreshTokens_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:32:37.882 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Subscriptions] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [PlanId] uniqueidentifier NOT NULL,
+    [Status] int NOT NULL,
+    [StartDate] datetime2 NOT NULL,
+    [EndDate] datetime2 NULL,
+    [CancelledAt] datetime2 NULL,
+    [AutoRenew] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Subscriptions] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Subscriptions_Plans_PlanId] FOREIGN KEY ([PlanId]) REFERENCES [Plans] ([Id]) ON DELETE NO ACTION,
+    CONSTRAINT [FK_Subscriptions_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:32:37.885 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [UserRoles] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [RoleId] uniqueidentifier NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_UserRoles] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_UserRoles_Roles_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [Roles] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_UserRoles_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:32:37.890 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [WordPressSites] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [SiteUrl] nvarchar(500) NOT NULL,
+    [SiteName] nvarchar(200) NOT NULL,
+    [Username] nvarchar(100) NOT NULL,
+    [ApplicationPassword] nvarchar(max) NOT NULL,
+    [IsWooCommerce] bit NOT NULL,
+    [IsConnected] bit NOT NULL,
+    [LastSyncedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_WordPressSites] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_WordPressSites_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:32:37.893 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ZaloAccounts] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [ZaloUserId] nvarchar(128) NOT NULL,
+    [DisplayName] nvarchar(200) NOT NULL,
+    [AvatarUrl] nvarchar(500) NULL,
+    [IsConnected] bit NOT NULL,
+    [TokenExpiresAt] datetime2 NULL,
+    [LastSyncedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_ZaloAccounts] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_ZaloAccounts_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:32:37.895 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AffiliateLinks] (
+    [Id] uniqueidentifier NOT NULL,
+    [AffiliateId] uniqueidentifier NOT NULL,
+    [Url] nvarchar(1000) NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Campaign] nvarchar(100) NULL,
+    [ClickCount] int NOT NULL,
+    [ConversionCount] int NOT NULL,
+    [IsActive] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_AffiliateLinks] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_AffiliateLinks_Affiliates_AffiliateId] FOREIGN KEY ([AffiliateId]) REFERENCES [Affiliates] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:32:37.898 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [CreditTransactions] (
+    [Id] uniqueidentifier NOT NULL,
+    [CreditId] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Type] int NOT NULL,
+    [Amount] int NOT NULL,
+    [BalanceAfter] int NOT NULL,
+    [Description] nvarchar(500) NULL,
+    [ReferenceType] nvarchar(100) NULL,
+    [ReferenceId] uniqueidentifier NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_CreditTransactions] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_CreditTransactions_Credits_CreditId] FOREIGN KEY ([CreditId]) REFERENCES [Credits] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_CreditTransactions_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE NO ACTION
+);
+2026-06-19 00:32:37.900 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [FacebookPages] (
+    [Id] uniqueidentifier NOT NULL,
+    [FacebookAccountId] uniqueidentifier NOT NULL,
+    [PageId] nvarchar(128) NOT NULL,
+    [Name] nvarchar(200) NOT NULL,
+    [Category] nvarchar(100) NULL,
+    [ProfilePictureUrl] nvarchar(500) NULL,
+    [IsConnected] bit NOT NULL,
+    [LastSyncedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_FacebookPages] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_FacebookPages_FacebookAccounts_FacebookAccountId] FOREIGN KEY ([FacebookAccountId]) REFERENCES [FacebookAccounts] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:32:37.931 +07:00 [ERR] Failed executing DbCommand (30ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AiPrompts] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NULL,
+    [ProjectId] uniqueidentifier NULL,
+    [Name] nvarchar(200) NOT NULL,
+    [Template] nvarchar(max) NOT NULL,
+    [Category] nvarchar(100) NULL,
+    [IsSystem] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_AiPrompts] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_AiPrompts_Projects_ProjectId] FOREIGN KEY ([ProjectId]) REFERENCES [Projects] ([Id]) ON DELETE SET NULL,
+    CONSTRAINT [FK_AiPrompts_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE SET NULL
+);
+2026-06-19 00:34:03.144 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:34:03.517 +07:00 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:34:03.566 +07:00 [INF] Executed DbCommand (22ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [AutoWorkDb_Dev] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+END;
+2026-06-19 00:34:03.656 +07:00 [INF] Executed DbCommand (90ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+DROP DATABASE [AutoWorkDb_Dev];
+2026-06-19 00:34:14.750 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:34:15.229 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:34:25.837 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:34:26.493 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:34:38.798 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:34:39.622 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:34:39.917 +07:00 [INF] Executed DbCommand (188ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+CREATE DATABASE [AutoWorkDb_Dev];
+2026-06-19 00:34:39.993 +07:00 [INF] Executed DbCommand (71ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [AutoWorkDb_Dev] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+2026-06-19 00:34:40.020 +07:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:34:40.101 +07:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [__EFMigrationsHistory] (
+    [MigrationId] nvarchar(150) NOT NULL,
+    [ProductVersion] nvarchar(32) NOT NULL,
+    CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+);
+2026-06-19 00:34:40.102 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:34:40.129 +07:00 [INF] Executed DbCommand (23ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:34:40.146 +07:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-06-19 00:34:40.169 +07:00 [INF] Applying migration '20260618173427_InitialCreate'.
+2026-06-19 00:34:40.378 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Channels] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(100) NOT NULL,
+    [Code] nvarchar(50) NOT NULL,
+    [Description] nvarchar(500) NULL,
+    [IconUrl] nvarchar(500) NULL,
+    [IsActive] bit NOT NULL,
+    [SortOrder] int NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Channels] PRIMARY KEY ([Id])
+);
+2026-06-19 00:34:40.380 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Permissions] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(200) NOT NULL,
+    [Code] nvarchar(100) NOT NULL,
+    [Description] nvarchar(500) NULL,
+    [Module] nvarchar(100) NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Permissions] PRIMARY KEY ([Id])
+);
+2026-06-19 00:34:40.383 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Plans] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(100) NOT NULL,
+    [Description] nvarchar(1000) NULL,
+    [Code] nvarchar(50) NOT NULL,
+    [Price] decimal(18,2) NOT NULL,
+    [BillingPeriod] int NOT NULL,
+    [MaxProjects] int NOT NULL,
+    [MaxChannels] int NOT NULL,
+    [MaxPostsPerMonth] int NOT NULL,
+    [CreditsIncluded] int NOT NULL,
+    [IsActive] bit NOT NULL,
+    [SortOrder] int NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Plans] PRIMARY KEY ([Id])
+);
+2026-06-19 00:34:40.386 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Roles] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(100) NOT NULL,
+    [Description] nvarchar(500) NULL,
+    [IsSystem] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Roles] PRIMARY KEY ([Id])
+);
+2026-06-19 00:34:40.388 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Settings] (
+    [Id] uniqueidentifier NOT NULL,
+    [Key] nvarchar(200) NOT NULL,
+    [Value] nvarchar(max) NOT NULL,
+    [Category] nvarchar(100) NULL,
+    [Description] nvarchar(500) NULL,
+    [IsPublic] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Settings] PRIMARY KEY ([Id])
+);
+2026-06-19 00:34:40.392 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Users] (
+    [Id] uniqueidentifier NOT NULL,
+    [Email] nvarchar(256) NOT NULL,
+    [PasswordHash] nvarchar(512) NOT NULL,
+    [FirstName] nvarchar(100) NOT NULL,
+    [LastName] nvarchar(100) NOT NULL,
+    [AvatarUrl] nvarchar(500) NULL,
+    [Phone] nvarchar(20) NULL,
+    [IsActive] bit NOT NULL,
+    [LastLoginAt] datetime2 NULL,
+    [GoogleId] nvarchar(128) NULL,
+    [FacebookId] nvarchar(128) NULL,
+    [ReferralCode] nvarchar(32) NULL,
+    [ReferredByUserId] uniqueidentifier NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Users] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Users_Users_ReferredByUserId] FOREIGN KEY ([ReferredByUserId]) REFERENCES [Users] ([Id]) ON DELETE NO ACTION
+);
+2026-06-19 00:34:40.395 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [RolePermissions] (
+    [Id] uniqueidentifier NOT NULL,
+    [RoleId] uniqueidentifier NOT NULL,
+    [PermissionId] uniqueidentifier NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_RolePermissions] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_RolePermissions_Permissions_PermissionId] FOREIGN KEY ([PermissionId]) REFERENCES [Permissions] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_RolePermissions_Roles_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [Roles] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:34:40.397 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Affiliates] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Code] nvarchar(32) NOT NULL,
+    [CommissionRate] decimal(5,4) NOT NULL,
+    [TotalEarnings] decimal(18,2) NOT NULL,
+    [IsActive] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Affiliates] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Affiliates_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:34:40.399 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AuditLogs] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NULL,
+    [Action] nvarchar(100) NOT NULL,
+    [EntityType] nvarchar(200) NOT NULL,
+    [EntityId] uniqueidentifier NOT NULL,
+    [OldValues] nvarchar(max) NULL,
+    [NewValues] nvarchar(max) NULL,
+    [IpAddress] nvarchar(45) NULL,
+    [UserAgent] nvarchar(500) NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_AuditLogs] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_AuditLogs_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE SET NULL
+);
+2026-06-19 00:34:40.401 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Credits] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Balance] int NOT NULL,
+    [TotalEarned] int NOT NULL,
+    [TotalUsed] int NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Credits] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Credits_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:34:40.404 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [FacebookAccounts] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [FacebookUserId] nvarchar(128) NOT NULL,
+    [Name] nvarchar(200) NOT NULL,
+    [Email] nvarchar(256) NULL,
+    [ProfilePictureUrl] nvarchar(500) NULL,
+    [IsActive] bit NOT NULL,
+    [TokenExpiresAt] datetime2 NULL,
+    [LastSyncedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_FacebookAccounts] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_FacebookAccounts_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:34:40.406 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Notifications] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Title] nvarchar(200) NOT NULL,
+    [Message] nvarchar(2000) NOT NULL,
+    [Type] int NOT NULL,
+    [IsRead] bit NOT NULL,
+    [ReadAt] datetime2 NULL,
+    [ReferenceType] nvarchar(100) NULL,
+    [ReferenceId] uniqueidentifier NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Notifications] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Notifications_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:34:40.408 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [PasswordResetTokens] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Token] nvarchar(512) NOT NULL,
+    [OtpCode] nvarchar(max) NOT NULL,
+    [ExpiresAt] datetime2 NOT NULL,
+    [UsedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_PasswordResetTokens] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_PasswordResetTokens_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:34:40.411 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Projects] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Name] nvarchar(200) NOT NULL,
+    [Description] nvarchar(2000) NULL,
+    [LogoUrl] nvarchar(500) NULL,
+    [IsActive] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Projects] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Projects_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:34:40.414 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [RefreshTokens] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Token] nvarchar(512) NOT NULL,
+    [ExpiresAt] datetime2 NOT NULL,
+    [RevokedAt] datetime2 NULL,
+    [ReplacedByToken] nvarchar(512) NULL,
+    [CreatedByIp] nvarchar(max) NULL,
+    [IsRevoked] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_RefreshTokens] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_RefreshTokens_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:34:40.417 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Subscriptions] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [PlanId] uniqueidentifier NOT NULL,
+    [Status] int NOT NULL,
+    [StartDate] datetime2 NOT NULL,
+    [EndDate] datetime2 NULL,
+    [CancelledAt] datetime2 NULL,
+    [AutoRenew] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Subscriptions] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Subscriptions_Plans_PlanId] FOREIGN KEY ([PlanId]) REFERENCES [Plans] ([Id]) ON DELETE NO ACTION,
+    CONSTRAINT [FK_Subscriptions_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:34:40.420 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [UserRoles] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [RoleId] uniqueidentifier NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_UserRoles] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_UserRoles_Roles_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [Roles] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_UserRoles_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:34:40.422 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [WordPressSites] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [SiteUrl] nvarchar(500) NOT NULL,
+    [SiteName] nvarchar(200) NOT NULL,
+    [Username] nvarchar(100) NOT NULL,
+    [ApplicationPassword] nvarchar(max) NOT NULL,
+    [IsWooCommerce] bit NOT NULL,
+    [IsConnected] bit NOT NULL,
+    [LastSyncedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_WordPressSites] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_WordPressSites_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:34:40.426 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ZaloAccounts] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [ZaloUserId] nvarchar(128) NOT NULL,
+    [DisplayName] nvarchar(200) NOT NULL,
+    [AvatarUrl] nvarchar(500) NULL,
+    [IsConnected] bit NOT NULL,
+    [TokenExpiresAt] datetime2 NULL,
+    [LastSyncedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_ZaloAccounts] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_ZaloAccounts_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:34:40.429 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AffiliateLinks] (
+    [Id] uniqueidentifier NOT NULL,
+    [AffiliateId] uniqueidentifier NOT NULL,
+    [Url] nvarchar(1000) NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Campaign] nvarchar(100) NULL,
+    [ClickCount] int NOT NULL,
+    [ConversionCount] int NOT NULL,
+    [IsActive] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_AffiliateLinks] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_AffiliateLinks_Affiliates_AffiliateId] FOREIGN KEY ([AffiliateId]) REFERENCES [Affiliates] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:34:40.432 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [CreditTransactions] (
+    [Id] uniqueidentifier NOT NULL,
+    [CreditId] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Type] int NOT NULL,
+    [Amount] int NOT NULL,
+    [BalanceAfter] int NOT NULL,
+    [Description] nvarchar(500) NULL,
+    [ReferenceType] nvarchar(100) NULL,
+    [ReferenceId] uniqueidentifier NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_CreditTransactions] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_CreditTransactions_Credits_CreditId] FOREIGN KEY ([CreditId]) REFERENCES [Credits] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_CreditTransactions_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE NO ACTION
+);
+2026-06-19 00:34:40.435 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [FacebookPages] (
+    [Id] uniqueidentifier NOT NULL,
+    [FacebookAccountId] uniqueidentifier NOT NULL,
+    [PageId] nvarchar(128) NOT NULL,
+    [Name] nvarchar(200) NOT NULL,
+    [Category] nvarchar(100) NULL,
+    [ProfilePictureUrl] nvarchar(500) NULL,
+    [IsConnected] bit NOT NULL,
+    [LastSyncedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_FacebookPages] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_FacebookPages_FacebookAccounts_FacebookAccountId] FOREIGN KEY ([FacebookAccountId]) REFERENCES [FacebookAccounts] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:34:40.440 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AiPrompts] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NULL,
+    [ProjectId] uniqueidentifier NULL,
+    [Name] nvarchar(200) NOT NULL,
+    [Template] nvarchar(max) NOT NULL,
+    [Category] nvarchar(100) NULL,
+    [IsSystem] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_AiPrompts] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_AiPrompts_Projects_ProjectId] FOREIGN KEY ([ProjectId]) REFERENCES [Projects] ([Id]),
+    CONSTRAINT [FK_AiPrompts_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:34:40.443 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ChannelAccounts] (
+    [Id] uniqueidentifier NOT NULL,
+    [ProjectId] uniqueidentifier NOT NULL,
+    [ChannelId] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Name] nvarchar(200) NOT NULL,
+    [ExternalId] nvarchar(128) NULL,
+    [ProfileUrl] nvarchar(500) NULL,
+    [AvatarUrl] nvarchar(500) NULL,
+    [IsActive] bit NOT NULL,
+    [LastSyncedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_ChannelAccounts] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_ChannelAccounts_Channels_ChannelId] FOREIGN KEY ([ChannelId]) REFERENCES [Channels] ([Id]) ON DELETE NO ACTION,
+    CONSTRAINT [FK_ChannelAccounts_Projects_ProjectId] FOREIGN KEY ([ProjectId]) REFERENCES [Projects] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_ChannelAccounts_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE NO ACTION
+);
+2026-06-19 00:34:40.447 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [MediaFiles] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [ProjectId] uniqueidentifier NULL,
+    [FileName] nvarchar(255) NOT NULL,
+    [FileUrl] nvarchar(1000) NOT NULL,
+    [MimeType] nvarchar(100) NOT NULL,
+    [FileSize] bigint NOT NULL,
+    [ThumbnailUrl] nvarchar(1000) NULL,
+    [Width] int NULL,
+    [Height] int NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_MediaFiles] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_MediaFiles_Projects_ProjectId] FOREIGN KEY ([ProjectId]) REFERENCES [Projects] ([Id]),
+    CONSTRAINT [FK_MediaFiles_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:34:40.452 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AffiliateCommissions] (
+    [Id] uniqueidentifier NOT NULL,
+    [AffiliateId] uniqueidentifier NOT NULL,
+    [ReferredUserId] uniqueidentifier NOT NULL,
+    [SubscriptionId] uniqueidentifier NULL,
+    [Amount] decimal(18,2) NOT NULL,
+    [Status] int NOT NULL,
+    [PaidAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_AffiliateCommissions] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_AffiliateCommissions_Affiliates_AffiliateId] FOREIGN KEY ([AffiliateId]) REFERENCES [Affiliates] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_AffiliateCommissions_Subscriptions_SubscriptionId] FOREIGN KEY ([SubscriptionId]) REFERENCES [Subscriptions] ([Id]),
+    CONSTRAINT [FK_AffiliateCommissions_Users_ReferredUserId] FOREIGN KEY ([ReferredUserId]) REFERENCES [Users] ([Id]) ON DELETE NO ACTION
+);
+2026-06-19 00:34:40.457 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Invoices] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [SubscriptionId] uniqueidentifier NULL,
+    [InvoiceNumber] nvarchar(50) NOT NULL,
+    [Amount] decimal(18,2) NOT NULL,
+    [Tax] decimal(18,2) NOT NULL,
+    [Total] decimal(18,2) NOT NULL,
+    [Status] int NOT NULL,
+    [DueDate] datetime2 NOT NULL,
+    [PaidAt] datetime2 NULL,
+    [Notes] nvarchar(1000) NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Invoices] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Invoices_Subscriptions_SubscriptionId] FOREIGN KEY ([SubscriptionId]) REFERENCES [Subscriptions] ([Id]),
+    CONSTRAINT [FK_Invoices_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:34:40.461 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [WordPressPosts] (
+    [Id] uniqueidentifier NOT NULL,
+    [WordPressSiteId] uniqueidentifier NOT NULL,
+    [ExternalPostId] nvarchar(128) NOT NULL,
+    [Title] nvarchar(500) NOT NULL,
+    [Excerpt] nvarchar(2000) NULL,
+    [Status] int NOT NULL,
+    [Permalink] nvarchar(1000) NULL,
+    [PublishedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_WordPressPosts] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_WordPressPosts_WordPressSites_WordPressSiteId] FOREIGN KEY ([WordPressSiteId]) REFERENCES [WordPressSites] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:34:40.463 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ZaloPosts] (
+    [Id] uniqueidentifier NOT NULL,
+    [ZaloAccountId] uniqueidentifier NOT NULL,
+    [ExternalPostId] nvarchar(128) NULL,
+    [Content] nvarchar(max) NOT NULL,
+    [Status] int NOT NULL,
+    [PublishedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_ZaloPosts] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_ZaloPosts_ZaloAccounts_ZaloAccountId] FOREIGN KEY ([ZaloAccountId]) REFERENCES [ZaloAccounts] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:34:40.466 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AiGeneratedContents] (
+    [Id] uniqueidentifier NOT NULL,
+    [AiPromptId] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [ProjectId] uniqueidentifier NULL,
+    [Input] nvarchar(max) NOT NULL,
+    [Output] nvarchar(max) NULL,
+    [TokensUsed] int NOT NULL,
+    [Status] int NOT NULL,
+    [ErrorMessage] nvarchar(2000) NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_AiGeneratedContents] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_AiGeneratedContents_AiPrompts_AiPromptId] FOREIGN KEY ([AiPromptId]) REFERENCES [AiPrompts] ([Id]) ON DELETE NO ACTION,
+    CONSTRAINT [FK_AiGeneratedContents_Projects_ProjectId] FOREIGN KEY ([ProjectId]) REFERENCES [Projects] ([Id]),
+    CONSTRAINT [FK_AiGeneratedContents_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:34:40.470 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Posts] (
+    [Id] uniqueidentifier NOT NULL,
+    [ProjectId] uniqueidentifier NOT NULL,
+    [ChannelAccountId] uniqueidentifier NOT NULL,
+    [Title] nvarchar(500) NOT NULL,
+    [Status] int NOT NULL,
+    [ExternalPostId] nvarchar(128) NULL,
+    [PublishedUrl] nvarchar(1000) NULL,
+    [PublishedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Posts] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Posts_ChannelAccounts_ChannelAccountId] FOREIGN KEY ([ChannelAccountId]) REFERENCES [ChannelAccounts] ([Id]) ON DELETE NO ACTION,
+    CONSTRAINT [FK_Posts_Projects_ProjectId] FOREIGN KEY ([ProjectId]) REFERENCES [Projects] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:34:40.473 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Payments] (
+    [Id] uniqueidentifier NOT NULL,
+    [InvoiceId] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Amount] decimal(18,2) NOT NULL,
+    [PaymentMethod] int NOT NULL,
+    [TransactionId] nvarchar(128) NULL,
+    [Status] int NOT NULL,
+    [PaidAt] datetime2 NULL,
+    [FailureReason] nvarchar(1000) NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Payments] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Payments_Invoices_InvoiceId] FOREIGN KEY ([InvoiceId]) REFERENCES [Invoices] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Payments_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE NO ACTION
+);
+2026-06-19 00:34:40.502 +07:00 [ERR] Failed executing DbCommand (28ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [PostContents] (
+    [Id] uniqueidentifier NOT NULL,
+    [PostId] uniqueidentifier NOT NULL,
+    [ContentType] int NOT NULL,
+    [Content] nvarchar(max) NOT NULL,
+    [SortOrder] int NOT NULL,
+    [MediaFileId] uniqueidentifier NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_PostContents] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_PostContents_MediaFiles_MediaFileId] FOREIGN KEY ([MediaFileId]) REFERENCES [MediaFiles] ([Id]) ON DELETE SET NULL,
+    CONSTRAINT [FK_PostContents_Posts_PostId] FOREIGN KEY ([PostId]) REFERENCES [Posts] ([Id]) ON DELETE CASCADE
+);
+2026-06-19 00:35:36.798 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:35:37.716 +07:00 [INF] Executed DbCommand (28ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:35:37.770 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [AutoWorkDb_Dev] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+END;
+2026-06-19 00:35:37.823 +07:00 [INF] Executed DbCommand (53ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+DROP DATABASE [AutoWorkDb_Dev];
+2026-06-19 00:35:50.946 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:35:51.608 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:36:05.373 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:36:06.234 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:36:21.169 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:36:22.194 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:36:22.511 +07:00 [INF] Executed DbCommand (209ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+CREATE DATABASE [AutoWorkDb_Dev];
+2026-06-19 00:36:22.580 +07:00 [INF] Executed DbCommand (64ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [AutoWorkDb_Dev] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+2026-06-19 00:36:22.608 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:36:22.697 +07:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [__EFMigrationsHistory] (
+    [MigrationId] nvarchar(150) NOT NULL,
+    [ProductVersion] nvarchar(32) NOT NULL,
+    CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+);
+2026-06-19 00:36:22.700 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:36:22.723 +07:00 [INF] Executed DbCommand (19ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:36:22.735 +07:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-06-19 00:36:22.758 +07:00 [INF] Applying migration '20260618173606_InitialCreate'.
+2026-06-19 00:36:23.123 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Channels] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(100) NOT NULL,
+    [Code] nvarchar(50) NOT NULL,
+    [Description] nvarchar(500) NULL,
+    [IconUrl] nvarchar(500) NULL,
+    [IsActive] bit NOT NULL,
+    [SortOrder] int NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Channels] PRIMARY KEY ([Id])
+);
+2026-06-19 00:36:23.125 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Permissions] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(200) NOT NULL,
+    [Code] nvarchar(100) NOT NULL,
+    [Description] nvarchar(500) NULL,
+    [Module] nvarchar(100) NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Permissions] PRIMARY KEY ([Id])
+);
+2026-06-19 00:36:23.127 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Plans] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(100) NOT NULL,
+    [Description] nvarchar(1000) NULL,
+    [Code] nvarchar(50) NOT NULL,
+    [Price] decimal(18,2) NOT NULL,
+    [BillingPeriod] int NOT NULL,
+    [MaxProjects] int NOT NULL,
+    [MaxChannels] int NOT NULL,
+    [MaxPostsPerMonth] int NOT NULL,
+    [CreditsIncluded] int NOT NULL,
+    [IsActive] bit NOT NULL,
+    [SortOrder] int NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Plans] PRIMARY KEY ([Id])
+);
+2026-06-19 00:36:23.130 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Roles] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(100) NOT NULL,
+    [Description] nvarchar(500) NULL,
+    [IsSystem] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Roles] PRIMARY KEY ([Id])
+);
+2026-06-19 00:36:23.134 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Settings] (
+    [Id] uniqueidentifier NOT NULL,
+    [Key] nvarchar(200) NOT NULL,
+    [Value] nvarchar(max) NOT NULL,
+    [Category] nvarchar(100) NULL,
+    [Description] nvarchar(500) NULL,
+    [IsPublic] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Settings] PRIMARY KEY ([Id])
+);
+2026-06-19 00:36:23.140 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Users] (
+    [Id] uniqueidentifier NOT NULL,
+    [Email] nvarchar(256) NOT NULL,
+    [PasswordHash] nvarchar(512) NOT NULL,
+    [FirstName] nvarchar(100) NOT NULL,
+    [LastName] nvarchar(100) NOT NULL,
+    [AvatarUrl] nvarchar(500) NULL,
+    [Phone] nvarchar(20) NULL,
+    [IsActive] bit NOT NULL,
+    [LastLoginAt] datetime2 NULL,
+    [GoogleId] nvarchar(128) NULL,
+    [FacebookId] nvarchar(128) NULL,
+    [ReferralCode] nvarchar(32) NULL,
+    [ReferredByUserId] uniqueidentifier NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Users] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Users_Users_ReferredByUserId] FOREIGN KEY ([ReferredByUserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:36:23.146 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [RolePermissions] (
+    [Id] uniqueidentifier NOT NULL,
+    [RoleId] uniqueidentifier NOT NULL,
+    [PermissionId] uniqueidentifier NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_RolePermissions] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_RolePermissions_Permissions_PermissionId] FOREIGN KEY ([PermissionId]) REFERENCES [Permissions] ([Id]),
+    CONSTRAINT [FK_RolePermissions_Roles_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [Roles] ([Id])
+);
+2026-06-19 00:36:23.155 +07:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Affiliates] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Code] nvarchar(32) NOT NULL,
+    [CommissionRate] decimal(5,4) NOT NULL,
+    [TotalEarnings] decimal(18,2) NOT NULL,
+    [IsActive] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Affiliates] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Affiliates_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:36:23.163 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AuditLogs] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NULL,
+    [Action] nvarchar(100) NOT NULL,
+    [EntityType] nvarchar(200) NOT NULL,
+    [EntityId] uniqueidentifier NOT NULL,
+    [OldValues] nvarchar(max) NULL,
+    [NewValues] nvarchar(max) NULL,
+    [IpAddress] nvarchar(45) NULL,
+    [UserAgent] nvarchar(500) NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_AuditLogs] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_AuditLogs_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:36:23.166 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Credits] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Balance] int NOT NULL,
+    [TotalEarned] int NOT NULL,
+    [TotalUsed] int NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Credits] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Credits_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:36:23.169 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [FacebookAccounts] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [FacebookUserId] nvarchar(128) NOT NULL,
+    [Name] nvarchar(200) NOT NULL,
+    [Email] nvarchar(256) NULL,
+    [ProfilePictureUrl] nvarchar(500) NULL,
+    [IsActive] bit NOT NULL,
+    [TokenExpiresAt] datetime2 NULL,
+    [LastSyncedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_FacebookAccounts] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_FacebookAccounts_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:36:23.173 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Notifications] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Title] nvarchar(200) NOT NULL,
+    [Message] nvarchar(2000) NOT NULL,
+    [Type] int NOT NULL,
+    [IsRead] bit NOT NULL,
+    [ReadAt] datetime2 NULL,
+    [ReferenceType] nvarchar(100) NULL,
+    [ReferenceId] uniqueidentifier NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Notifications] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Notifications_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:36:23.177 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [PasswordResetTokens] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Token] nvarchar(512) NOT NULL,
+    [OtpCode] nvarchar(max) NOT NULL,
+    [ExpiresAt] datetime2 NOT NULL,
+    [UsedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_PasswordResetTokens] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_PasswordResetTokens_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:36:23.183 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Projects] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Name] nvarchar(200) NOT NULL,
+    [Description] nvarchar(2000) NULL,
+    [LogoUrl] nvarchar(500) NULL,
+    [IsActive] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Projects] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Projects_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:36:23.187 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [RefreshTokens] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Token] nvarchar(512) NOT NULL,
+    [ExpiresAt] datetime2 NOT NULL,
+    [RevokedAt] datetime2 NULL,
+    [ReplacedByToken] nvarchar(512) NULL,
+    [CreatedByIp] nvarchar(max) NULL,
+    [IsRevoked] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_RefreshTokens] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_RefreshTokens_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:36:23.193 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Subscriptions] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [PlanId] uniqueidentifier NOT NULL,
+    [Status] int NOT NULL,
+    [StartDate] datetime2 NOT NULL,
+    [EndDate] datetime2 NULL,
+    [CancelledAt] datetime2 NULL,
+    [AutoRenew] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Subscriptions] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Subscriptions_Plans_PlanId] FOREIGN KEY ([PlanId]) REFERENCES [Plans] ([Id]),
+    CONSTRAINT [FK_Subscriptions_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:36:23.196 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [UserRoles] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [RoleId] uniqueidentifier NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_UserRoles] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_UserRoles_Roles_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [Roles] ([Id]),
+    CONSTRAINT [FK_UserRoles_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:36:23.200 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [WordPressSites] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [SiteUrl] nvarchar(500) NOT NULL,
+    [SiteName] nvarchar(200) NOT NULL,
+    [Username] nvarchar(100) NOT NULL,
+    [ApplicationPassword] nvarchar(max) NOT NULL,
+    [IsWooCommerce] bit NOT NULL,
+    [IsConnected] bit NOT NULL,
+    [LastSyncedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_WordPressSites] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_WordPressSites_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:36:23.206 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ZaloAccounts] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [ZaloUserId] nvarchar(128) NOT NULL,
+    [DisplayName] nvarchar(200) NOT NULL,
+    [AvatarUrl] nvarchar(500) NULL,
+    [IsConnected] bit NOT NULL,
+    [TokenExpiresAt] datetime2 NULL,
+    [LastSyncedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_ZaloAccounts] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_ZaloAccounts_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:36:23.209 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AffiliateLinks] (
+    [Id] uniqueidentifier NOT NULL,
+    [AffiliateId] uniqueidentifier NOT NULL,
+    [Url] nvarchar(1000) NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Campaign] nvarchar(100) NULL,
+    [ClickCount] int NOT NULL,
+    [ConversionCount] int NOT NULL,
+    [IsActive] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_AffiliateLinks] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_AffiliateLinks_Affiliates_AffiliateId] FOREIGN KEY ([AffiliateId]) REFERENCES [Affiliates] ([Id])
+);
+2026-06-19 00:36:23.213 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [CreditTransactions] (
+    [Id] uniqueidentifier NOT NULL,
+    [CreditId] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Type] int NOT NULL,
+    [Amount] int NOT NULL,
+    [BalanceAfter] int NOT NULL,
+    [Description] nvarchar(500) NULL,
+    [ReferenceType] nvarchar(100) NULL,
+    [ReferenceId] uniqueidentifier NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_CreditTransactions] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_CreditTransactions_Credits_CreditId] FOREIGN KEY ([CreditId]) REFERENCES [Credits] ([Id]),
+    CONSTRAINT [FK_CreditTransactions_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:36:23.221 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [FacebookPages] (
+    [Id] uniqueidentifier NOT NULL,
+    [FacebookAccountId] uniqueidentifier NOT NULL,
+    [PageId] nvarchar(128) NOT NULL,
+    [Name] nvarchar(200) NOT NULL,
+    [Category] nvarchar(100) NULL,
+    [ProfilePictureUrl] nvarchar(500) NULL,
+    [IsConnected] bit NOT NULL,
+    [LastSyncedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_FacebookPages] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_FacebookPages_FacebookAccounts_FacebookAccountId] FOREIGN KEY ([FacebookAccountId]) REFERENCES [FacebookAccounts] ([Id])
+);
+2026-06-19 00:36:23.228 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AiPrompts] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NULL,
+    [ProjectId] uniqueidentifier NULL,
+    [Name] nvarchar(200) NOT NULL,
+    [Template] nvarchar(max) NOT NULL,
+    [Category] nvarchar(100) NULL,
+    [IsSystem] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_AiPrompts] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_AiPrompts_Projects_ProjectId] FOREIGN KEY ([ProjectId]) REFERENCES [Projects] ([Id]),
+    CONSTRAINT [FK_AiPrompts_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:36:23.233 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ChannelAccounts] (
+    [Id] uniqueidentifier NOT NULL,
+    [ProjectId] uniqueidentifier NOT NULL,
+    [ChannelId] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Name] nvarchar(200) NOT NULL,
+    [ExternalId] nvarchar(128) NULL,
+    [ProfileUrl] nvarchar(500) NULL,
+    [AvatarUrl] nvarchar(500) NULL,
+    [IsActive] bit NOT NULL,
+    [LastSyncedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_ChannelAccounts] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_ChannelAccounts_Channels_ChannelId] FOREIGN KEY ([ChannelId]) REFERENCES [Channels] ([Id]),
+    CONSTRAINT [FK_ChannelAccounts_Projects_ProjectId] FOREIGN KEY ([ProjectId]) REFERENCES [Projects] ([Id]),
+    CONSTRAINT [FK_ChannelAccounts_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:36:23.238 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [MediaFiles] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [ProjectId] uniqueidentifier NULL,
+    [FileName] nvarchar(255) NOT NULL,
+    [FileUrl] nvarchar(1000) NOT NULL,
+    [MimeType] nvarchar(100) NOT NULL,
+    [FileSize] bigint NOT NULL,
+    [ThumbnailUrl] nvarchar(1000) NULL,
+    [Width] int NULL,
+    [Height] int NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_MediaFiles] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_MediaFiles_Projects_ProjectId] FOREIGN KEY ([ProjectId]) REFERENCES [Projects] ([Id]),
+    CONSTRAINT [FK_MediaFiles_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:36:23.243 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AffiliateCommissions] (
+    [Id] uniqueidentifier NOT NULL,
+    [AffiliateId] uniqueidentifier NOT NULL,
+    [ReferredUserId] uniqueidentifier NOT NULL,
+    [SubscriptionId] uniqueidentifier NULL,
+    [Amount] decimal(18,2) NOT NULL,
+    [Status] int NOT NULL,
+    [PaidAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_AffiliateCommissions] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_AffiliateCommissions_Affiliates_AffiliateId] FOREIGN KEY ([AffiliateId]) REFERENCES [Affiliates] ([Id]),
+    CONSTRAINT [FK_AffiliateCommissions_Subscriptions_SubscriptionId] FOREIGN KEY ([SubscriptionId]) REFERENCES [Subscriptions] ([Id]),
+    CONSTRAINT [FK_AffiliateCommissions_Users_ReferredUserId] FOREIGN KEY ([ReferredUserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:36:23.250 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Invoices] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [SubscriptionId] uniqueidentifier NULL,
+    [InvoiceNumber] nvarchar(50) NOT NULL,
+    [Amount] decimal(18,2) NOT NULL,
+    [Tax] decimal(18,2) NOT NULL,
+    [Total] decimal(18,2) NOT NULL,
+    [Status] int NOT NULL,
+    [DueDate] datetime2 NOT NULL,
+    [PaidAt] datetime2 NULL,
+    [Notes] nvarchar(1000) NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Invoices] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Invoices_Subscriptions_SubscriptionId] FOREIGN KEY ([SubscriptionId]) REFERENCES [Subscriptions] ([Id]),
+    CONSTRAINT [FK_Invoices_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:36:23.254 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [WordPressPosts] (
+    [Id] uniqueidentifier NOT NULL,
+    [WordPressSiteId] uniqueidentifier NOT NULL,
+    [ExternalPostId] nvarchar(128) NOT NULL,
+    [Title] nvarchar(500) NOT NULL,
+    [Excerpt] nvarchar(2000) NULL,
+    [Status] int NOT NULL,
+    [Permalink] nvarchar(1000) NULL,
+    [PublishedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_WordPressPosts] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_WordPressPosts_WordPressSites_WordPressSiteId] FOREIGN KEY ([WordPressSiteId]) REFERENCES [WordPressSites] ([Id])
+);
+2026-06-19 00:36:23.260 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ZaloPosts] (
+    [Id] uniqueidentifier NOT NULL,
+    [ZaloAccountId] uniqueidentifier NOT NULL,
+    [ExternalPostId] nvarchar(128) NULL,
+    [Content] nvarchar(max) NOT NULL,
+    [Status] int NOT NULL,
+    [PublishedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_ZaloPosts] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_ZaloPosts_ZaloAccounts_ZaloAccountId] FOREIGN KEY ([ZaloAccountId]) REFERENCES [ZaloAccounts] ([Id])
+);
+2026-06-19 00:36:23.264 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AiGeneratedContents] (
+    [Id] uniqueidentifier NOT NULL,
+    [AiPromptId] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [ProjectId] uniqueidentifier NULL,
+    [Input] nvarchar(max) NOT NULL,
+    [Output] nvarchar(max) NULL,
+    [TokensUsed] int NOT NULL,
+    [Status] int NOT NULL,
+    [ErrorMessage] nvarchar(2000) NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_AiGeneratedContents] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_AiGeneratedContents_AiPrompts_AiPromptId] FOREIGN KEY ([AiPromptId]) REFERENCES [AiPrompts] ([Id]),
+    CONSTRAINT [FK_AiGeneratedContents_Projects_ProjectId] FOREIGN KEY ([ProjectId]) REFERENCES [Projects] ([Id]),
+    CONSTRAINT [FK_AiGeneratedContents_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:36:23.271 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Posts] (
+    [Id] uniqueidentifier NOT NULL,
+    [ProjectId] uniqueidentifier NOT NULL,
+    [ChannelAccountId] uniqueidentifier NOT NULL,
+    [Title] nvarchar(500) NOT NULL,
+    [Status] int NOT NULL,
+    [ExternalPostId] nvarchar(128) NULL,
+    [PublishedUrl] nvarchar(1000) NULL,
+    [PublishedAt] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Posts] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Posts_ChannelAccounts_ChannelAccountId] FOREIGN KEY ([ChannelAccountId]) REFERENCES [ChannelAccounts] ([Id]),
+    CONSTRAINT [FK_Posts_Projects_ProjectId] FOREIGN KEY ([ProjectId]) REFERENCES [Projects] ([Id])
+);
+2026-06-19 00:36:23.277 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Payments] (
+    [Id] uniqueidentifier NOT NULL,
+    [InvoiceId] uniqueidentifier NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [Amount] decimal(18,2) NOT NULL,
+    [PaymentMethod] int NOT NULL,
+    [TransactionId] nvarchar(128) NULL,
+    [Status] int NOT NULL,
+    [PaidAt] datetime2 NULL,
+    [FailureReason] nvarchar(1000) NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Payments] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Payments_Invoices_InvoiceId] FOREIGN KEY ([InvoiceId]) REFERENCES [Invoices] ([Id]),
+    CONSTRAINT [FK_Payments_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id])
+);
+2026-06-19 00:36:23.282 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [PostContents] (
+    [Id] uniqueidentifier NOT NULL,
+    [PostId] uniqueidentifier NOT NULL,
+    [ContentType] int NOT NULL,
+    [Content] nvarchar(max) NOT NULL,
+    [SortOrder] int NOT NULL,
+    [MediaFileId] uniqueidentifier NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_PostContents] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_PostContents_MediaFiles_MediaFileId] FOREIGN KEY ([MediaFileId]) REFERENCES [MediaFiles] ([Id]),
+    CONSTRAINT [FK_PostContents_Posts_PostId] FOREIGN KEY ([PostId]) REFERENCES [Posts] ([Id])
+);
+2026-06-19 00:36:23.288 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [PostLogs] (
+    [Id] uniqueidentifier NOT NULL,
+    [PostId] uniqueidentifier NOT NULL,
+    [Action] nvarchar(100) NOT NULL,
+    [Message] nvarchar(2000) NOT NULL,
+    [Level] int NOT NULL,
+    [Details] nvarchar(max) NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_PostLogs] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_PostLogs_Posts_PostId] FOREIGN KEY ([PostId]) REFERENCES [Posts] ([Id])
+);
+2026-06-19 00:36:23.292 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [PostSchedules] (
+    [Id] uniqueidentifier NOT NULL,
+    [PostId] uniqueidentifier NOT NULL,
+    [ScheduledAt] datetime2 NOT NULL,
+    [Status] int NOT NULL,
+    [ExecutedAt] datetime2 NULL,
+    [FailureReason] nvarchar(1000) NULL,
+    [RetryCount] int NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] uniqueidentifier NULL,
+    [UpdatedBy] uniqueidentifier NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_PostSchedules] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_PostSchedules_Posts_PostId] FOREIGN KEY ([PostId]) REFERENCES [Posts] ([Id])
+);
+2026-06-19 00:36:23.301 +07:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AffiliateCommissions_AffiliateId] ON [AffiliateCommissions] ([AffiliateId]);
+2026-06-19 00:36:23.304 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AffiliateCommissions_IsDeleted] ON [AffiliateCommissions] ([IsDeleted]);
+2026-06-19 00:36:23.307 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AffiliateCommissions_ReferredUserId] ON [AffiliateCommissions] ([ReferredUserId]);
+2026-06-19 00:36:23.309 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AffiliateCommissions_Status] ON [AffiliateCommissions] ([Status]);
+2026-06-19 00:36:23.312 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AffiliateCommissions_SubscriptionId] ON [AffiliateCommissions] ([SubscriptionId]);
+2026-06-19 00:36:23.315 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AffiliateLinks_AffiliateId] ON [AffiliateLinks] ([AffiliateId]);
+2026-06-19 00:36:23.322 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AffiliateLinks_IsDeleted] ON [AffiliateLinks] ([IsDeleted]);
+2026-06-19 00:36:23.326 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Affiliates_Code] ON [Affiliates] ([Code]);
+2026-06-19 00:36:23.330 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Affiliates_IsDeleted] ON [Affiliates] ([IsDeleted]);
+2026-06-19 00:36:23.334 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Affiliates_UserId] ON [Affiliates] ([UserId]);
+2026-06-19 00:36:23.337 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AiGeneratedContents_AiPromptId] ON [AiGeneratedContents] ([AiPromptId]);
+2026-06-19 00:36:23.341 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AiGeneratedContents_CreatedAt] ON [AiGeneratedContents] ([CreatedAt]);
+2026-06-19 00:36:23.345 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AiGeneratedContents_IsDeleted] ON [AiGeneratedContents] ([IsDeleted]);
+2026-06-19 00:36:23.349 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AiGeneratedContents_ProjectId] ON [AiGeneratedContents] ([ProjectId]);
+2026-06-19 00:36:23.352 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AiGeneratedContents_UserId] ON [AiGeneratedContents] ([UserId]);
+2026-06-19 00:36:23.356 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AiPrompts_IsDeleted] ON [AiPrompts] ([IsDeleted]);
+2026-06-19 00:36:23.359 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AiPrompts_IsSystem] ON [AiPrompts] ([IsSystem]);
+2026-06-19 00:36:23.363 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AiPrompts_ProjectId] ON [AiPrompts] ([ProjectId]);
+2026-06-19 00:36:23.367 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AiPrompts_UserId] ON [AiPrompts] ([UserId]);
+2026-06-19 00:36:23.371 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AuditLogs_CreatedAt] ON [AuditLogs] ([CreatedAt]);
+2026-06-19 00:36:23.374 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AuditLogs_EntityType] ON [AuditLogs] ([EntityType]);
+2026-06-19 00:36:23.375 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AuditLogs_IsDeleted] ON [AuditLogs] ([IsDeleted]);
+2026-06-19 00:36:23.378 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AuditLogs_UserId] ON [AuditLogs] ([UserId]);
+2026-06-19 00:36:23.381 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_ChannelAccounts_ChannelId] ON [ChannelAccounts] ([ChannelId]);
+2026-06-19 00:36:23.388 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_ChannelAccounts_IsDeleted] ON [ChannelAccounts] ([IsDeleted]);
+2026-06-19 00:36:23.393 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_ChannelAccounts_ProjectId_ChannelId_ExternalId] ON [ChannelAccounts] ([ProjectId], [ChannelId], [ExternalId]);
+2026-06-19 00:36:23.396 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_ChannelAccounts_UserId] ON [ChannelAccounts] ([UserId]);
+2026-06-19 00:36:23.401 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Channels_Code] ON [Channels] ([Code]);
+2026-06-19 00:36:23.407 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Channels_IsDeleted] ON [Channels] ([IsDeleted]);
+2026-06-19 00:36:23.411 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Credits_IsDeleted] ON [Credits] ([IsDeleted]);
+2026-06-19 00:36:23.413 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Credits_UserId] ON [Credits] ([UserId]);
+2026-06-19 00:36:23.417 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_CreditTransactions_CreatedAt] ON [CreditTransactions] ([CreatedAt]);
+2026-06-19 00:36:23.419 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_CreditTransactions_CreditId] ON [CreditTransactions] ([CreditId]);
+2026-06-19 00:36:23.421 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_CreditTransactions_IsDeleted] ON [CreditTransactions] ([IsDeleted]);
+2026-06-19 00:36:23.425 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_CreditTransactions_UserId] ON [CreditTransactions] ([UserId]);
+2026-06-19 00:36:23.428 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_FacebookAccounts_FacebookUserId] ON [FacebookAccounts] ([FacebookUserId]);
+2026-06-19 00:36:23.431 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_FacebookAccounts_IsDeleted] ON [FacebookAccounts] ([IsDeleted]);
+2026-06-19 00:36:23.434 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_FacebookAccounts_UserId] ON [FacebookAccounts] ([UserId]);
+2026-06-19 00:36:23.436 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_FacebookPages_FacebookAccountId] ON [FacebookPages] ([FacebookAccountId]);
+2026-06-19 00:36:23.439 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_FacebookPages_IsDeleted] ON [FacebookPages] ([IsDeleted]);
+2026-06-19 00:36:23.441 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_FacebookPages_PageId] ON [FacebookPages] ([PageId]);
+2026-06-19 00:36:23.443 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Invoices_InvoiceNumber] ON [Invoices] ([InvoiceNumber]);
+2026-06-19 00:36:23.445 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Invoices_IsDeleted] ON [Invoices] ([IsDeleted]);
+2026-06-19 00:36:23.448 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Invoices_Status] ON [Invoices] ([Status]);
+2026-06-19 00:36:23.451 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Invoices_SubscriptionId] ON [Invoices] ([SubscriptionId]);
+2026-06-19 00:36:23.454 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Invoices_UserId] ON [Invoices] ([UserId]);
+2026-06-19 00:36:23.458 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_MediaFiles_FileUrl] ON [MediaFiles] ([FileUrl]);
+2026-06-19 00:36:23.460 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_MediaFiles_IsDeleted] ON [MediaFiles] ([IsDeleted]);
+2026-06-19 00:36:23.461 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_MediaFiles_ProjectId] ON [MediaFiles] ([ProjectId]);
+2026-06-19 00:36:23.462 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_MediaFiles_UserId] ON [MediaFiles] ([UserId]);
+2026-06-19 00:36:23.465 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Notifications_CreatedAt] ON [Notifications] ([CreatedAt]);
+2026-06-19 00:36:23.467 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Notifications_IsDeleted] ON [Notifications] ([IsDeleted]);
+2026-06-19 00:36:23.469 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Notifications_UserId_IsRead] ON [Notifications] ([UserId], [IsRead]);
+2026-06-19 00:36:23.472 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_PasswordResetTokens_IsDeleted] ON [PasswordResetTokens] ([IsDeleted]);
+2026-06-19 00:36:23.475 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_PasswordResetTokens_Token] ON [PasswordResetTokens] ([Token]);
+2026-06-19 00:36:23.478 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_PasswordResetTokens_UserId] ON [PasswordResetTokens] ([UserId]);
+2026-06-19 00:36:23.480 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Payments_InvoiceId] ON [Payments] ([InvoiceId]);
+2026-06-19 00:36:23.482 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Payments_IsDeleted] ON [Payments] ([IsDeleted]);
+2026-06-19 00:36:23.488 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Payments_TransactionId] ON [Payments] ([TransactionId]) WHERE [TransactionId] IS NOT NULL;
+2026-06-19 00:36:23.490 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Payments_UserId] ON [Payments] ([UserId]);
+2026-06-19 00:36:23.493 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Permissions_Code] ON [Permissions] ([Code]);
+2026-06-19 00:36:23.495 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Permissions_IsDeleted] ON [Permissions] ([IsDeleted]);
+2026-06-19 00:36:23.496 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Plans_Code] ON [Plans] ([Code]);
+2026-06-19 00:36:23.498 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Plans_IsActive] ON [Plans] ([IsActive]);
+2026-06-19 00:36:23.500 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Plans_IsDeleted] ON [Plans] ([IsDeleted]);
+2026-06-19 00:36:23.502 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Plans_Name] ON [Plans] ([Name]);
+2026-06-19 00:36:23.504 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Plans_SortOrder] ON [Plans] ([SortOrder]);
+2026-06-19 00:36:23.506 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_PostContents_IsDeleted] ON [PostContents] ([IsDeleted]);
+2026-06-19 00:36:23.510 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_PostContents_MediaFileId] ON [PostContents] ([MediaFileId]);
+2026-06-19 00:36:23.513 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_PostContents_PostId_SortOrder] ON [PostContents] ([PostId], [SortOrder]);
+2026-06-19 00:36:23.517 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_PostLogs_CreatedAt] ON [PostLogs] ([CreatedAt]);
+2026-06-19 00:36:23.520 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_PostLogs_IsDeleted] ON [PostLogs] ([IsDeleted]);
+2026-06-19 00:36:23.525 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_PostLogs_PostId] ON [PostLogs] ([PostId]);
+2026-06-19 00:36:23.528 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Posts_ChannelAccountId] ON [Posts] ([ChannelAccountId]);
+2026-06-19 00:36:23.531 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Posts_IsDeleted] ON [Posts] ([IsDeleted]);
+2026-06-19 00:36:23.537 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Posts_ProjectId] ON [Posts] ([ProjectId]);
+2026-06-19 00:36:23.539 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Posts_PublishedAt] ON [Posts] ([PublishedAt]);
+2026-06-19 00:36:23.541 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Posts_Status] ON [Posts] ([Status]);
+2026-06-19 00:36:23.543 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_PostSchedules_IsDeleted] ON [PostSchedules] ([IsDeleted]);
+2026-06-19 00:36:23.545 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_PostSchedules_PostId] ON [PostSchedules] ([PostId]);
+2026-06-19 00:36:23.550 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_PostSchedules_Status_ScheduledAt] ON [PostSchedules] ([Status], [ScheduledAt]);
+2026-06-19 00:36:23.554 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Projects_IsDeleted] ON [Projects] ([IsDeleted]);
+2026-06-19 00:36:23.556 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Projects_UserId] ON [Projects] ([UserId]);
+2026-06-19 00:36:23.560 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_RefreshTokens_IsDeleted] ON [RefreshTokens] ([IsDeleted]);
+2026-06-19 00:36:23.564 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_RefreshTokens_Token] ON [RefreshTokens] ([Token]);
+2026-06-19 00:36:23.567 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_RefreshTokens_UserId_ExpiresAt] ON [RefreshTokens] ([UserId], [ExpiresAt]);
+2026-06-19 00:36:23.570 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_RolePermissions_IsDeleted] ON [RolePermissions] ([IsDeleted]);
+2026-06-19 00:36:23.572 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_RolePermissions_PermissionId] ON [RolePermissions] ([PermissionId]);
+2026-06-19 00:36:23.574 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_RolePermissions_RoleId_PermissionId] ON [RolePermissions] ([RoleId], [PermissionId]);
+2026-06-19 00:36:23.577 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Roles_IsDeleted] ON [Roles] ([IsDeleted]);
+2026-06-19 00:36:23.579 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Roles_Name] ON [Roles] ([Name]);
+2026-06-19 00:36:23.582 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Settings_Category] ON [Settings] ([Category]);
+2026-06-19 00:36:23.585 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Settings_IsDeleted] ON [Settings] ([IsDeleted]);
+2026-06-19 00:36:23.587 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Settings_Key] ON [Settings] ([Key]);
+2026-06-19 00:36:23.589 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Subscriptions_IsDeleted] ON [Subscriptions] ([IsDeleted]);
+2026-06-19 00:36:23.591 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Subscriptions_PlanId] ON [Subscriptions] ([PlanId]);
+2026-06-19 00:36:23.594 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Subscriptions_UserId_Status] ON [Subscriptions] ([UserId], [Status]);
+2026-06-19 00:36:23.596 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_UserRoles_IsDeleted] ON [UserRoles] ([IsDeleted]);
+2026-06-19 00:36:23.599 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_UserRoles_RoleId] ON [UserRoles] ([RoleId]);
+2026-06-19 00:36:23.603 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_UserRoles_UserId_RoleId] ON [UserRoles] ([UserId], [RoleId]);
+2026-06-19 00:36:23.606 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Users_Email] ON [Users] ([Email]);
+2026-06-19 00:36:23.610 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Users_FacebookId] ON [Users] ([FacebookId]) WHERE [FacebookId] IS NOT NULL;
+2026-06-19 00:36:23.612 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Users_GoogleId] ON [Users] ([GoogleId]) WHERE [GoogleId] IS NOT NULL;
+2026-06-19 00:36:23.615 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Users_IsDeleted] ON [Users] ([IsDeleted]);
+2026-06-19 00:36:23.619 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Users_ReferralCode] ON [Users] ([ReferralCode]) WHERE [ReferralCode] IS NOT NULL;
+2026-06-19 00:36:23.622 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Users_ReferredByUserId] ON [Users] ([ReferredByUserId]);
+2026-06-19 00:36:23.625 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_WordPressPosts_IsDeleted] ON [WordPressPosts] ([IsDeleted]);
+2026-06-19 00:36:23.626 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_WordPressPosts_Status] ON [WordPressPosts] ([Status]);
+2026-06-19 00:36:23.628 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_WordPressPosts_WordPressSiteId] ON [WordPressPosts] ([WordPressSiteId]);
+2026-06-19 00:36:23.630 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_WordPressSites_IsDeleted] ON [WordPressSites] ([IsDeleted]);
+2026-06-19 00:36:23.634 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_WordPressSites_UserId] ON [WordPressSites] ([UserId]);
+2026-06-19 00:36:23.636 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_ZaloAccounts_IsDeleted] ON [ZaloAccounts] ([IsDeleted]);
+2026-06-19 00:36:23.639 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_ZaloAccounts_UserId] ON [ZaloAccounts] ([UserId]);
+2026-06-19 00:36:23.642 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_ZaloAccounts_ZaloUserId] ON [ZaloAccounts] ([ZaloUserId]);
+2026-06-19 00:36:23.645 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_ZaloPosts_IsDeleted] ON [ZaloPosts] ([IsDeleted]);
+2026-06-19 00:36:23.649 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_ZaloPosts_Status] ON [ZaloPosts] ([Status]);
+2026-06-19 00:36:23.654 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_ZaloPosts_ZaloAccountId] ON [ZaloPosts] ([ZaloAccountId]);
+2026-06-19 00:36:23.664 +07:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20260618173606_InitialCreate', N'8.0.11');
+2026-06-19 00:36:52.770 +07:00 [WRN] No store type was specified for the decimal property 'TotalEarnings' on entity type 'Affiliate'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-19 00:36:53.388 +07:00 [INF] Executed DbCommand (26ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:36:53.436 +07:00 [INF] Executed DbCommand (32ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:36:53.440 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-19 00:36:53.441 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-19 00:36:53.469 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-06-19 00:36:53.489 +07:00 [INF] No migrations were applied. The database is already up to date.
+2026-06-19 00:36:53.710 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Roles] AS [r]
+        WHERE [r].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:36:53.829 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Permissions] AS [p]
+        WHERE [p].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:36:54.011 +07:00 [INF] Executed DbCommand (48ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Size = 100), @p2='?' (DbType = DateTime2), @p3='?' (DbType = Guid), @p4='?' (Size = 500), @p5='?' (Size = 100), @p6='?' (Size = 200), @p7='?' (DbType = DateTime2), @p8='?' (DbType = Guid), @p9='?' (DbType = Guid), @p10='?' (Size = 100), @p11='?' (DbType = DateTime2), @p12='?' (DbType = Guid), @p13='?' (Size = 500), @p14='?' (Size = 100), @p15='?' (Size = 200), @p16='?' (DbType = DateTime2), @p17='?' (DbType = Guid), @p18='?' (DbType = Guid), @p19='?' (Size = 100), @p20='?' (DbType = DateTime2), @p21='?' (DbType = Guid), @p22='?' (Size = 500), @p23='?' (Size = 100), @p24='?' (Size = 200), @p25='?' (DbType = DateTime2), @p26='?' (DbType = Guid), @p27='?' (DbType = Guid), @p28='?' (Size = 100), @p29='?' (DbType = DateTime2), @p30='?' (DbType = Guid), @p31='?' (Size = 500), @p32='?' (Size = 100), @p33='?' (Size = 200), @p34='?' (DbType = DateTime2), @p35='?' (DbType = Guid), @p36='?' (DbType = Guid), @p37='?' (Size = 100), @p38='?' (DbType = DateTime2), @p39='?' (DbType = Guid), @p40='?' (Size = 500), @p41='?' (Size = 100), @p42='?' (Size = 200), @p43='?' (DbType = DateTime2), @p44='?' (DbType = Guid), @p45='?' (DbType = Guid), @p46='?' (Size = 100), @p47='?' (DbType = DateTime2), @p48='?' (DbType = Guid), @p49='?' (Size = 500), @p50='?' (Size = 100), @p51='?' (Size = 200), @p52='?' (DbType = DateTime2), @p53='?' (DbType = Guid), @p54='?' (DbType = Guid), @p55='?' (Size = 100), @p56='?' (DbType = DateTime2), @p57='?' (DbType = Guid), @p58='?' (Size = 500), @p59='?' (Size = 100), @p60='?' (Size = 200), @p61='?' (DbType = DateTime2), @p62='?' (DbType = Guid), @p63='?' (DbType = Guid), @p64='?' (Size = 100), @p65='?' (DbType = DateTime2), @p66='?' (DbType = Guid), @p67='?' (Size = 500), @p68='?' (Size = 100), @p69='?' (Size = 200), @p70='?' (DbType = DateTime2), @p71='?' (DbType = Guid), @p72='?' (DbType = Guid), @p73='?' (Size = 100), @p74='?' (DbType = DateTime2), @p75='?' (DbType = Guid), @p76='?' (Size = 500), @p77='?' (Size = 100), @p78='?' (Size = 200), @p79='?' (DbType = DateTime2), @p80='?' (DbType = Guid), @p81='?' (DbType = Guid), @p82='?' (Size = 100), @p83='?' (DbType = DateTime2), @p84='?' (DbType = Guid), @p85='?' (Size = 500), @p86='?' (Size = 100), @p87='?' (Size = 200), @p88='?' (DbType = DateTime2), @p89='?' (DbType = Guid), @p90='?' (DbType = Guid), @p91='?' (Size = 100), @p92='?' (DbType = DateTime2), @p93='?' (DbType = Guid), @p94='?' (Size = 500), @p95='?' (Size = 100), @p96='?' (Size = 200), @p97='?' (DbType = DateTime2), @p98='?' (DbType = Guid), @p99='?' (DbType = Guid), @p100='?' (Size = 100), @p101='?' (DbType = DateTime2), @p102='?' (DbType = Guid), @p103='?' (Size = 500), @p104='?' (Size = 100), @p105='?' (Size = 200), @p106='?' (DbType = DateTime2), @p107='?' (DbType = Guid), @p108='?' (DbType = Guid), @p109='?' (Size = 100), @p110='?' (DbType = DateTime2), @p111='?' (DbType = Guid), @p112='?' (Size = 500), @p113='?' (Size = 100), @p114='?' (Size = 200), @p115='?' (DbType = DateTime2), @p116='?' (DbType = Guid), @p117='?' (DbType = Guid), @p118='?' (Size = 100), @p119='?' (DbType = DateTime2), @p120='?' (DbType = Guid), @p121='?' (Size = 500), @p122='?' (Size = 100), @p123='?' (Size = 200), @p124='?' (DbType = DateTime2), @p125='?' (DbType = Guid), @p126='?' (DbType = Guid), @p127='?' (Size = 100), @p128='?' (DbType = DateTime2), @p129='?' (DbType = Guid), @p130='?' (Size = 500), @p131='?' (Size = 100), @p132='?' (Size = 200), @p133='?' (DbType = DateTime2), @p134='?' (DbType = Guid), @p135='?' (DbType = Guid), @p136='?' (Size = 100), @p137='?' (DbType = DateTime2), @p138='?' (DbType = Guid), @p139='?' (Size = 500), @p140='?' (Size = 100), @p141='?' (Size = 200), @p142='?' (DbType = DateTime2), @p143='?' (DbType = Guid), @p144='?' (DbType = Guid), @p145='?' (Size = 100), @p146='?' (DbType = DateTime2), @p147='?' (DbType = Guid), @p148='?' (Size = 500), @p149='?' (Size = 100), @p150='?' (Size = 200), @p151='?' (DbType = DateTime2), @p152='?' (DbType = Guid), @p153='?' (DbType = Guid), @p154='?' (Size = 100), @p155='?' (DbType = DateTime2), @p156='?' (DbType = Guid), @p157='?' (Size = 500), @p158='?' (Size = 100), @p159='?' (Size = 200), @p160='?' (DbType = DateTime2), @p161='?' (DbType = Guid), @p162='?' (DbType = Guid), @p163='?' (Size = 100), @p164='?' (DbType = DateTime2), @p165='?' (DbType = Guid), @p166='?' (Size = 500), @p167='?' (Size = 100), @p168='?' (Size = 200), @p169='?' (DbType = DateTime2), @p170='?' (DbType = Guid), @p171='?' (DbType = Guid), @p172='?' (Size = 100), @p173='?' (DbType = DateTime2), @p174='?' (DbType = Guid), @p175='?' (Size = 500), @p176='?' (Size = 100), @p177='?' (Size = 200), @p178='?' (DbType = DateTime2), @p179='?' (DbType = Guid), @p180='?' (DbType = Guid), @p181='?' (Size = 100), @p182='?' (DbType = DateTime2), @p183='?' (DbType = Guid), @p184='?' (Size = 500), @p185='?' (Size = 100), @p186='?' (Size = 200), @p187='?' (DbType = DateTime2), @p188='?' (DbType = Guid), @p189='?' (DbType = Guid), @p190='?' (Size = 100), @p191='?' (DbType = DateTime2), @p192='?' (DbType = Guid), @p193='?' (Size = 500), @p194='?' (Size = 100), @p195='?' (Size = 200), @p196='?' (DbType = DateTime2), @p197='?' (DbType = Guid), @p198='?' (DbType = Guid), @p199='?' (Size = 100), @p200='?' (DbType = DateTime2), @p201='?' (DbType = Guid), @p202='?' (Size = 500), @p203='?' (Size = 100), @p204='?' (Size = 200), @p205='?' (DbType = DateTime2), @p206='?' (DbType = Guid), @p207='?' (DbType = Guid), @p208='?' (Size = 100), @p209='?' (DbType = DateTime2), @p210='?' (DbType = Guid), @p211='?' (Size = 500), @p212='?' (Size = 100), @p213='?' (Size = 200), @p214='?' (DbType = DateTime2), @p215='?' (DbType = Guid), @p216='?' (DbType = Guid), @p217='?' (Size = 100), @p218='?' (DbType = DateTime2), @p219='?' (DbType = Guid), @p220='?' (Size = 500), @p221='?' (Size = 100), @p222='?' (Size = 200), @p223='?' (DbType = DateTime2), @p224='?' (DbType = Guid), @p225='?' (DbType = Guid), @p226='?' (Size = 100), @p227='?' (DbType = DateTime2), @p228='?' (DbType = Guid), @p229='?' (Size = 500), @p230='?' (Size = 100), @p231='?' (Size = 200), @p232='?' (DbType = DateTime2), @p233='?' (DbType = Guid), @p234='?' (DbType = Guid), @p235='?' (Size = 100), @p236='?' (DbType = DateTime2), @p237='?' (DbType = Guid), @p238='?' (Size = 500), @p239='?' (Size = 100), @p240='?' (Size = 200), @p241='?' (DbType = DateTime2), @p242='?' (DbType = Guid), @p243='?' (DbType = Guid), @p244='?' (Size = 100), @p245='?' (DbType = DateTime2), @p246='?' (DbType = Guid), @p247='?' (Size = 500), @p248='?' (Size = 100), @p249='?' (Size = 200), @p250='?' (DbType = DateTime2), @p251='?' (DbType = Guid), @p252='?' (DbType = Guid), @p253='?' (Size = 100), @p254='?' (DbType = DateTime2), @p255='?' (DbType = Guid), @p256='?' (Size = 500), @p257='?' (Size = 100), @p258='?' (Size = 200), @p259='?' (DbType = DateTime2), @p260='?' (DbType = Guid), @p261='?' (DbType = Guid), @p262='?' (Size = 100), @p263='?' (DbType = DateTime2), @p264='?' (DbType = Guid), @p265='?' (Size = 500), @p266='?' (Size = 100), @p267='?' (Size = 200), @p268='?' (DbType = DateTime2), @p269='?' (DbType = Guid), @p270='?' (DbType = Guid), @p271='?' (Size = 100), @p272='?' (DbType = DateTime2), @p273='?' (DbType = Guid), @p274='?' (Size = 500), @p275='?' (Size = 100), @p276='?' (Size = 200), @p277='?' (DbType = DateTime2), @p278='?' (DbType = Guid), @p279='?' (DbType = Guid), @p280='?' (DbType = DateTime2), @p281='?' (DbType = Guid), @p282='?' (Size = 500), @p283='?' (DbType = Boolean), @p284='?' (Size = 100), @p285='?' (DbType = DateTime2), @p286='?' (DbType = Guid), @p287='?' (DbType = Guid), @p288='?' (DbType = DateTime2), @p289='?' (DbType = Guid), @p290='?' (Size = 500), @p291='?' (DbType = Boolean), @p292='?' (Size = 100), @p293='?' (DbType = DateTime2), @p294='?' (DbType = Guid), @p295='?' (DbType = Guid), @p296='?' (DbType = DateTime2), @p297='?' (DbType = Guid), @p298='?' (Size = 500), @p299='?' (DbType = Boolean), @p300='?' (Size = 100), @p301='?' (DbType = DateTime2), @p302='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SET NOCOUNT ON;
+MERGE [Permissions] USING (
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, 0),
+(@p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, 1),
+(@p18, @p19, @p20, @p21, @p22, @p23, @p24, @p25, @p26, 2),
+(@p27, @p28, @p29, @p30, @p31, @p32, @p33, @p34, @p35, 3),
+(@p36, @p37, @p38, @p39, @p40, @p41, @p42, @p43, @p44, 4),
+(@p45, @p46, @p47, @p48, @p49, @p50, @p51, @p52, @p53, 5),
+(@p54, @p55, @p56, @p57, @p58, @p59, @p60, @p61, @p62, 6),
+(@p63, @p64, @p65, @p66, @p67, @p68, @p69, @p70, @p71, 7),
+(@p72, @p73, @p74, @p75, @p76, @p77, @p78, @p79, @p80, 8),
+(@p81, @p82, @p83, @p84, @p85, @p86, @p87, @p88, @p89, 9),
+(@p90, @p91, @p92, @p93, @p94, @p95, @p96, @p97, @p98, 10),
+(@p99, @p100, @p101, @p102, @p103, @p104, @p105, @p106, @p107, 11),
+(@p108, @p109, @p110, @p111, @p112, @p113, @p114, @p115, @p116, 12),
+(@p117, @p118, @p119, @p120, @p121, @p122, @p123, @p124, @p125, 13),
+(@p126, @p127, @p128, @p129, @p130, @p131, @p132, @p133, @p134, 14),
+(@p135, @p136, @p137, @p138, @p139, @p140, @p141, @p142, @p143, 15),
+(@p144, @p145, @p146, @p147, @p148, @p149, @p150, @p151, @p152, 16),
+(@p153, @p154, @p155, @p156, @p157, @p158, @p159, @p160, @p161, 17),
+(@p162, @p163, @p164, @p165, @p166, @p167, @p168, @p169, @p170, 18),
+(@p171, @p172, @p173, @p174, @p175, @p176, @p177, @p178, @p179, 19),
+(@p180, @p181, @p182, @p183, @p184, @p185, @p186, @p187, @p188, 20),
+(@p189, @p190, @p191, @p192, @p193, @p194, @p195, @p196, @p197, 21),
+(@p198, @p199, @p200, @p201, @p202, @p203, @p204, @p205, @p206, 22),
+(@p207, @p208, @p209, @p210, @p211, @p212, @p213, @p214, @p215, 23),
+(@p216, @p217, @p218, @p219, @p220, @p221, @p222, @p223, @p224, 24),
+(@p225, @p226, @p227, @p228, @p229, @p230, @p231, @p232, @p233, 25),
+(@p234, @p235, @p236, @p237, @p238, @p239, @p240, @p241, @p242, 26),
+(@p243, @p244, @p245, @p246, @p247, @p248, @p249, @p250, @p251, 27),
+(@p252, @p253, @p254, @p255, @p256, @p257, @p258, @p259, @p260, 28),
+(@p261, @p262, @p263, @p264, @p265, @p266, @p267, @p268, @p269, 29),
+(@p270, @p271, @p272, @p273, @p274, @p275, @p276, @p277, @p278, 30)) AS i ([Id], [Code], [CreatedAt], [CreatedBy], [Description], [Module], [Name], [UpdatedAt], [UpdatedBy], _Position) ON 1=0
+WHEN NOT MATCHED THEN
+INSERT ([Id], [Code], [CreatedAt], [CreatedBy], [Description], [Module], [Name], [UpdatedAt], [UpdatedBy])
+VALUES (i.[Id], i.[Code], i.[CreatedAt], i.[CreatedBy], i.[Description], i.[Module], i.[Name], i.[UpdatedAt], i.[UpdatedBy])
+OUTPUT INSERTED.[IsDeleted], i._Position;
+MERGE [Roles] USING (
+VALUES (@p279, @p280, @p281, @p282, @p283, @p284, @p285, @p286, 0),
+(@p287, @p288, @p289, @p290, @p291, @p292, @p293, @p294, 1),
+(@p295, @p296, @p297, @p298, @p299, @p300, @p301, @p302, 2)) AS i ([Id], [CreatedAt], [CreatedBy], [Description], [IsSystem], [Name], [UpdatedAt], [UpdatedBy], _Position) ON 1=0
+WHEN NOT MATCHED THEN
+INSERT ([Id], [CreatedAt], [CreatedBy], [Description], [IsSystem], [Name], [UpdatedAt], [UpdatedBy])
+VALUES (i.[Id], i.[CreatedAt], i.[CreatedBy], i.[Description], i.[IsSystem], i.[Name], i.[UpdatedAt], i.[UpdatedBy])
+OUTPUT INSERTED.[IsDeleted], i._Position;
+2026-06-19 00:36:54.085 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[Code], [p].[CreatedAt], [p].[CreatedBy], [p].[Description], [p].[IsDeleted], [p].[Module], [p].[Name], [p].[UpdatedAt], [p].[UpdatedBy]
+FROM [Permissions] AS [p]
+WHERE [p].[IsDeleted] = CAST(0 AS bit)
+2026-06-19 00:36:54.128 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Plans] AS [p]
+        WHERE [p].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:36:54.180 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Channels] AS [c]
+        WHERE [c].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:36:54.217 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Settings] AS [s]
+        WHERE [s].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:36:54.245 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [AiPrompts] AS [a]
+        WHERE [a].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:36:54.304 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Users] AS [u]
+        WHERE [u].[IsDeleted] = CAST(0 AS bit) AND [u].[Email] = N'admin@autowork.com') THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-19 00:36:54.569 +07:00 [INF] Executed DbCommand (51ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Size = 100), @p2='?' (DbType = DateTime2), @p3='?' (DbType = Guid), @p4='?' (DbType = Boolean), @p5='?' (Size = 200), @p6='?' (DbType = Guid), @p7='?' (Size = 4000), @p8='?' (DbType = DateTime2), @p9='?' (DbType = Guid), @p10='?' (DbType = Guid), @p11='?' (DbType = Guid), @p12='?' (Size = 100), @p13='?' (DbType = DateTime2), @p14='?' (DbType = Guid), @p15='?' (DbType = Boolean), @p16='?' (Size = 200), @p17='?' (DbType = Guid), @p18='?' (Size = 4000), @p19='?' (DbType = DateTime2), @p20='?' (DbType = Guid), @p21='?' (DbType = Guid), @p22='?' (DbType = Guid), @p23='?' (Size = 100), @p24='?' (DbType = DateTime2), @p25='?' (DbType = Guid), @p26='?' (DbType = Boolean), @p27='?' (Size = 200), @p28='?' (DbType = Guid), @p29='?' (Size = 4000), @p30='?' (DbType = DateTime2), @p31='?' (DbType = Guid), @p32='?' (DbType = Guid), @p33='?' (DbType = Guid), @p34='?' (Size = 100), @p35='?' (DbType = DateTime2), @p36='?' (DbType = Guid), @p37='?' (DbType = Boolean), @p38='?' (Size = 200), @p39='?' (DbType = Guid), @p40='?' (Size = 4000), @p41='?' (DbType = DateTime2), @p42='?' (DbType = Guid), @p43='?' (DbType = Guid), @p44='?' (DbType = Guid), @p45='?' (Size = 50), @p46='?' (DbType = DateTime2), @p47='?' (DbType = Guid), @p48='?' (Size = 500), @p49='?' (Size = 500), @p50='?' (DbType = Boolean), @p51='?' (Size = 100), @p52='?' (DbType = Int32), @p53='?' (DbType = DateTime2), @p54='?' (DbType = Guid), @p55='?' (DbType = Guid), @p56='?' (Size = 50), @p57='?' (DbType = DateTime2), @p58='?' (DbType = Guid), @p59='?' (Size = 500), @p60='?' (Size = 500), @p61='?' (DbType = Boolean), @p62='?' (Size = 100), @p63='?' (DbType = Int32), @p64='?' (DbType = DateTime2), @p65='?' (DbType = Guid), @p66='?' (DbType = Guid), @p67='?' (Size = 50), @p68='?' (DbType = DateTime2), @p69='?' (DbType = Guid), @p70='?' (Size = 500), @p71='?' (Size = 500), @p72='?' (DbType = Boolean), @p73='?' (Size = 100), @p74='?' (DbType = Int32), @p75='?' (DbType = DateTime2), @p76='?' (DbType = Guid), @p77='?' (DbType = Guid), @p78='?' (DbType = Int32), @p79='?' (Size = 50), @p80='?' (DbType = DateTime2), @p81='?' (DbType = Guid), @p82='?' (DbType = Int32), @p83='?' (Size = 1000), @p84='?' (DbType = Boolean), @p85='?' (DbType = Int32), @p86='?' (DbType = Int32), @p87='?' (DbType = Int32), @p88='?' (Size = 100), @p89='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p90='?' (DbType = Int32), @p91='?' (DbType = DateTime2), @p92='?' (DbType = Guid), @p93='?' (DbType = Guid), @p94='?' (DbType = Int32), @p95='?' (Size = 50), @p96='?' (DbType = DateTime2), @p97='?' (DbType = Guid), @p98='?' (DbType = Int32), @p99='?' (Size = 1000), @p100='?' (DbType = Boolean), @p101='?' (DbType = Int32), @p102='?' (DbType = Int32), @p103='?' (DbType = Int32), @p104='?' (Size = 100), @p105='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p106='?' (DbType = Int32), @p107='?' (DbType = DateTime2), @p108='?' (DbType = Guid), @p109='?' (DbType = Guid), @p110='?' (DbType = Int32), @p111='?' (Size = 50), @p112='?' (DbType = DateTime2), @p113='?' (DbType = Guid), @p114='?' (DbType = Int32), @p115='?' (Size = 1000), @p116='?' (DbType = Boolean), @p117='?' (DbType = Int32), @p118='?' (DbType = Int32), @p119='?' (DbType = Int32), @p120='?' (Size = 100), @p121='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p122='?' (DbType = Int32), @p123='?' (DbType = DateTime2), @p124='?' (DbType = Guid), @p125='?' (DbType = Guid), @p126='?' (DbType = Int32), @p127='?' (Size = 50), @p128='?' (DbType = DateTime2), @p129='?' (DbType = Guid), @p130='?' (DbType = Int32), @p131='?' (Size = 1000), @p132='?' (DbType = Boolean), @p133='?' (DbType = Int32), @p134='?' (DbType = Int32), @p135='?' (DbType = Int32), @p136='?' (Size = 100), @p137='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p138='?' (DbType = Int32), @p139='?' (DbType = DateTime2), @p140='?' (DbType = Guid), @p141='?' (DbType = Guid), @p142='?' (DbType = DateTime2), @p143='?' (DbType = Guid), @p144='?' (DbType = Guid), @p145='?' (DbType = Guid), @p146='?' (DbType = DateTime2), @p147='?' (DbType = Guid), @p148='?' (DbType = Guid), @p149='?' (DbType = DateTime2), @p150='?' (DbType = Guid), @p151='?' (DbType = Guid), @p152='?' (DbType = Guid), @p153='?' (DbType = DateTime2), @p154='?' (DbType = Guid), @p155='?' (DbType = Guid), @p156='?' (DbType = DateTime2), @p157='?' (DbType = Guid), @p158='?' (DbType = Guid), @p159='?' (DbType = Guid), @p160='?' (DbType = DateTime2), @p161='?' (DbType = Guid), @p162='?' (DbType = Guid), @p163='?' (DbType = DateTime2), @p164='?' (DbType = Guid), @p165='?' (DbType = Guid), @p166='?' (DbType = Guid), @p167='?' (DbType = DateTime2), @p168='?' (DbType = Guid), @p169='?' (DbType = Guid), @p170='?' (DbType = DateTime2), @p171='?' (DbType = Guid), @p172='?' (DbType = Guid), @p173='?' (DbType = Guid), @p174='?' (DbType = DateTime2), @p175='?' (DbType = Guid), @p176='?' (DbType = Guid), @p177='?' (DbType = DateTime2), @p178='?' (DbType = Guid), @p179='?' (DbType = Guid), @p180='?' (DbType = Guid), @p181='?' (DbType = DateTime2), @p182='?' (DbType = Guid), @p183='?' (DbType = Guid), @p184='?' (DbType = DateTime2), @p185='?' (DbType = Guid), @p186='?' (DbType = Guid), @p187='?' (DbType = Guid), @p188='?' (DbType = DateTime2), @p189='?' (DbType = Guid), @p190='?' (DbType = Guid), @p191='?' (DbType = DateTime2), @p192='?' (DbType = Guid), @p193='?' (DbType = Guid), @p194='?' (DbType = Guid), @p195='?' (DbType = DateTime2), @p196='?' (DbType = Guid), @p197='?' (DbType = Guid), @p198='?' (DbType = DateTime2), @p199='?' (DbType = Guid), @p200='?' (DbType = Guid), @p201='?' (DbType = Guid), @p202='?' (DbType = DateTime2), @p203='?' (DbType = Guid), @p204='?' (DbType = Guid), @p205='?' (DbType = DateTime2), @p206='?' (DbType = Guid), @p207='?' (DbType = Guid), @p208='?' (DbType = Guid), @p209='?' (DbType = DateTime2), @p210='?' (DbType = Guid), @p211='?' (DbType = Guid), @p212='?' (DbType = DateTime2), @p213='?' (DbType = Guid), @p214='?' (DbType = Guid), @p215='?' (DbType = Guid), @p216='?' (DbType = DateTime2), @p217='?' (DbType = Guid), @p218='?' (DbType = Guid), @p219='?' (DbType = DateTime2), @p220='?' (DbType = Guid), @p221='?' (DbType = Guid), @p222='?' (DbType = Guid), @p223='?' (DbType = DateTime2), @p224='?' (DbType = Guid), @p225='?' (DbType = Guid), @p226='?' (DbType = DateTime2), @p227='?' (DbType = Guid), @p228='?' (DbType = Guid), @p229='?' (DbType = Guid), @p230='?' (DbType = DateTime2), @p231='?' (DbType = Guid), @p232='?' (DbType = Guid), @p233='?' (DbType = DateTime2), @p234='?' (DbType = Guid), @p235='?' (DbType = Guid), @p236='?' (DbType = Guid), @p237='?' (DbType = DateTime2), @p238='?' (DbType = Guid), @p239='?' (DbType = Guid), @p240='?' (DbType = DateTime2), @p241='?' (DbType = Guid), @p242='?' (DbType = Guid), @p243='?' (DbType = Guid), @p244='?' (DbType = DateTime2), @p245='?' (DbType = Guid), @p246='?' (DbType = Guid), @p247='?' (DbType = DateTime2), @p248='?' (DbType = Guid), @p249='?' (DbType = Guid), @p250='?' (DbType = Guid), @p251='?' (DbType = DateTime2), @p252='?' (DbType = Guid), @p253='?' (DbType = Guid), @p254='?' (DbType = DateTime2), @p255='?' (DbType = Guid), @p256='?' (DbType = Guid), @p257='?' (DbType = Guid), @p258='?' (DbType = DateTime2), @p259='?' (DbType = Guid), @p260='?' (DbType = Guid), @p261='?' (DbType = DateTime2), @p262='?' (DbType = Guid), @p263='?' (DbType = Guid), @p264='?' (DbType = Guid), @p265='?' (DbType = DateTime2), @p266='?' (DbType = Guid), @p267='?' (DbType = Guid), @p268='?' (DbType = DateTime2), @p269='?' (DbType = Guid), @p270='?' (DbType = Guid), @p271='?' (DbType = Guid), @p272='?' (DbType = DateTime2), @p273='?' (DbType = Guid), @p274='?' (DbType = Guid), @p275='?' (DbType = DateTime2), @p276='?' (DbType = Guid), @p277='?' (DbType = Guid), @p278='?' (DbType = Guid), @p279='?' (DbType = DateTime2), @p280='?' (DbType = Guid), @p281='?' (DbType = Guid), @p282='?' (DbType = DateTime2), @p283='?' (DbType = Guid), @p284='?' (DbType = Guid), @p285='?' (DbType = Guid), @p286='?' (DbType = DateTime2), @p287='?' (DbType = Guid), @p288='?' (DbType = Guid), @p289='?' (DbType = DateTime2), @p290='?' (DbType = Guid), @p291='?' (DbType = Guid), @p292='?' (DbType = Guid), @p293='?' (DbType = DateTime2), @p294='?' (DbType = Guid), @p295='?' (DbType = Guid), @p296='?' (DbType = DateTime2), @p297='?' (DbType = Guid), @p298='?' (DbType = Guid), @p299='?' (DbType = Guid), @p300='?' (DbType = DateTime2), @p301='?' (DbType = Guid), @p302='?' (DbType = Guid), @p303='?' (DbType = DateTime2), @p304='?' (DbType = Guid), @p305='?' (DbType = Guid), @p306='?' (DbType = Guid), @p307='?' (DbType = DateTime2), @p308='?' (DbType = Guid), @p309='?' (DbType = Guid), @p310='?' (DbType = DateTime2), @p311='?' (DbType = Guid), @p312='?' (DbType = Guid), @p313='?' (DbType = Guid), @p314='?' (DbType = DateTime2), @p315='?' (DbType = Guid), @p316='?' (DbType = Guid), @p317='?' (DbType = DateTime2), @p318='?' (DbType = Guid), @p319='?' (DbType = Guid), @p320='?' (DbType = Guid), @p321='?' (DbType = DateTime2), @p322='?' (DbType = Guid), @p323='?' (DbType = Guid), @p324='?' (DbType = DateTime2), @p325='?' (DbType = Guid), @p326='?' (DbType = Guid), @p327='?' (DbType = Guid), @p328='?' (DbType = DateTime2), @p329='?' (DbType = Guid), @p330='?' (DbType = Guid), @p331='?' (DbType = DateTime2), @p332='?' (DbType = Guid), @p333='?' (DbType = Guid), @p334='?' (DbType = Guid), @p335='?' (DbType = DateTime2), @p336='?' (DbType = Guid), @p337='?' (DbType = Guid), @p338='?' (DbType = DateTime2), @p339='?' (DbType = Guid), @p340='?' (DbType = Guid), @p341='?' (DbType = Guid), @p342='?' (DbType = DateTime2), @p343='?' (DbType = Guid), @p344='?' (DbType = Guid), @p345='?' (DbType = DateTime2), @p346='?' (DbType = Guid), @p347='?' (DbType = Guid), @p348='?' (DbType = Guid), @p349='?' (DbType = DateTime2), @p350='?' (DbType = Guid), @p351='?' (DbType = Guid), @p352='?' (DbType = DateTime2), @p353='?' (DbType = Guid), @p354='?' (DbType = Guid), @p355='?' (DbType = Guid), @p356='?' (DbType = DateTime2), @p357='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SET NOCOUNT ON;
+MERGE [AiPrompts] USING (
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, 0),
+(@p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21, 1),
+(@p22, @p23, @p24, @p25, @p26, @p27, @p28, @p29, @p30, @p31, @p32, 2),
+(@p33, @p34, @p35, @p36, @p37, @p38, @p39, @p40, @p41, @p42, @p43, 3)) AS i ([Id], [Category], [CreatedAt], [CreatedBy], [IsSystem], [Name], [ProjectId], [Template], [UpdatedAt], [UpdatedBy], [UserId], _Position) ON 1=0
+WHEN NOT MATCHED THEN
+INSERT ([Id], [Category], [CreatedAt], [CreatedBy], [IsSystem], [Name], [ProjectId], [Template], [UpdatedAt], [UpdatedBy], [UserId])
+VALUES (i.[Id], i.[Category], i.[CreatedAt], i.[CreatedBy], i.[IsSystem], i.[Name], i.[ProjectId], i.[Template], i.[UpdatedAt], i.[UpdatedBy], i.[UserId])
+OUTPUT INSERTED.[IsDeleted], i._Position;
+MERGE [Channels] USING (
+VALUES (@p44, @p45, @p46, @p47, @p48, @p49, @p50, @p51, @p52, @p53, @p54, 0),
+(@p55, @p56, @p57, @p58, @p59, @p60, @p61, @p62, @p63, @p64, @p65, 1),
+(@p66, @p67, @p68, @p69, @p70, @p71, @p72, @p73, @p74, @p75, @p76, 2)) AS i ([Id], [Code], [CreatedAt], [CreatedBy], [Description], [IconUrl], [IsActive], [Name], [SortOrder], [UpdatedAt], [UpdatedBy], _Position) ON 1=0
+WHEN NOT MATCHED THEN
+INSERT ([Id], [Code], [CreatedAt], [CreatedBy], [Description], [IconUrl], [IsActive], [Name], [SortOrder], [UpdatedAt], [UpdatedBy])
+VALUES (i.[Id], i.[Code], i.[CreatedAt], i.[CreatedBy], i.[Description], i.[IconUrl], i.[IsActive], i.[Name], i.[SortOrder], i.[UpdatedAt], i.[UpdatedBy])
+OUTPUT INSERTED.[IsDeleted], i._Position;
+MERGE [Plans] USING (
+VALUES (@p77, @p78, @p79, @p80, @p81, @p82, @p83, @p84, @p85, @p86, @p87, @p88, @p89, @p90, @p91, @p92, 0),
+(@p93, @p94, @p95, @p96, @p97, @p98, @p99, @p100, @p101, @p102, @p103, @p104, @p105, @p106, @p107, @p108, 1),
+(@p109, @p110, @p111, @p112, @p113, @p114, @p115, @p116, @p117, @p118, @p119, @p120, @p121, @p122, @p123, @p124, 2),
+(@p125, @p126, @p127, @p128, @p129, @p130, @p131, @p132, @p133, @p134, @p135, @p136, @p137, @p138, @p139, @p140, 3)) AS i ([Id], [BillingPeriod], [Code], [CreatedAt], [CreatedBy], [CreditsIncluded], [Description], [IsActive], [MaxChannels], [MaxPostsPerMonth], [MaxProjects], [Name], [Price], [SortOrder], [UpdatedAt], [UpdatedBy], _Position) ON 1=0
+WHEN NOT MATCHED THEN
+INSERT ([Id], [BillingPeriod], [Code], [CreatedAt], [CreatedBy], [CreditsIncluded], [Description], [IsActive], [MaxChannels], [MaxPostsPerMonth], [MaxProjects], [Name], [Price], [SortOrder], [UpdatedAt], [UpdatedBy])
+VALUES (i.[Id], i.[BillingPeriod], i.[Code], i.[CreatedAt], i.[CreatedBy], i.[CreditsIncluded], i.[Description], i.[IsActive], i.[MaxChannels], i.[MaxPostsPerMonth], i.[MaxProjects], i.[Name], i.[Price], i.[SortOrder], i.[UpdatedAt], i.[UpdatedBy])
+OUTPUT INSERTED.[IsDeleted], i._Position;
+MERGE [RolePermissions] USING (
+VALUES (@p141, @p142, @p143, @p144, @p145, @p146, @p147, 0),
+(@p148, @p149, @p150, @p151, @p152, @p153, @p154, 1),
+(@p155, @p156, @p157, @p158, @p159, @p160, @p161, 2),
+(@p162, @p163, @p164, @p165, @p166, @p167, @p168, 3),
+(@p169, @p170, @p171, @p172, @p173, @p174, @p175, 4),
+(@p176, @p177, @p178, @p179, @p180, @p181, @p182, 5),
+(@p183, @p184, @p185, @p186, @p187, @p188, @p189, 6),
+(@p190, @p191, @p192, @p193, @p194, @p195, @p196, 7),
+(@p197, @p198, @p199, @p200, @p201, @p202, @p203, 8),
+(@p204, @p205, @p206, @p207, @p208, @p209, @p210, 9),
+(@p211, @p212, @p213, @p214, @p215, @p216, @p217, 10),
+(@p218, @p219, @p220, @p221, @p222, @p223, @p224, 11),
+(@p225, @p226, @p227, @p228, @p229, @p230, @p231, 12),
+(@p232, @p233, @p234, @p235, @p236, @p237, @p238, 13),
+(@p239, @p240, @p241, @p242, @p243, @p244, @p245, 14),
+(@p246, @p247, @p248, @p249, @p250, @p251, @p252, 15),
+(@p253, @p254, @p255, @p256, @p257, @p258, @p259, 16),
+(@p260, @p261, @p262, @p263, @p264, @p265, @p266, 17),
+(@p267, @p268, @p269, @p270, @p271, @p272, @p273, 18),
+(@p274, @p275, @p276, @p277, @p278, @p279, @p280, 19),
+(@p281, @p282, @p283, @p284, @p285, @p286, @p287, 20),
+(@p288, @p289, @p290, @p291, @p292, @p293, @p294, 21),
+(@p295, @p296, @p297, @p298, @p299, @p300, @p301, 22),
+(@p302, @p303, @p304, @p305, @p306, @p307, @p308, 23),
+(@p309, @p310, @p311, @p312, @p313, @p314, @p315, 24),
+(@p316, @p317, @p318, @p319, @p320, @p321, @p322, 25),
+(@p323, @p324, @p325, @p326, @p327, @p328, @p329, 26),
+(@p330, @p331, @p332, @p333, @p334, @p335, @p336, 27),
+(@p337, @p338, @p339, @p340, @p341, @p342, @p343, 28),
+(@p344, @p345, @p346, @p347, @p348, @p349, @p350, 29),
+(@p351, @p352, @p353, @p354, @p355, @p356, @p357, 30)) AS i ([Id], [CreatedAt], [CreatedBy], [PermissionId], [RoleId], [UpdatedAt], [UpdatedBy], _Position) ON 1=0
+WHEN NOT MATCHED THEN
+INSERT ([Id], [CreatedAt], [CreatedBy], [PermissionId], [RoleId], [UpdatedAt], [UpdatedBy])
+VALUES (i.[Id], i.[CreatedAt], i.[CreatedBy], i.[PermissionId], i.[RoleId], i.[UpdatedAt], i.[UpdatedBy])
+OUTPUT INSERTED.[IsDeleted], i._Position;
+2026-06-19 00:36:54.596 +07:00 [INF] Executed DbCommand (21ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Size = 100), @p2='?' (DbType = DateTime2), @p3='?' (DbType = Guid), @p4='?' (Size = 500), @p5='?' (DbType = Boolean), @p6='?' (Size = 200), @p7='?' (DbType = DateTime2), @p8='?' (DbType = Guid), @p9='?' (Size = 4000), @p10='?' (DbType = Guid), @p11='?' (Size = 100), @p12='?' (DbType = DateTime2), @p13='?' (DbType = Guid), @p14='?' (Size = 500), @p15='?' (DbType = Boolean), @p16='?' (Size = 200), @p17='?' (DbType = DateTime2), @p18='?' (DbType = Guid), @p19='?' (Size = 4000), @p20='?' (DbType = Guid), @p21='?' (Size = 100), @p22='?' (DbType = DateTime2), @p23='?' (DbType = Guid), @p24='?' (Size = 500), @p25='?' (DbType = Boolean), @p26='?' (Size = 200), @p27='?' (DbType = DateTime2), @p28='?' (DbType = Guid), @p29='?' (Size = 4000), @p30='?' (DbType = Guid), @p31='?' (Size = 100), @p32='?' (DbType = DateTime2), @p33='?' (DbType = Guid), @p34='?' (Size = 500), @p35='?' (DbType = Boolean), @p36='?' (Size = 200), @p37='?' (DbType = DateTime2), @p38='?' (DbType = Guid), @p39='?' (Size = 4000), @p40='?' (DbType = Guid), @p41='?' (Size = 100), @p42='?' (DbType = DateTime2), @p43='?' (DbType = Guid), @p44='?' (Size = 500), @p45='?' (DbType = Boolean), @p46='?' (Size = 200), @p47='?' (DbType = DateTime2), @p48='?' (DbType = Guid), @p49='?' (Size = 4000), @p50='?' (DbType = Guid), @p51='?' (Size = 100), @p52='?' (DbType = DateTime2), @p53='?' (DbType = Guid), @p54='?' (Size = 500), @p55='?' (DbType = Boolean), @p56='?' (Size = 200), @p57='?' (DbType = DateTime2), @p58='?' (DbType = Guid), @p59='?' (Size = 4000), @p60='?' (DbType = Guid), @p61='?' (Size = 100), @p62='?' (DbType = DateTime2), @p63='?' (DbType = Guid), @p64='?' (Size = 500), @p65='?' (DbType = Boolean), @p66='?' (Size = 200), @p67='?' (DbType = DateTime2), @p68='?' (DbType = Guid), @p69='?' (Size = 4000), @p70='?' (DbType = Guid), @p71='?' (Size = 100), @p72='?' (DbType = DateTime2), @p73='?' (DbType = Guid), @p74='?' (Size = 500), @p75='?' (DbType = Boolean), @p76='?' (Size = 200), @p77='?' (DbType = DateTime2), @p78='?' (DbType = Guid), @p79='?' (Size = 4000), @p80='?' (DbType = Guid), @p81='?' (Size = 500), @p82='?' (DbType = DateTime2), @p83='?' (DbType = Guid), @p84='?' (Size = 256), @p85='?' (Size = 128), @p86='?' (Size = 100), @p87='?' (Size = 128), @p88='?' (DbType = Boolean), @p89='?' (DbType = DateTime2), @p90='?' (Size = 100), @p91='?' (Size = 512), @p92='?' (Size = 20), @p93='?' (Size = 32), @p94='?' (DbType = Guid), @p95='?' (DbType = DateTime2), @p96='?' (DbType = Guid), @p97='?' (DbType = Guid), @p98='?' (DbType = Int32), @p99='?' (DbType = DateTime2), @p100='?' (DbType = Guid), @p101='?' (DbType = Int32), @p102='?' (DbType = Int32), @p103='?' (DbType = DateTime2), @p104='?' (DbType = Guid), @p105='?' (DbType = Guid), @p106='?' (DbType = Guid), @p107='?' (DbType = DateTime2), @p108='?' (DbType = Guid), @p109='?' (DbType = Guid), @p110='?' (DbType = DateTime2), @p111='?' (DbType = Guid), @p112='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SET NOCOUNT ON;
+MERGE [Settings] USING (
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, 0),
+(@p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, 1),
+(@p20, @p21, @p22, @p23, @p24, @p25, @p26, @p27, @p28, @p29, 2),
+(@p30, @p31, @p32, @p33, @p34, @p35, @p36, @p37, @p38, @p39, 3),
+(@p40, @p41, @p42, @p43, @p44, @p45, @p46, @p47, @p48, @p49, 4),
+(@p50, @p51, @p52, @p53, @p54, @p55, @p56, @p57, @p58, @p59, 5),
+(@p60, @p61, @p62, @p63, @p64, @p65, @p66, @p67, @p68, @p69, 6),
+(@p70, @p71, @p72, @p73, @p74, @p75, @p76, @p77, @p78, @p79, 7)) AS i ([Id], [Category], [CreatedAt], [CreatedBy], [Description], [IsPublic], [Key], [UpdatedAt], [UpdatedBy], [Value], _Position) ON 1=0
+WHEN NOT MATCHED THEN
+INSERT ([Id], [Category], [CreatedAt], [CreatedBy], [Description], [IsPublic], [Key], [UpdatedAt], [UpdatedBy], [Value])
+VALUES (i.[Id], i.[Category], i.[CreatedAt], i.[CreatedBy], i.[Description], i.[IsPublic], i.[Key], i.[UpdatedAt], i.[UpdatedBy], i.[Value])
+OUTPUT INSERTED.[IsDeleted], i._Position;
+INSERT INTO [Users] ([Id], [AvatarUrl], [CreatedAt], [CreatedBy], [Email], [FacebookId], [FirstName], [GoogleId], [IsActive], [LastLoginAt], [LastName], [PasswordHash], [Phone], [ReferralCode], [ReferredByUserId], [UpdatedAt], [UpdatedBy])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p80, @p81, @p82, @p83, @p84, @p85, @p86, @p87, @p88, @p89, @p90, @p91, @p92, @p93, @p94, @p95, @p96);
+INSERT INTO [Credits] ([Id], [Balance], [CreatedAt], [CreatedBy], [TotalEarned], [TotalUsed], [UpdatedAt], [UpdatedBy], [UserId])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p97, @p98, @p99, @p100, @p101, @p102, @p103, @p104, @p105);
+INSERT INTO [UserRoles] ([Id], [CreatedAt], [CreatedBy], [RoleId], [UpdatedAt], [UpdatedBy], [UserId])
+OUTPUT INSERTED.[IsDeleted]
+VALUES (@p106, @p107, @p108, @p109, @p110, @p111, @p112);
+2026-06-19 00:36:54.604 +07:00 [INF] Database seed completed successfully.
+2026-06-19 00:36:54.759 +07:00 [INF] Start installing Hangfire SQL objects...
+2026-06-19 00:36:55.208 +07:00 [INF] Hangfire SQL objects installed.
+2026-06-19 00:36:55.562 +07:00 [WRN] The WebRootPath was not found: D:\EXE01\AIMarketingAssistant\src\AutoWork.API\wwwroot. Static files may be unavailable.
+2026-06-19 00:36:55.584 +07:00 [INF] Now listening on: http://localhost:5241
+2026-06-19 00:36:55.589 +07:00 [INF] Starting Hangfire Server using job storage: 'SQL Server: localhost@AutoWorkDb_Dev'
+2026-06-19 00:36:55.589 +07:00 [INF] Using the following options for SQL Server job storage: Queue poll interval: 00:00:15.
+2026-06-19 00:36:55.589 +07:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2026-06-19 00:36:55.599 +07:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-06-19 00:36:55.600 +07:00 [INF] Hosting environment: Development
+2026-06-19 00:36:55.600 +07:00 [INF] Content root path: D:\EXE01\AIMarketingAssistant\src\AutoWork.API
+2026-06-19 00:36:55.613 +07:00 [INF] Server laptop-g044c7b0:21900:35cddbe2 successfully announced in 13.5989 ms
+2026-06-19 00:36:55.617 +07:00 [INF] Server laptop-g044c7b0:21900:35cddbe2 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, SqlServerHeartbeatProcess, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2026-06-19 00:36:55.629 +07:00 [INF] Server laptop-g044c7b0:21900:35cddbe2 all the dispatchers started
+2026-06-19 00:37:11.027 +07:00 [INF] Executed DbCommand (9ms) [Parameters=[@__before_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[CreatedAt], [p].[CreatedBy], [p].[ExecutedAt], [p].[FailureReason], [p].[IsDeleted], [p].[PostId], [p].[RetryCount], [p].[ScheduledAt], [p].[Status], [p].[UpdatedAt], [p].[UpdatedBy], [t].[Id], [t].[ChannelAccountId], [t].[CreatedAt], [t].[CreatedBy], [t].[ExternalPostId], [t].[IsDeleted], [t].[ProjectId], [t].[PublishedAt], [t].[PublishedUrl], [t].[Status], [t].[Title], [t].[UpdatedAt], [t].[UpdatedBy], [t0].[Id], [t0].[Content], [t0].[ContentType], [t0].[CreatedAt], [t0].[CreatedBy], [t0].[IsDeleted], [t0].[MediaFileId], [t0].[PostId], [t0].[SortOrder], [t0].[UpdatedAt], [t0].[UpdatedBy]
+FROM [PostSchedules] AS [p]
+INNER JOIN (
+    SELECT [p0].[Id], [p0].[ChannelAccountId], [p0].[CreatedAt], [p0].[CreatedBy], [p0].[ExternalPostId], [p0].[IsDeleted], [p0].[ProjectId], [p0].[PublishedAt], [p0].[PublishedUrl], [p0].[Status], [p0].[Title], [p0].[UpdatedAt], [p0].[UpdatedBy]
+    FROM [Posts] AS [p0]
+    WHERE [p0].[IsDeleted] = CAST(0 AS bit)
+) AS [t] ON [p].[PostId] = [t].[Id]
+LEFT JOIN (
+    SELECT [p1].[Id], [p1].[Content], [p1].[ContentType], [p1].[CreatedAt], [p1].[CreatedBy], [p1].[IsDeleted], [p1].[MediaFileId], [p1].[PostId], [p1].[SortOrder], [p1].[UpdatedAt], [p1].[UpdatedBy]
+    FROM [PostContents] AS [p1]
+    WHERE [p1].[IsDeleted] = CAST(0 AS bit)
+) AS [t0] ON [t].[Id] = [t0].[PostId]
+WHERE [p].[IsDeleted] = CAST(0 AS bit) AND [p].[Status] = 0 AND [p].[ScheduledAt] <= @__before_0
+ORDER BY [p].[ScheduledAt], [p].[Id], [t].[Id]
+2026-06-19 00:38:10.924 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[@__before_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[CreatedAt], [p].[CreatedBy], [p].[ExecutedAt], [p].[FailureReason], [p].[IsDeleted], [p].[PostId], [p].[RetryCount], [p].[ScheduledAt], [p].[Status], [p].[UpdatedAt], [p].[UpdatedBy], [t].[Id], [t].[ChannelAccountId], [t].[CreatedAt], [t].[CreatedBy], [t].[ExternalPostId], [t].[IsDeleted], [t].[ProjectId], [t].[PublishedAt], [t].[PublishedUrl], [t].[Status], [t].[Title], [t].[UpdatedAt], [t].[UpdatedBy], [t0].[Id], [t0].[Content], [t0].[ContentType], [t0].[CreatedAt], [t0].[CreatedBy], [t0].[IsDeleted], [t0].[MediaFileId], [t0].[PostId], [t0].[SortOrder], [t0].[UpdatedAt], [t0].[UpdatedBy]
+FROM [PostSchedules] AS [p]
+INNER JOIN (
+    SELECT [p0].[Id], [p0].[ChannelAccountId], [p0].[CreatedAt], [p0].[CreatedBy], [p0].[ExternalPostId], [p0].[IsDeleted], [p0].[ProjectId], [p0].[PublishedAt], [p0].[PublishedUrl], [p0].[Status], [p0].[Title], [p0].[UpdatedAt], [p0].[UpdatedBy]
+    FROM [Posts] AS [p0]
+    WHERE [p0].[IsDeleted] = CAST(0 AS bit)
+) AS [t] ON [p].[PostId] = [t].[Id]
+LEFT JOIN (
+    SELECT [p1].[Id], [p1].[Content], [p1].[ContentType], [p1].[CreatedAt], [p1].[CreatedBy], [p1].[IsDeleted], [p1].[MediaFileId], [p1].[PostId], [p1].[SortOrder], [p1].[UpdatedAt], [p1].[UpdatedBy]
+    FROM [PostContents] AS [p1]
+    WHERE [p1].[IsDeleted] = CAST(0 AS bit)
+) AS [t0] ON [t].[Id] = [t0].[PostId]
+WHERE [p].[IsDeleted] = CAST(0 AS bit) AND [p].[Status] = 0 AND [p].[ScheduledAt] <= @__before_0
+ORDER BY [p].[ScheduledAt], [p].[Id], [t].[Id]
+2026-06-19 00:39:10.918 +07:00 [INF] Executed DbCommand (10ms) [Parameters=[@__before_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[CreatedAt], [p].[CreatedBy], [p].[ExecutedAt], [p].[FailureReason], [p].[IsDeleted], [p].[PostId], [p].[RetryCount], [p].[ScheduledAt], [p].[Status], [p].[UpdatedAt], [p].[UpdatedBy], [t].[Id], [t].[ChannelAccountId], [t].[CreatedAt], [t].[CreatedBy], [t].[ExternalPostId], [t].[IsDeleted], [t].[ProjectId], [t].[PublishedAt], [t].[PublishedUrl], [t].[Status], [t].[Title], [t].[UpdatedAt], [t].[UpdatedBy], [t0].[Id], [t0].[Content], [t0].[ContentType], [t0].[CreatedAt], [t0].[CreatedBy], [t0].[IsDeleted], [t0].[MediaFileId], [t0].[PostId], [t0].[SortOrder], [t0].[UpdatedAt], [t0].[UpdatedBy]
+FROM [PostSchedules] AS [p]
+INNER JOIN (
+    SELECT [p0].[Id], [p0].[ChannelAccountId], [p0].[CreatedAt], [p0].[CreatedBy], [p0].[ExternalPostId], [p0].[IsDeleted], [p0].[ProjectId], [p0].[PublishedAt], [p0].[PublishedUrl], [p0].[Status], [p0].[Title], [p0].[UpdatedAt], [p0].[UpdatedBy]
+    FROM [Posts] AS [p0]
+    WHERE [p0].[IsDeleted] = CAST(0 AS bit)
+) AS [t] ON [p].[PostId] = [t].[Id]
+LEFT JOIN (
+    SELECT [p1].[Id], [p1].[Content], [p1].[ContentType], [p1].[CreatedAt], [p1].[CreatedBy], [p1].[IsDeleted], [p1].[MediaFileId], [p1].[PostId], [p1].[SortOrder], [p1].[UpdatedAt], [p1].[UpdatedBy]
+    FROM [PostContents] AS [p1]
+    WHERE [p1].[IsDeleted] = CAST(0 AS bit)
+) AS [t0] ON [t].[Id] = [t0].[PostId]
+WHERE [p].[IsDeleted] = CAST(0 AS bit) AND [p].[Status] = 0 AND [p].[ScheduledAt] <= @__before_0
+ORDER BY [p].[ScheduledAt], [p].[Id], [t].[Id]
+2026-06-19 00:40:11.270 +07:00 [INF] Executed DbCommand (23ms) [Parameters=[@__before_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[CreatedAt], [p].[CreatedBy], [p].[ExecutedAt], [p].[FailureReason], [p].[IsDeleted], [p].[PostId], [p].[RetryCount], [p].[ScheduledAt], [p].[Status], [p].[UpdatedAt], [p].[UpdatedBy], [t].[Id], [t].[ChannelAccountId], [t].[CreatedAt], [t].[CreatedBy], [t].[ExternalPostId], [t].[IsDeleted], [t].[ProjectId], [t].[PublishedAt], [t].[PublishedUrl], [t].[Status], [t].[Title], [t].[UpdatedAt], [t].[UpdatedBy], [t0].[Id], [t0].[Content], [t0].[ContentType], [t0].[CreatedAt], [t0].[CreatedBy], [t0].[IsDeleted], [t0].[MediaFileId], [t0].[PostId], [t0].[SortOrder], [t0].[UpdatedAt], [t0].[UpdatedBy]
+FROM [PostSchedules] AS [p]
+INNER JOIN (
+    SELECT [p0].[Id], [p0].[ChannelAccountId], [p0].[CreatedAt], [p0].[CreatedBy], [p0].[ExternalPostId], [p0].[IsDeleted], [p0].[ProjectId], [p0].[PublishedAt], [p0].[PublishedUrl], [p0].[Status], [p0].[Title], [p0].[UpdatedAt], [p0].[UpdatedBy]
+    FROM [Posts] AS [p0]
+    WHERE [p0].[IsDeleted] = CAST(0 AS bit)
+) AS [t] ON [p].[PostId] = [t].[Id]
+LEFT JOIN (
+    SELECT [p1].[Id], [p1].[Content], [p1].[ContentType], [p1].[CreatedAt], [p1].[CreatedBy], [p1].[IsDeleted], [p1].[MediaFileId], [p1].[PostId], [p1].[SortOrder], [p1].[UpdatedAt], [p1].[UpdatedBy]
+    FROM [PostContents] AS [p1]
+    WHERE [p1].[IsDeleted] = CAST(0 AS bit)
+) AS [t0] ON [t].[Id] = [t0].[PostId]
+WHERE [p].[IsDeleted] = CAST(0 AS bit) AND [p].[Status] = 0 AND [p].[ScheduledAt] <= @__before_0
+ORDER BY [p].[ScheduledAt], [p].[Id], [t].[Id]
+2026-06-19 00:41:11.318 +07:00 [INF] Executed DbCommand (11ms) [Parameters=[@__before_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[CreatedAt], [p].[CreatedBy], [p].[ExecutedAt], [p].[FailureReason], [p].[IsDeleted], [p].[PostId], [p].[RetryCount], [p].[ScheduledAt], [p].[Status], [p].[UpdatedAt], [p].[UpdatedBy], [t].[Id], [t].[ChannelAccountId], [t].[CreatedAt], [t].[CreatedBy], [t].[ExternalPostId], [t].[IsDeleted], [t].[ProjectId], [t].[PublishedAt], [t].[PublishedUrl], [t].[Status], [t].[Title], [t].[UpdatedAt], [t].[UpdatedBy], [t0].[Id], [t0].[Content], [t0].[ContentType], [t0].[CreatedAt], [t0].[CreatedBy], [t0].[IsDeleted], [t0].[MediaFileId], [t0].[PostId], [t0].[SortOrder], [t0].[UpdatedAt], [t0].[UpdatedBy]
+FROM [PostSchedules] AS [p]
+INNER JOIN (
+    SELECT [p0].[Id], [p0].[ChannelAccountId], [p0].[CreatedAt], [p0].[CreatedBy], [p0].[ExternalPostId], [p0].[IsDeleted], [p0].[ProjectId], [p0].[PublishedAt], [p0].[PublishedUrl], [p0].[Status], [p0].[Title], [p0].[UpdatedAt], [p0].[UpdatedBy]
+    FROM [Posts] AS [p0]
+    WHERE [p0].[IsDeleted] = CAST(0 AS bit)
+) AS [t] ON [p].[PostId] = [t].[Id]
+LEFT JOIN (
+    SELECT [p1].[Id], [p1].[Content], [p1].[ContentType], [p1].[CreatedAt], [p1].[CreatedBy], [p1].[IsDeleted], [p1].[MediaFileId], [p1].[PostId], [p1].[SortOrder], [p1].[UpdatedAt], [p1].[UpdatedBy]
+    FROM [PostContents] AS [p1]
+    WHERE [p1].[IsDeleted] = CAST(0 AS bit)
+) AS [t0] ON [t].[Id] = [t0].[PostId]
+WHERE [p].[IsDeleted] = CAST(0 AS bit) AND [p].[Status] = 0 AND [p].[ScheduledAt] <= @__before_0
+ORDER BY [p].[ScheduledAt], [p].[Id], [t].[Id]

@@ -1,0 +1,17 @@
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\obj\Debug\net8.0\AutoWork.Application.csproj.AssemblyReference.cache
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\obj\Debug\net8.0\AutoWork.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\obj\Debug\net8.0\AutoWork.Application.AssemblyInfoInputs.cache
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\obj\Debug\net8.0\AutoWork.Application.AssemblyInfo.cs
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\obj\Debug\net8.0\AutoWork.Application.csproj.CoreCompileInputs.cache
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\bin\Debug\net8.0\AutoWork.Application.deps.json
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\bin\Debug\net8.0\AutoWork.Application.dll
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\bin\Debug\net8.0\AutoWork.Application.pdb
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\bin\Debug\net8.0\AutoWork.Domain.dll
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\bin\Debug\net8.0\AutoWork.Shared.dll
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\bin\Debug\net8.0\AutoWork.Domain.pdb
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\bin\Debug\net8.0\AutoWork.Shared.pdb
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\obj\Debug\net8.0\AutoWork.88FC95B8.Up2Date
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\obj\Debug\net8.0\AutoWork.Application.dll
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\obj\Debug\net8.0\refint\AutoWork.Application.dll
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\obj\Debug\net8.0\AutoWork.Application.pdb
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\obj\Debug\net8.0\ref\AutoWork.Application.dll

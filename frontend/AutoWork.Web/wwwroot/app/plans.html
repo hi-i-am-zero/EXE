@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gói dịch vụ — AutoWork</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/layout.js"></script>
+  <script>
+    if (!Auth.requireAuth()) throw new Error('auth');
+    renderAppLayout('/app/plans.html');
+    setPageTitle('Gói dịch vụ');
+
+    async function subscribe(planId) {
+      if (!confirm('Xác nhận đăng ký gói này?')) return;
+      try {
+        const json = await apiPost('/api/plans/subscriptions', { planId, autoRenew: true });
+        if (json.success) {
+          showToast('Đăng ký gói thành công!', 'success');
+          loadPlans();
+        } else {
+          showToast(json.message || 'Đăng ký thất bại', 'error');
+        }
+      } catch {
+        showToast('Lỗi kết nối API', 'error');
+      }
+    }
+
+    async function loadPlans() {
+      setPageContent('<div class="empty-state">Đang tải...</div>');
+      try {
+        const [plansJson, subJson] = await Promise.all([
+          apiGet('/api/plans'),
+          apiGet('/api/plans/subscriptions')
+        ]);
+
+        const plans = plansJson.data || [];
+        const sub = subJson.data;
+
+        let subBanner = '';
+        if (sub) {
+          subBanner = `<div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:12px;padding:16px 20px;margin-bottom:24px">
+            <strong>Gói hiện tại:</strong> ${sub.planName || sub.plan?.name || '—'}
+            ${sub.expiresAt ? ` — Hết hạn: ${formatDate(sub.expiresAt)}` : ''}
+          </div>`;
+        }
+
+        setPageContent(subBanner + `<div class="pricing-grid">
+          ${plans.map((p, i) => `
+            <div class="plan-card ${sub?.planId === p.id ? 'featured' : ''}">
+              ${sub?.planId === p.id ? '<span class="plan-badge">Đang dùng</span>' : ''}
+              <div class="plan-name">${p.name}</div>
+              <div class="plan-price">${formatCurrency(p.price)} <span>/ tháng</span></div>
+              <div class="plan-desc">${p.description || ''}</div>
+              <ul class="plan-features">
+                <li>${p.creditsIncluded} credits/tháng</li>
+                <li>Tối đa ${p.maxProjects} dự án</li>
+                <li>${p.maxChannels} kênh</li>
+                <li>${p.maxPostsPerMonth} bài/tháng</li>
+              </ul>
+              ${sub?.planId === p.id
+                ? '<button class="btn-outline w-100" disabled>Đang sử dụng</button>'
+                : `<button class="btn-primary w-100" onclick="subscribe('${p.id}')">Chọn gói</button>`}
+            </div>`).join('')}
+        </div>`);
+      } catch (e) {
+        setPageContent(`<div class="empty-state">Lỗi: ${e.message}</div>`);
+      }
+    }
+
+    loadPlans();
+  </script>
+</body>
+</html>
