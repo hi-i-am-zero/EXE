@@ -207,4 +207,5 @@ D:\EXE01\AIMarketingAssistant\src\AutoWork.API\bin\Debug\net8.0\ru\Microsoft.Cod
 D:\EXE01\AIMarketingAssistant\src\AutoWork.API\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 D:\EXE01\AIMarketingAssistant\src\AutoWork.API\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 D:\EXE01\AIMarketingAssistant\src\AutoWork.API\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\EXE01\AIMarketingAssistant\src\AutoWork.API\obj\Debug\net8.0\AutoWork.API.sourcelink.json
 D:\EXE01\AIMarketingAssistant\src\AutoWork.API\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

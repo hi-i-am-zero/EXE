@@ -15,3 +15,4 @@ D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\obj\Debug\net8.0\AutoWork
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\obj\Debug\net8.0\refint\AutoWork.Application.dll
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\obj\Debug\net8.0\AutoWork.Application.pdb
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\obj\Debug\net8.0\ref\AutoWork.Application.dll
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Application\obj\Debug\net8.0\AutoWork.Application.sourcelink.json

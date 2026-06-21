@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lên lịch — AutoWork Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/demo.js"></script>
+  <script src="/js/layout.js"></script>
+  <script>
+    if (!Auth.requireAuth()) throw new Error('auth');
+    renderAppLayout('/app/schedules.html');
+    setPageTitle('Lên lịch đăng bài', `<button class="btn-primary btn-sm" onclick="showCreateSchedule()"><i class="bi bi-plus"></i> Lên lịch mới</button>`);
+
+    async function loadSchedules() {
+      setPageContent('<div class="empty-state">Đang tải...</div>');
+      try {
+        const json = await apiGet('/api/Schedules?page=1&pageSize=20');
+        const items = json.data?.items || json.data || [];
+        setPageContent(`
+          <div class="data-card">
+            <table class="data-table">
+              <thead><tr><th>Bài viết</th><th>Thời gian đăng</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+              <tbody>${items.length ? items.map(s => `<tr>
+                <td>${s.postTitle || s.postId?.slice(0,8) + '...' || '—'}</td>
+                <td>${formatDate(s.scheduledAt)}</td>
+                <td><span class="badge ${s.isProcessed ? 'badge-success' : 'badge-warning'}">${s.isProcessed ? 'Đã chạy' : 'Chờ đăng'}</span></td>
+                <td>
+                  <button class="btn-outline btn-icon btn-sm" onclick="editSchedule('${s.id}')"><i class="bi bi-pencil"></i></button>
+                  <button class="btn-danger btn-icon btn-sm" onclick="deleteSchedule('${s.id}')"><i class="bi bi-trash"></i></button>
+                </td></tr>`).join('') : '<tr><td colspan="4" class="empty-state">Chưa có lịch. Nhấn "Lên lịch mới" hoặc tạo từ trang Bài viết.</td></tr>'}
+              </tbody>
+            </table>
+          </div>
+          <div style="margin-top:20px;padding:16px;background:#fffbeb;border-radius:12px;border:1px solid #fde68a;font-size:.9rem">
+            <i class="bi bi-clock"></i> <strong>Giờ vàng:</strong> Demo gợi ý đăng 7h, 12h, 19h — tối ưu tương tác Fanpage.
+          </div>`);
+      } catch (e) {
+        setPageContent(`<div class="empty-state">Lỗi: ${e.message}</div>`);
+      }
+    }
+
+    let postsCache = [];
+
+    async function showCreateSchedule() {
+      const pJson = await apiGet('/api/Posts?page=1&pageSize=50');
+      postsCache = pJson.data?.items || [];
+      showModal('Lên lịch đăng bài', `
+        <div class="form-group"><label>Chọn bài viết</label>
+          <select id="schPost" class="form-control">${postsCache.map(p => `<option value="${p.id}">${p.title}</option>`).join('') || '<option value="">— Chưa có bài —</option>'}</select></div>
+        <div class="form-group"><label>Thời gian đăng</label>
+          <input id="schTime" type="datetime-local" class="form-control" /></div>
+        <div class="action-bar">
+          <button class="btn-outline btn-sm" onclick="document.getElementById('schTime').value='${tomorrowAt(7)}'">7:00 sáng</button>
+          <button class="btn-outline btn-sm" onclick="document.getElementById('schTime').value='${tomorrowAt(12)}'">12:00 trưa</button>
+          <button class="btn-outline btn-sm" onclick="document.getElementById('schTime').value='${tomorrowAt(19)}'">19:00 tối</button>
+        </div>`,
+        `<button class="btn-outline btn-sm" onclick="closeModal()">Hủy</button>
+         <button class="btn-primary btn-sm" id="saveSch">Lên lịch</button>`);
+      document.getElementById('saveSch')?.addEventListener('click', saveSchedule);
+    }
+
+    function tomorrowAt(hour) {
+      const d = new Date(); d.setDate(d.getDate() + 1); d.setHours(hour, 0, 0, 0);
+      return d.toISOString().slice(0, 16);
+    }
+
+    async function saveSchedule() {
+      const postId = document.getElementById('schPost').value;
+      const time = document.getElementById('schTime').value;
+      if (!postId || !time) return showToast('Chọn bài và thời gian', 'error');
+      const json = await apiPost('/api/Schedules', { postId, scheduledAt: new Date(time).toISOString(), recurrenceType: 0 });
+      closeModal();
+      if (json.success) {
+        showToast('Đã lên lịch!', 'success');
+        DemoStore.addNotification('Lên lịch', `Bài sẽ đăng lúc ${formatDate(time)}`, 'post');
+        loadSchedules();
+      } else showToast(json.message || 'Lỗi', 'error');
+    }
+
+    function editSchedule(id) {
+      showModal('Sửa lịch', `<div class="form-group"><label>Thời gian mới</label><input id="editTime" type="datetime-local" class="form-control" /></div>`,
+        `<button class="btn-primary btn-sm" id="doEdit">Cập nhật</button>`);
+      document.getElementById('doEdit')?.addEventListener('click', async () => {
+        const json = await apiPut(`/api/Schedules/${id}`, { scheduledAt: new Date(document.getElementById('editTime').value).toISOString(), recurrenceType: 0 });
+        closeModal();
+        if (json.success) { showToast('Đã cập nhật', 'success'); loadSchedules(); }
+      });
+    }
+
+    function deleteSchedule(id) {
+      confirmAction('Xóa lịch này?', async () => {
+        const json = await apiDelete(`/api/Schedules/${id}`);
+        if (json.success) { showToast('Đã xóa', 'success'); loadSchedules(); }
+      });
+    }
+
+    loadSchedules();
+  </script>
+</body>
+</html>

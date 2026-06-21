@@ -3,16 +3,24 @@
   "WorkspaceRootPath": "D:\\EXE01\\AIMarketingAssistant\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CF5054E7-433D-691B-A2A1-F7A04876F7FF}|frontend\\AutoWork.Web\\AutoWork.Web.csproj|d:\\exe01\\aimarketingassistant\\frontend\\autowork.web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{CF5054E7-433D-691B-A2A1-F7A04876F7FF}|frontend\\AutoWork.Web\\AutoWork.Web.csproj|solutionrelative:frontend\\autowork.web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{CF5054E7-433D-691B-A2A1-F7A04876F7FF}|frontend\\AutoWork.Web\\AutoWork.Web.csproj|d:\\exe01\\aimarketingassistant\\frontend\\autowork.web\\autowork.web.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{CF5054E7-433D-691B-A2A1-F7A04876F7FF}|frontend\\AutoWork.Web\\AutoWork.Web.csproj|solutionrelative:frontend\\autowork.web\\autowork.web.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CF5054E7-433D-691B-A2A1-F7A04876F7FF}|frontend\\AutoWork.Web\\AutoWork.Web.csproj|d:\\exe01\\aimarketingassistant\\frontend\\autowork.web\\wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CF5054E7-433D-691B-A2A1-F7A04876F7FF}|frontend\\AutoWork.Web\\AutoWork.Web.csproj|solutionrelative:frontend\\autowork.web\\wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003E65D7-C0F7-1608-F992-A9344CDF7A97}|src\\AutoWork.Infrastructure\\AutoWork.Infrastructure.csproj|d:\\exe01\\aimarketingassistant\\src\\autowork.infrastructure\\ai\\aicontentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003E65D7-C0F7-1608-F992-A9344CDF7A97}|src\\AutoWork.Infrastructure\\AutoWork.Infrastructure.csproj|solutionrelative:src\\autowork.infrastructure\\ai\\aicontentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A0D17987-BDF7-30C8-FD51-4D3CFC2CDBA5}|src\\AutoWork.API\\AutoWork.API.csproj|d:\\exe01\\aimarketingassistant\\src\\autowork.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{A0D17987-BDF7-30C8-FD51-4D3CFC2CDBA5}|src\\AutoWork.API\\AutoWork.API.csproj|solutionrelative:src\\autowork.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CF5054E7-433D-691B-A2A1-F7A04876F7FF}|frontend\\AutoWork.Web\\AutoWork.Web.csproj|d:\\exe01\\aimarketingassistant\\frontend\\autowork.web\\autowork.web.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{CF5054E7-433D-691B-A2A1-F7A04876F7FF}|frontend\\AutoWork.Web\\AutoWork.Web.csproj|solutionrelative:frontend\\autowork.web\\autowork.web.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{CF5054E7-433D-691B-A2A1-F7A04876F7FF}|frontend\\AutoWork.Web\\AutoWork.Web.csproj|d:\\exe01\\aimarketingassistant\\frontend\\autowork.web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{CF5054E7-433D-691B-A2A1-F7A04876F7FF}|frontend\\AutoWork.Web\\AutoWork.Web.csproj|solutionrelative:frontend\\autowork.web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 16,
+          "SelectedChildIndex": 19,
           "Children": [
             {
               "$type": "Bookmark",
@@ -87,19 +95,43 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "index.html",
+              "DocumentMoniker": "D:\\EXE01\\AIMarketingAssistant\\frontend\\AutoWork.Web\\wwwroot\\index.html",
+              "RelativeDocumentMoniker": "frontend\\AutoWork.Web\\wwwroot\\index.html",
+              "ToolTip": "D:\\EXE01\\AIMarketingAssistant\\frontend\\AutoWork.Web\\wwwroot\\index.html",
+              "RelativeToolTip": "frontend\\AutoWork.Web\\wwwroot\\index.html",
+              "ViewState": "AgIAADsAAAAAAAAAAAAAAE8AAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2026-06-20T07:11:54.303Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AiContentService.cs",
+              "DocumentMoniker": "D:\\EXE01\\AIMarketingAssistant\\src\\AutoWork.Infrastructure\\AI\\AiContentService.cs",
+              "RelativeDocumentMoniker": "src\\AutoWork.Infrastructure\\AI\\AiContentService.cs",
+              "ToolTip": "D:\\EXE01\\AIMarketingAssistant\\src\\AutoWork.Infrastructure\\AI\\AiContentService.cs",
+              "RelativeToolTip": "src\\AutoWork.Infrastructure\\AI\\AiContentService.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAgwC8AAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-20T06:16:50.837Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\EXE01\\AIMarketingAssistant\\src\\AutoWork.API\\appsettings.json",
               "RelativeDocumentMoniker": "src\\AutoWork.API\\appsettings.json",
               "ToolTip": "D:\\EXE01\\AIMarketingAssistant\\src\\AutoWork.API\\appsettings.json",
               "RelativeToolTip": "src\\AutoWork.API\\appsettings.json",
-              "ViewState": "AgIAACwAAAAAAAAAAAAAACUAAAAEAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAJAwAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-06-18T17:08:51.472Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-18T17:08:51.472Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\EXE01\\AIMarketingAssistant\\frontend\\AutoWork.Web\\appsettings.json",
               "RelativeDocumentMoniker": "frontend\\AutoWork.Web\\appsettings.json",
@@ -107,20 +139,20 @@
               "RelativeToolTip": "frontend\\AutoWork.Web\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-06-18T17:08:36.764Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-18T17:08:36.764Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "AutoWork.Web.csproj",
               "DocumentMoniker": "D:\\EXE01\\AIMarketingAssistant\\frontend\\AutoWork.Web\\AutoWork.Web.csproj",
               "RelativeDocumentMoniker": "frontend\\AutoWork.Web\\AutoWork.Web.csproj",
               "ToolTip": "D:\\EXE01\\AIMarketingAssistant\\frontend\\AutoWork.Web\\AutoWork.Web.csproj",
               "RelativeToolTip": "frontend\\AutoWork.Web\\AutoWork.Web.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-06-18T16:43:22.441Z"
+              "WhenOpened": "2026-06-18T16:43:22.441Z",
+              "EditorCaption": ""
             }
           ]
         }

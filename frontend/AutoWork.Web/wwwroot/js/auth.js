@@ -32,6 +32,13 @@ const Auth = {
     window.location.href = redirect;
   },
 
+  clearSession() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('expiresAt');
+    localStorage.removeItem('user');
+  },
+
   requireAuth() {
     if (!this.isLoggedIn()) {
       window.location.href = '/login.html?return=' + encodeURIComponent(window.location.pathname);

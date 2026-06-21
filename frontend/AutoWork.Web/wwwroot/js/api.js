@@ -1,13 +1,24 @@
 let API_BASE = 'https://localhost:7165';
+let API_PREFIX = '';
 const apiReady = (async () => {
   try {
     const res = await fetch('/api/config');
     if (res.ok) {
       const cfg = await res.json();
-      if (cfg.apiBaseUrl) API_BASE = cfg.apiBaseUrl.replace(/\/$/, '');
+      if (cfg.useProxy) {
+        API_BASE = '';
+        API_PREFIX = '/backend-api';
+      } else if (cfg.apiBaseUrl) {
+        API_BASE = cfg.apiBaseUrl.replace(/\/$/, '');
+        API_PREFIX = '';
+      }
     }
   } catch { /* use default */ }
 })();
+
+function apiUrl(path) {
+  return `${API_BASE}${API_PREFIX}${path}`;
+}
 
 async function apiFetch(path, options = {}) {
   await apiReady;
@@ -16,13 +27,13 @@ async function apiFetch(path, options = {}) {
   const token = localStorage.getItem('accessToken');
   if (token) headers['Authorization'] = `Bearer ${token}`;
 
-  const res = await fetch(`${API_BASE}${path}`, { ...options, headers });
+  const res = await fetch(apiUrl(path), { ...options, headers });
 
   if (res.status === 401 && token) {
     const refreshed = await tryRefreshToken();
     if (refreshed) {
       headers['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
-      return fetch(`${API_BASE}${path}`, { ...options, headers });
+      return fetch(apiUrl(path), { ...options, headers });
     }
     Auth.logout('/login.html');
     return res;
@@ -38,7 +49,7 @@ async function tryRefreshToken() {
 
   try {
     await apiReady;
-    const res = await fetch(`${API_BASE}/api/auth/refresh`, {
+    const res = await fetch(apiUrl('/api/auth/refresh'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ accessToken, refreshToken })

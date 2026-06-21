@@ -13,3 +13,4 @@ D:\EXE01\AIMarketingAssistant\src\AutoWork.Domain\obj\Debug\net8.0\AutoWork.Doma
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Domain\obj\Debug\net8.0\refint\AutoWork.Domain.dll
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Domain\obj\Debug\net8.0\AutoWork.Domain.pdb
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Domain\obj\Debug\net8.0\ref\AutoWork.Domain.dll
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Domain\obj\Debug\net8.0\AutoWork.Domain.sourcelink.json

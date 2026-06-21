@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cài đặt — AutoWork Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/demo.js"></script>
+  <script src="/js/layout.js"></script>
+  <script>
+    if (!Auth.requireAuth()) throw new Error('auth');
+    renderAppLayout('/app/settings.html');
+    setPageTitle('Cài đặt');
+
+    const user = Auth.getUser();
+
+    setPageContent(`
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="profile">Hồ sơ</button>
+        <button class="tab-btn" data-tab="security">Bảo mật</button>
+        <button class="tab-btn" data-tab="demo">Demo</button>
+      </div>
+      <div id="tabProfile" class="tab-panel active">
+        <div class="data-card" style="padding:24px">
+          <div class="form-group"><label>Email</label><input class="form-control" value="${user?.email || ''}" readonly /></div>
+          <div class="form-row">
+            <div class="form-group"><label>Họ</label><input id="firstName" class="form-control" value="${user?.firstName || ''}" /></div>
+            <div class="form-group"><label>Tên</label><input id="lastName" class="form-control" value="${user?.lastName || ''}" /></div>
+          </div>
+          <div class="form-group"><label>Vai trò</label><input class="form-control" value="${(user?.roles || []).join(', ')}" readonly /></div>
+          <button class="btn-primary btn-sm" onclick="saveProfile()"><i class="bi bi-save"></i> Lưu (demo)</button>
+        </div>
+      </div>
+      <div id="tabSecurity" class="tab-panel">
+        <div class="data-card" style="padding:24px">
+          <button class="btn-outline btn-sm" onclick="showChangePassword()"><i class="bi bi-key"></i> Đổi mật khẩu</button>
+          <button class="btn-outline btn-sm" style="margin-left:10px" onclick="showForgotPassword()"><i class="bi bi-envelope"></i> Quên mật khẩu (demo)</button>
+        </div>
+      </div>
+      <div id="tabDemo" class="tab-panel">
+        <div class="data-card" style="padding:24px">
+          <p style="color:var(--color-text-muted)">Reset dữ liệu demo cục bộ (kênh kết nối, media, thông báo).</p>
+          <button class="btn-danger btn-sm" onclick="resetDemo()"><i class="bi bi-arrow-counterclockwise"></i> Reset Demo Data</button>
+          <hr style="margin:20px 0;border:none;border-top:1px solid var(--color-border)" />
+          <p><strong>Tài khoản demo:</strong></p>
+          <ul style="color:var(--color-text-muted)">
+            <li>Admin: admin@autowork.com / Admin@123!</li>
+            <li>User: demo@autowork.com / Demo@123!</li>
+          </ul>
+        </div>
+      </div>`);
+
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('tab' + btn.dataset.tab.charAt(0).toUpperCase() + btn.dataset.tab.slice(1))?.classList.add('active');
+    }));
+
+    function saveProfile() {
+      const u = Auth.getUser();
+      u.firstName = document.getElementById('firstName').value;
+      u.lastName = document.getElementById('lastName').value;
+      localStorage.setItem('user', JSON.stringify(u));
+      showToast('Đã lưu hồ sơ (demo — chưa gọi API)', 'success');
+    }
+
+    function showChangePassword() {
+      showModal('Đổi mật khẩu', `
+        <div class="form-group"><label>Mật khẩu hiện tại</label><input type="password" class="form-control" /></div>
+        <div class="form-group"><label>Mật khẩu mới</label><input type="password" class="form-control" /></div>`,
+        `<button class="btn-primary btn-sm" onclick="closeModal();showToast('Demo: Mật khẩu đã đổi','success')">Đổi mật khẩu</button>`);
+    }
+
+    function showForgotPassword() {
+      showModal('Quên mật khẩu', `
+        <div class="form-group"><label>Email</label><input id="fpEmail" class="form-control" value="${user?.email || ''}" /></div>`,
+        `<button class="btn-primary btn-sm" id="fpBtn">Gửi OTP</button>`);
+      document.getElementById('fpBtn')?.addEventListener('click', async () => {
+        const json = await apiPost('/api/auth/forgot-password', { email: document.getElementById('fpEmail').value });
+        closeModal();
+        showToast(json.success ? 'Đã gửi OTP (nếu SMTP đã cấu hình)' : (json.message || 'Demo: OTP đã gửi'), json.success ? 'success' : 'info');
+      });
+    }
+
+    function resetDemo() {
+      confirmAction('Reset toàn bộ dữ liệu demo cục bộ?', () => {
+        localStorage.removeItem(DEMO.STORAGE_KEY);
+        showToast('Đã reset demo data', 'success');
+        location.reload();
+      });
+    }
+  </script>
+</body>
+</html>

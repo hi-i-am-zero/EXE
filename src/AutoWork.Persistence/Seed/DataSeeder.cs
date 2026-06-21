@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AutoWork.Persistence.Seed;
 
-public static class DataSeeder
+public static partial class DataSeeder
 {
     public static readonly Guid SuperAdminUserId = Guid.Parse("11111111-1111-1111-1111-111111111111");
     public static readonly Guid SuperAdminRoleId = Guid.Parse("22222222-2222-2222-2222-222222222222");
@@ -24,11 +24,16 @@ public static class DataSeeder
     {
         await SeedRolesAsync(context, cancellationToken);
         await SeedPermissionsAsync(context, cancellationToken);
+        await SeedRolePermissionsMatrixAsync(context, cancellationToken);
         await SeedPlansAsync(context, cancellationToken);
         await SeedChannelsAsync(context, cancellationToken);
         await SeedSettingsAsync(context, cancellationToken);
         await SeedAiPromptsAsync(context, cancellationToken);
+        await SeedExtendedAiPromptsAsync(context, cancellationToken);
         await SeedSuperAdminAsync(context, cancellationToken);
+        await SeedDemoUsersAsync(context, cancellationToken);
+        await SeedDemoWorkspaceAsync(context, cancellationToken);
+        await SeedDemoPostsAsync(context, cancellationToken);
 
         await context.SaveChangesAsync(cancellationToken);
         logger?.LogInformation("Database seed completed successfully.");
@@ -127,10 +132,10 @@ public static class DataSeeder
             new Plan
             {
                 Id = StarterPlanId,
-                Name = "Starter",
+                Name = "Premium",
                 Code = nameof(PlanType.Starter),
-                Description = "Ideal for individuals and small teams",
-                Price = 199_000,
+                Description = "Gói phổ biến — AI viết & đăng bài đa kênh (Facebook, WordPress, Zalo OA)",
+                Price = 299_000,
                 BillingPeriod = (int)BillingPeriod.Monthly,
                 MaxProjects = 3,
                 MaxChannels = 5,
@@ -223,14 +228,20 @@ public static class DataSeeder
 
         var settings = new Dictionary<string, (string Value, string Category, string Description, bool IsPublic)>
         {
-            ["App.Name"] = ("AutoWork", "General", "Application display name", true),
-            ["App.SupportEmail"] = ("support@autowork.com", "General", "Support contact email", true),
-            ["App.DefaultLanguage"] = ("vi-VN", "General", "Default application language", true),
+            ["App.Name"] = ("AutoWork", "General", "Tên ứng dụng", true),
+            ["App.SupportEmail"] = ("support@autowork.com.vn", "General", "Email hỗ trợ", true),
+            ["App.SupportPhone"] = ("0394932696", "General", "Hotline hỗ trợ", true),
+            ["App.DefaultLanguage"] = ("vi-VN", "General", "Ngôn ngữ mặc định", true),
+            ["App.PremiumTrialDays"] = ("1", "General", "Số ngày dùng thử Premium miễn phí", true),
             ["Auth.JwtExpiryMinutes"] = ("60", "Auth", "JWT access token expiry in minutes", false),
             ["Auth.RefreshTokenExpiryDays"] = ("7", "Auth", "Refresh token expiry in days", false),
-            ["Credits.DefaultFreeCredits"] = (PlanCredits.Free.ToString(), "Credits", "Default free plan credits", false),
-            ["Payment.Currency"] = ("VND", "Payment", "Default payment currency", true),
-            ["Affiliate.DefaultCommissionRate"] = ("0.10", "Affiliate", "Default affiliate commission rate", false)
+            ["Credits.DefaultFreeCredits"] = (PlanCredits.Free.ToString(), "Credits", "Credits gói Free", false),
+            ["Credits.AiGenerateCost"] = ("5", "Credits", "Chi phí 1 lần tạo AI", false),
+            ["Credits.PostPublishCost"] = ("2", "Credits", "Chi phí 1 lần đăng bài", false),
+            ["Payment.Currency"] = ("VND", "Payment", "Đơn vị tiền tệ", true),
+            ["Affiliate.DefaultCommissionRate"] = ("0.30", "Affiliate", "Hoa hồng affiliate 30%", false),
+            ["Affiliate.CookieDays"] = ("30", "Affiliate", "Thời hạn cookie giới thiệu (ngày)", false),
+            ["Affiliate.CommissionMonths"] = ("12", "Affiliate", "Thời hạn tính hoa hồng (tháng)", false)
         };
 
         foreach (var (key, (value, category, description, isPublic)) in settings)
