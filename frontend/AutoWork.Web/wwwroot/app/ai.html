@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Content — AutoWork Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/demo.js"></script>
+  <script src="/js/layout.js"></script>
+  <script>
+    if (!Auth.requireAuth()) throw new Error('auth');
+    renderAppLayout('/app/ai.html');
+    setPageTitle('AI Content Generator');
+
+    let prompts = [];
+    let activeTab = 'generate';
+
+    async function loadPage() {
+      try {
+        const pJson = await apiGet('/api/Ai/prompts');
+        prompts = pJson.data || [];
+      } catch { prompts = []; }
+
+      setPageContent(`
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="generate">Tạo nội dung</button>
+          <button class="tab-btn" data-tab="prompts">Prompts</button>
+          <button class="tab-btn" data-tab="history">Lịch sử</button>
+        </div>
+        <div id="tabGenerate" class="tab-panel active">
+          <div class="data-card" style="padding:24px">
+            <div class="form-group">
+              <label>Chủ đề / Sản phẩm</label>
+              <input id="aiTopic" class="form-control" placeholder="VD: Bộ sương mù thu đông 2026" value="Bộ sương mù cao cấp" />
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Kênh đích</label>
+                <select id="aiChannel" class="form-control">
+                  <option value="facebook">Facebook Fanpage</option>
+                  <option value="wordpress">WordPress SEO</option>
+                  <option value="zalo">Zalo OA</option>
+                  <option value="seo">Bài SEO dài</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Giọng điệu</label>
+                <select id="aiTone" class="form-control">
+                  <option>Thân thiện</option>
+                  <option>Chuyên nghiệp</option>
+                  <option>Năng động</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Prompt mẫu (tuỳ chọn)</label>
+              <select id="aiPrompt" class="form-control">
+                <option value="">— Tự động —</option>
+                ${prompts.map(p => `<option value="${p.id}">${p.name}</option>`).join('')}
+              </select>
+            </div>
+            <div class="action-bar">
+              <button class="btn-primary" id="btnGenerate"><i class="bi bi-stars"></i> Tạo bằng AI</button>
+              <button class="btn-outline" id="btnCopy"><i class="bi bi-clipboard"></i> Sao chép</button>
+              <button class="btn-outline" id="btnToPost"><i class="bi bi-file-post"></i> Tạo bài viết</button>
+            </div>
+            <div id="aiResult" class="ai-output" style="display:none"></div>
+          </div>
+        </div>
+        <div id="tabPrompts" class="tab-panel">
+          <div class="action-bar">
+            <button class="btn-primary btn-sm" id="btnAddPrompt"><i class="bi bi-plus"></i> Thêm prompt</button>
+          </div>
+          <div class="data-card"><table class="data-table"><thead><tr><th>Tên</th><th>Danh mục</th><th>Loại</th><th></th></tr></thead>
+          <tbody>${prompts.map(p => `<tr>
+            <td>${p.name}</td><td>${p.category || '—'}</td>
+            <td><span class="badge ${p.isSystem ? 'badge-info' : 'badge-secondary'}">${p.isSystem ? 'Hệ thống' : 'Cá nhân'}</span></td>
+            <td>${!p.isSystem ? `<button class="btn-danger btn-sm btn-icon" onclick="deletePrompt('${p.id}')"><i class="bi bi-trash"></i></button>` : ''}</td>
+          </tr>`).join('') || '<tr><td colspan="4" class="empty-state">Chưa có prompt</td></tr>'}
+          </tbody></table></div>
+        </div>
+        <div id="tabHistory" class="tab-panel"><div id="historyList" class="empty-state">Đang tải...</div></div>`);
+
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
+      document.getElementById('btnGenerate')?.addEventListener('click', generateAi);
+      document.getElementById('btnCopy')?.addEventListener('click', copyResult);
+      document.getElementById('btnToPost')?.addEventListener('click', createPostFromAi);
+      document.getElementById('btnAddPrompt')?.addEventListener('click', showAddPrompt);
+      loadHistory();
+    }
+
+    function switchTab(tab) {
+      activeTab = tab;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1))?.classList.add('active');
+    }
+
+    let lastResult = null;
+
+    async function generateAi() {
+      const topic = document.getElementById('aiTopic').value.trim();
+      if (!topic) return showToast('Nhập chủ đề', 'error');
+      const channel = document.getElementById('aiChannel').value;
+      const btn = document.getElementById('btnGenerate');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Đang tạo...';
+
+      const body = {
+        topic, tone: document.getElementById('aiTone').value,
+        length: 500, provider: 0,
+        promptId: document.getElementById('aiPrompt').value || null,
+        projectId: DEMO.PROJECT_ID
+      };
+
+      const json = await tryApiOrDemo(
+        () => apiPost('/api/Ai/generate', body),
+        () => mockAiContent(topic, channel)
+      );
+
+      const data = json.data || json;
+      lastResult = data;
+      const el = document.getElementById('aiResult');
+      el.style.display = 'block';
+      el.className = 'ai-output' + (data.isDemo ? ' demo' : '');
+      el.textContent = (data.title ? data.title + '\n\n' : '') + (data.content || data.output || '') + (data.hashtags ? '\n\n' + data.hashtags : '');
+      if (data.isDemo) el.textContent = '🎭 DEMO MODE\n\n' + el.textContent;
+
+      DemoStore.addNotification('AI đã tạo nội dung', `Chủ đề: ${topic}`, 'info');
+      btn.disabled = false;
+      btn.innerHTML = '<i class="bi bi-stars"></i> Tạo bằng AI';
+      loadHistory();
+    }
+
+    function copyResult() {
+      const el = document.getElementById('aiResult');
+      if (!el?.textContent) return showToast('Chưa có nội dung', 'error');
+      navigator.clipboard.writeText(el.textContent);
+      showToast('Đã sao chép!', 'success');
+    }
+
+    async function createPostFromAi() {
+      if (!lastResult) return showToast('Tạo AI trước', 'error');
+      const title = lastResult.title || document.getElementById('aiTopic').value;
+      const content = lastResult.content || lastResult.output || '';
+      try {
+        const json = await apiPost('/api/Posts', {
+          projectId: DEMO.PROJECT_ID,
+          channelAccountId: DEMO.CHANNEL_FB,
+          title, content, contentType: 1
+        });
+        if (json.success) {
+          showToast('Đã tạo bài viết từ AI!', 'success');
+          DemoStore.addNotification('Bài viết mới', title, 'post');
+          setTimeout(() => location.href = '/app/posts.html', 800);
+        } else throw new Error(json.message);
+      } catch (e) {
+        showToast('Demo: ' + e.message, 'info');
+      }
+    }
+
+    function showAddPrompt() {
+      showModal('Thêm Prompt', `
+        <div class="form-group"><label>Tên</label><input id="pName" class="form-control" /></div>
+        <div class="form-group"><label>Template</label><textarea id="pTpl" class="form-control" placeholder="Dùng {{topic}}, {{tone}}..."></textarea></div>
+        <div class="form-group"><label>Danh mục</label><input id="pCat" class="form-control" value="Custom" /></div>`,
+        `<button class="btn-outline btn-sm" onclick="closeModal()">Hủy</button>
+         <button class="btn-primary btn-sm" id="savePrompt">Lưu</button>`);
+      document.getElementById('savePrompt')?.addEventListener('click', async () => {
+        const json = await apiPost('/api/Ai/prompts', {
+          name: document.getElementById('pName').value,
+          template: document.getElementById('pTpl').value,
+          category: document.getElementById('pCat').value
+        });
+        closeModal();
+        if (json.success) { showToast('Đã thêm prompt', 'success'); loadPage(); }
+        else showToast(json.message || 'Lỗi', 'error');
+      });
+    }
+
+    async function deletePrompt(id) {
+      confirmAction('Xóa prompt này?', async () => {
+        const json = await apiDelete(`/api/Ai/prompts/${id}`);
+        if (json.success) { showToast('Đã xóa', 'success'); loadPage(); }
+        else showToast(json.message, 'error');
+      });
+    }
+
+    async function loadHistory() {
+      const el = document.getElementById('historyList');
+      if (!el) return;
+      try {
+        const json = await apiGet('/api/Ai/history?page=1&pageSize=10');
+        const items = json.data?.items || [];
+        el.innerHTML = items.length ? `<div class="data-card"><table class="data-table"><thead><tr><th>Input</th><th>Tokens</th><th>Thời gian</th></tr></thead><tbody>
+          ${items.map(h => `<tr><td>${(h.input || h.topic || '').slice(0,60)}...</td><td>${h.tokensUsed || '—'}</td><td>${formatDate(h.createdAt)}</td></tr>`).join('')}
+        </tbody></table></div>` : '<div class="empty-state">Chưa có lịch sử AI. Hãy thử nút "Tạo bằng AI".</div>';
+      } catch {
+        el.innerHTML = '<div class="empty-state">Chưa có lịch sử (chạy API để lưu thật).</div>';
+      }
+    }
+
+    loadPage();
+  </script>
+</body>
+</html>

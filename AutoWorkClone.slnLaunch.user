@@ -1,14 +1,16 @@
 [
   {
-    "Name": "New Profile",
+    "Name": "API + Web (HTTPS)",
     "Projects": [
       {
-        "Path": "frontend\\AutoWork.Web\\AutoWork.Web.csproj",
-        "Action": "Start"
+        "Path": "src\\AutoWork.API\\AutoWork.API.csproj",
+        "Action": "Start",
+        "DebugTarget": "https"
       },
       {
-        "Path": "src\\AutoWork.API\\AutoWork.API.csproj",
-        "Action": "Start"
+        "Path": "frontend\\AutoWork.Web\\AutoWork.Web.csproj",
+        "Action": "Start",
+        "DebugTarget": "https"
       }
     ]
   }

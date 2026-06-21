@@ -12,10 +12,19 @@
     <div class="auth-card">
       <h1>⚡ AutoWork</h1>
       <p class="subtitle">Đăng nhập vào tài khoản của bạn</p>
+
+      <ol class="login-steps" id="loginSteps">
+        <li id="step1" class="active">1. Trang chủ</li>
+        <li id="step2">2. Nhập TK</li>
+        <li id="step3">3. Xác thực</li>
+        <li id="step4">4. Dashboard</li>
+      </ol>
+      <div class="login-step-status" id="stepStatus">Bước 2: Nhập email và mật khẩu</div>
+
       <form id="loginForm">
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" class="form-control" placeholder="admin@autowork.com" required />
+          <input type="email" id="email" class="form-control" placeholder="demo@autowork.com" required />
         </div>
         <div class="form-group">
           <label for="password">Mật khẩu</label>
@@ -24,23 +33,56 @@
         <button type="submit" class="btn-primary w-100" id="btnSubmit">Đăng nhập</button>
         <div id="error" class="form-error" style="display:none;"></div>
       </form>
-      <p class="auth-footer">Chưa có tài khoản? <a href="/register.html">Đăng ký miễn phí</a></p>
+      <p class="auth-footer">
+        Chưa có tài khoản? <a href="/register.html">Đăng ký miễn phí</a>
+        &nbsp;·&nbsp; <a href="/login.html?fresh=1&demo=demo">Demo (điền sẵn)</a>
+      </p>
     </div>
   </div>
   <script src="/js/api.js"></script>
   <script src="/js/auth.js"></script>
+  <script src="/js/demo.js"></script>
   <script>
-    Auth.redirectIfLoggedIn();
     const params = new URLSearchParams(location.search);
-    const returnUrl = params.get('return') || '/app/dashboard.html';
+    const returnUrl = params.get('return') || '/app/dashboard.html?welcome=1';
+    const isFresh = params.has('fresh') || params.has('logout');
+
+    // Xóa session cũ để luôn thấy màn hình đăng nhập
+    if (isFresh) {
+      Auth.clearSession();
+    } else if (Auth.isLoggedIn()) {
+      window.location.href = returnUrl;
+    }
+
+    function setStep(n, msg) {
+      for (let i = 1; i <= 4; i++) {
+        const el = document.getElementById('step' + i);
+        el.classList.remove('active', 'done');
+        if (i < n) el.classList.add('done');
+        if (i === n) el.classList.add('active');
+      }
+      document.getElementById('stepStatus').textContent = msg;
+    }
+
+    setStep(2, 'Bước 2: Nhập email và mật khẩu');
+
+    if (params.get('demo') === 'demo') {
+      document.getElementById('email').value = 'demo@autowork.com';
+      document.getElementById('password').value = 'Demo@123!';
+      document.getElementById('stepStatus').textContent = 'Bước 2: Tài khoản demo đã điền sẵn — bấm Đăng nhập';
+    }
+
+    const wait = ms => new Promise(r => setTimeout(r, ms));
 
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('btnSubmit');
       const err = document.getElementById('error');
       btn.disabled = true;
-      btn.textContent = 'Đang đăng nhập...';
       err.style.display = 'none';
+
+      setStep(3, 'Bước 3: Đang gọi API đăng nhập...');
+      btn.textContent = 'Đang xác thực...';
 
       try {
         const json = await apiPost('/api/auth/login', {
@@ -49,18 +91,32 @@
         });
 
         if (json.success && json.data) {
+          setStep(3, 'Bước 3: Xác thực thành công ✓');
+          btn.textContent = 'Đăng nhập thành công!';
+          await wait(600);
+
           Auth.saveSession(json.data);
+          DemoStore.addNotification('Chào mừng!', 'Bạn đã đăng nhập AutoWork Demo', 'system');
+
+          setStep(4, 'Bước 4: Đang chuyển đến Dashboard...');
+          btn.textContent = 'Đang vào Dashboard...';
+          await wait(900);
+
           window.location.href = returnUrl;
         } else {
+          setStep(2, 'Bước 2: Nhập lại thông tin đăng nhập');
           err.textContent = json.message || 'Email hoặc mật khẩu không đúng';
           err.style.display = 'block';
+          btn.textContent = 'Đăng nhập';
+          btn.disabled = false;
         }
-      } catch {
-        err.textContent = 'Không kết nối được API. Hãy chạy AutoWork.API trước.';
+      } catch (ex) {
+        setStep(2, 'Bước 2: Kiểm tra API đang chạy chưa');
+        err.textContent = 'Không kết nối được API. Hãy chạy AutoWork.API (https://localhost:7165) trước, rồi thử lại.';
         err.style.display = 'block';
-      } finally {
-        btn.disabled = false;
         btn.textContent = 'Đăng nhập';
+        btn.disabled = false;
+        console.error('Login API error:', ex);
       }
     });
   </script>

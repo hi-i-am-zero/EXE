@@ -218,3 +218,4 @@ D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\r
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\AutoWork.IntegrationTests.pdb
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\AutoWork.IntegrationTests.genruntimeconfig.cache
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\ref\AutoWork.IntegrationTests.dll
+D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\AutoWork.IntegrationTests.sourcelink.json

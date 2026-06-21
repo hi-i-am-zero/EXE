@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Thông báo — AutoWork Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/demo.js"></script>
+  <script src="/js/layout.js"></script>
+  <script>
+    if (!Auth.requireAuth()) throw new Error('auth');
+    renderAppLayout('/app/notifications.html');
+    setPageTitle('Thông báo', `<button class="btn-outline btn-sm" onclick="markAllRead()"><i class="bi bi-check-all"></i> Đọc tất cả</button>`);
+
+    async function load() {
+      let apiNotifs = [];
+      try {
+        const json = await apiGet('/api/Notifications?page=1&pageSize=20');
+        apiNotifs = json.data?.items || [];
+      } catch { /* ignore */ }
+
+      const demoNotifs = DemoStore.getNotifications();
+      const all = [...demoNotifs, ...apiNotifs.map(n => ({
+        id: n.id, title: n.title, message: n.message,
+        isRead: n.isRead, createdAt: n.createdAt, source: 'api'
+      }))];
+
+      if (!all.length) {
+        DemoStore.addNotification('Chào mừng AutoWork!', 'Bắt đầu trải nghiệm demo — thử tạo AI content nhé.', 'system');
+        return load();
+      }
+
+      setPageContent(`
+        <div class="data-card">
+          ${all.map(n => `
+            <div style="padding:16px 20px;border-bottom:1px solid var(--color-border);display:flex;gap:16px;align-items:flex-start;${n.isRead ? 'opacity:.7' : 'background:#f8fafc'}">
+              <i class="bi bi-bell${n.isRead ? '' : '-fill'}" style="color:var(--color-primary);margin-top:4px"></i>
+              <div style="flex:1">
+                <div style="font-weight:600">${n.title}</div>
+                <div style="font-size:.9rem;color:var(--color-text-muted)">${n.message}</div>
+                <div style="font-size:.75rem;color:var(--color-text-muted);margin-top:4px">${formatDate(n.createdAt)}</div>
+              </div>
+              ${!n.isRead ? `<button class="btn-outline btn-sm" onclick="markRead('${n.id}', ${n.source === 'api'})">Đã đọc</button>` : ''}
+            </div>`).join('')}
+        </div>`);
+    }
+
+    function markRead(id, isApi) {
+      if (isApi) apiPut(`/api/Notifications/${id}/read`, {});
+      else DemoStore.markRead(id);
+      showToast('Đã đánh dấu đọc', 'success');
+      renderAppLayout('/app/notifications.html');
+      setPageTitle('Thông báo', `<button class="btn-outline btn-sm" onclick="markAllRead()"><i class="bi bi-check-all"></i> Đọc tất cả</button>`);
+      load();
+    }
+
+    async function markAllRead() {
+      DemoStore.markAllRead();
+      try { await apiPut('/api/Notifications/read-all', {}); } catch { /* */ }
+      showToast('Đã đọc tất cả', 'success');
+      load();
+    }
+
+    load();
+  </script>
+</body>
+</html>

@@ -17,3 +17,4 @@ D:\EXE01\AIMarketingAssistant\src\AutoWork.Infrastructure\obj\Debug\net8.0\AutoW
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Infrastructure\obj\Debug\net8.0\refint\AutoWork.Infrastructure.dll
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Infrastructure\obj\Debug\net8.0\AutoWork.Infrastructure.pdb
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Infrastructure\obj\Debug\net8.0\ref\AutoWork.Infrastructure.dll
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Infrastructure\obj\Debug\net8.0\AutoWork.Infrastructure.sourcelink.json

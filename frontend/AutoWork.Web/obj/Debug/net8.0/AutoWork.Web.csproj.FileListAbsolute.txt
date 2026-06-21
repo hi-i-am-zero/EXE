@@ -31,4 +31,5 @@ D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\AutoWork.We
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\AutoWork.Web.genruntimeconfig.cache
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\ref\AutoWork.Web.dll
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\bin\Debug\net8.0\AutoWork.Web.staticwebassets.runtime.json
+D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\AutoWork.Web.sourcelink.json
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

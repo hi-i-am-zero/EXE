@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Affiliate — AutoWork Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/demo.js"></script>
+  <script src="/js/layout.js"></script>
+  <script>
+    if (!Auth.requireAuth()) throw new Error('auth');
+    renderAppLayout('/app/affiliate.html');
+    setPageTitle('Chương trình Affiliate');
+
+    async function load() {
+      setPageContent('<div class="empty-state">Đang tải...</div>');
+      let aff = null, links = [], commissions = [];
+      try {
+        const [a, l, c] = await Promise.all([
+          apiGet('/api/Affiliates'),
+          apiGet('/api/Affiliates/links'),
+          apiGet('/api/Affiliates/commissions')
+        ]);
+        aff = a.data; links = l.data || []; commissions = c.data || [];
+      } catch { /* demo fallback */ }
+
+      const code = aff?.code || Auth.getUser()?.referralCode || 'DEMO2026';
+      const link = `${location.origin}/register.html?ref=${code}`;
+
+      setPageContent(`
+        <div class="stats-grid" style="grid-template-columns:repeat(4,1fr)">
+          <div class="stat-card"><div class="stat-label">Hoa hồng</div><div class="stat-value" style="font-size:1.5rem">30%</div></div>
+          <div class="stat-card"><div class="stat-label">Thời hạn</div><div class="stat-value" style="font-size:1.5rem">12 tháng</div></div>
+          <div class="stat-card"><div class="stat-label">Tổng thu nhập</div><div class="stat-value">${formatCurrency(aff?.totalEarnings || 0)}</div></div>
+          <div class="stat-card"><div class="stat-label">Link giới thiệu</div><div class="stat-value" style="font-size:1.2rem">${links.length}</div></div>
+        </div>
+        <div class="data-card" style="padding:24px;margin-bottom:24px">
+          <h3 style="margin:0 0 12px">Link giới thiệu của bạn</h3>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <input class="form-control" id="refLink" value="${link}" readonly style="flex:1;min-width:200px" />
+            <button class="btn-primary btn-sm" onclick="copyRef()"><i class="bi bi-clipboard"></i> Sao chép</button>
+            <button class="btn-outline btn-sm" onclick="shareRef()"><i class="bi bi-share"></i> Chia sẻ</button>
+          </div>
+          <p style="color:var(--color-text-muted);font-size:.85rem;margin-top:12px">
+            Cookie 30 ngày — khách click hôm nay, mua sau vẫn tính hoa hồng.
+          </p>
+        </div>
+        <div class="action-bar">
+          <button class="btn-primary btn-sm" onclick="createLink()"><i class="bi bi-plus"></i> Tạo link chiến dịch</button>
+          <button class="btn-outline btn-sm" onclick="withdrawDemo()"><i class="bi bi-cash"></i> Rút tiền (demo)</button>
+        </div>
+        <div class="data-card">
+          <div style="padding:16px 20px;border-bottom:1px solid var(--color-border);font-weight:600">Lịch sử hoa hồng</div>
+          <table class="data-table">
+            <thead><tr><th>Số tiền</th><th>Trạng thái</th><th>Ngày</th></tr></thead>
+            <tbody>${commissions.length ? commissions.map(c => `<tr>
+              <td><strong>${formatCurrency(c.amount)}</strong></td>
+              <td><span class="badge badge-success">${c.status === 1 ? 'Đã thanh toán' : 'Chờ'}</span></td>
+              <td>${formatDate(c.createdAt)}</td></tr>`).join('')
+              : '<tr><td colspan="3" class="empty-state">Chưa có hoa hồng — chia sẻ link để bắt đầu!</td></tr>'}
+            </tbody>
+          </table>
+        </div>`);
+    }
+
+    function copyRef() {
+      navigator.clipboard.writeText(document.getElementById('refLink').value);
+      showToast('Đã sao chép link!', 'success');
+    }
+
+    function shareRef() {
+      const url = document.getElementById('refLink').value;
+      if (navigator.share) navigator.share({ title: 'AutoWork', url });
+      else { copyRef(); showToast('Đã sao chép — dán lên Facebook/Zalo', 'info'); }
+    }
+
+    function createLink() {
+      showModal('Tạo link chiến dịch', `
+        <div class="form-group"><label>Tên chiến dịch</label><input id="campName" class="form-control" placeholder="Facebook tháng 6" /></div>`,
+        `<button class="btn-primary btn-sm" id="saveLink">Tạo</button>`);
+      document.getElementById('saveLink')?.addEventListener('click', async () => {
+        const json = await apiPost('/api/Affiliates/links', { name: document.getElementById('campName').value, campaign: 'demo' });
+        closeModal();
+        if (json.success) { showToast('Đã tạo link!', 'success'); load(); }
+        else { DemoStore.addNotification('Affiliate', 'Link chiến dịch demo đã tạo', 'affiliate'); showToast('Demo: Link đã tạo', 'success'); load(); }
+      });
+    }
+
+    function withdrawDemo() {
+      showModal('Rút tiền Affiliate', `
+        <p>Số dư khả dụng: <strong>0đ</strong> (demo)</p>
+        <div class="form-group"><label>Số tiền rút</label><input class="form-control" type="number" value="500000" /></div>
+        <div class="form-group"><label>Tài khoản ngân hàng</label><input class="form-control" placeholder="STK + Ngân hàng" /></div>`,
+        `<button class="btn-primary btn-sm" onclick="closeModal();showToast('Demo: Yêu cầu rút tiền đã gửi!','success')">Gửi yêu cầu</button>`);
+    }
+
+    load();
+  </script>
+</body>
+</html>

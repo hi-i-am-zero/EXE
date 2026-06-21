@@ -118,3 +118,4 @@ D:\EXE01\AIMarketingAssistant\tests\AutoWork.UnitTests\bin\Debug\net8.0\Microsof
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.UnitTests\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.UnitTests\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.UnitTests\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\EXE01\AIMarketingAssistant\tests\AutoWork.UnitTests\obj\Debug\net8.0\AutoWork.UnitTests.sourcelink.json

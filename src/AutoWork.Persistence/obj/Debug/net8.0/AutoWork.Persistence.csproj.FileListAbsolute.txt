@@ -19,3 +19,4 @@ D:\EXE01\AIMarketingAssistant\src\AutoWork.Persistence\obj\Debug\net8.0\refint\A
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Persistence\obj\Debug\net8.0\AutoWork.Persistence.pdb
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Persistence\obj\Debug\net8.0\AutoWork.Persistence.genruntimeconfig.cache
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Persistence\obj\Debug\net8.0\ref\AutoWork.Persistence.dll
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Persistence\obj\Debug\net8.0\AutoWork.Persistence.sourcelink.json

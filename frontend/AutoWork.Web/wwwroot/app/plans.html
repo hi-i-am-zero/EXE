@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Gói dịch vụ — AutoWork</title>
+  <title>Gói dịch vụ — AutoWork Demo</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <link rel="stylesheet" href="/css/app.css" />
@@ -11,26 +11,12 @@
 <body>
   <script src="/js/api.js"></script>
   <script src="/js/auth.js"></script>
+  <script src="/js/demo.js"></script>
   <script src="/js/layout.js"></script>
   <script>
     if (!Auth.requireAuth()) throw new Error('auth');
     renderAppLayout('/app/plans.html');
     setPageTitle('Gói dịch vụ');
-
-    async function subscribe(planId) {
-      if (!confirm('Xác nhận đăng ký gói này?')) return;
-      try {
-        const json = await apiPost('/api/plans/subscriptions', { planId, autoRenew: true });
-        if (json.success) {
-          showToast('Đăng ký gói thành công!', 'success');
-          loadPlans();
-        } else {
-          showToast(json.message || 'Đăng ký thất bại', 'error');
-        }
-      } catch {
-        showToast('Lỗi kết nối API', 'error');
-      }
-    }
 
     async function loadPlans() {
       setPageContent('<div class="empty-state">Đang tải...</div>');
@@ -39,39 +25,83 @@
           apiGet('/api/plans'),
           apiGet('/api/plans/subscriptions')
         ]);
-
         const plans = plansJson.data || [];
         const sub = subJson.data;
 
-        let subBanner = '';
         if (sub) {
-          subBanner = `<div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:12px;padding:16px 20px;margin-bottom:24px">
+          setPageContent(`<div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:12px;padding:16px 20px;margin-bottom:24px">
             <strong>Gói hiện tại:</strong> ${sub.planName || sub.plan?.name || '—'}
-            ${sub.expiresAt ? ` — Hết hạn: ${formatDate(sub.expiresAt)}` : ''}
-          </div>`;
+            ${sub.endDate ? ` — Hết hạn: ${formatDate(sub.endDate)}` : ''}
+            <button class="btn-outline btn-sm" style="margin-left:12px" onclick="cancelSub()">Hủy gói</button>
+          </div>` + buildGrid(plans, sub));
+        } else {
+          setPageContent(buildGrid(plans, sub));
         }
-
-        setPageContent(subBanner + `<div class="pricing-grid">
-          ${plans.map((p, i) => `
-            <div class="plan-card ${sub?.planId === p.id ? 'featured' : ''}">
-              ${sub?.planId === p.id ? '<span class="plan-badge">Đang dùng</span>' : ''}
-              <div class="plan-name">${p.name}</div>
-              <div class="plan-price">${formatCurrency(p.price)} <span>/ tháng</span></div>
-              <div class="plan-desc">${p.description || ''}</div>
-              <ul class="plan-features">
-                <li>${p.creditsIncluded} credits/tháng</li>
-                <li>Tối đa ${p.maxProjects} dự án</li>
-                <li>${p.maxChannels} kênh</li>
-                <li>${p.maxPostsPerMonth} bài/tháng</li>
-              </ul>
-              ${sub?.planId === p.id
-                ? '<button class="btn-outline w-100" disabled>Đang sử dụng</button>'
-                : `<button class="btn-primary w-100" onclick="subscribe('${p.id}')">Chọn gói</button>`}
-            </div>`).join('')}
-        </div>`);
       } catch (e) {
         setPageContent(`<div class="empty-state">Lỗi: ${e.message}</div>`);
       }
+    }
+
+    function buildGrid(plans, sub) {
+      return `<div class="pricing-grid">${plans.map((p, i) => `
+        <div class="plan-card ${sub?.planId === p.id ? 'featured' : i === 1 ? 'featured' : ''}">
+          ${i === 1 && !sub ? '<span class="plan-badge">Phổ biến</span>' : ''}
+          ${sub?.planId === p.id ? '<span class="plan-badge">Đang dùng</span>' : ''}
+          <div class="plan-name">${p.name}</div>
+          <div class="plan-price">${formatCurrency(p.price)} <span>/ tháng</span></div>
+          <div class="plan-desc">${p.description || ''}</div>
+          <ul class="plan-features">
+            <li>${p.creditsIncluded >= 999999 ? 'Unlimited' : p.creditsIncluded} credits</li>
+            <li>${p.maxProjects} dự án</li>
+            <li>${p.maxChannels} kênh</li>
+            <li>${p.maxPostsPerMonth} bài/tháng</li>
+          </ul>
+          ${sub?.planId === p.id
+            ? '<button class="btn-outline w-100" disabled>Đang sử dụng</button>'
+            : `<button class="btn-primary w-100" onclick="subscribe('${p.id}','${p.name}',${p.price})">Chọn gói</button>`}
+        </div>`).join('')}</div>
+        <div style="text-align:center;margin-top:24px;padding:16px;background:#f0fdf4;border-radius:12px">
+          <i class="bi bi-gift"></i> Dùng thử Premium <strong>1 ngày miễn phí</strong> — 
+          <button class="btn-outline btn-sm" onclick="trialPremium()">Trải nghiệm ngay</button>
+        </div>`;
+    }
+
+    function subscribe(planId, name, price) {
+      showModal(`Đăng ký ${name}`, `
+        <p>${formatCurrency(price)}/tháng — tự động gia hạn</p>
+        <div class="action-bar" style="justify-content:center">
+          <button class="btn-outline btn-sm" onclick="confirmSub('${planId}','momo')">MoMo</button>
+          <button class="btn-outline btn-sm" onclick="confirmSub('${planId}','vnpay')">VNPay</button>
+          <button class="btn-primary btn-sm" onclick="confirmSub('${planId}',null)">Kích hoạt demo</button>
+        </div>`,
+        `<button class="btn-outline btn-sm" onclick="closeModal()">Hủy</button>`);
+    }
+
+    async function confirmSub(planId, method) {
+      if (method) {
+        closeModal();
+        showToast(`Demo: Thanh toán ${method}...`, 'info');
+        await new Promise(r => setTimeout(r, 1500));
+      }
+      const json = await apiPost('/api/plans/subscriptions', { planId, autoRenew: true });
+      closeModal();
+      if (json.success) {
+        showToast('Đăng ký gói thành công!', 'success');
+        DemoStore.addNotification('Gói dịch vụ', 'Đã kích hoạt subscription', 'subscription');
+        loadPlans();
+      } else showToast(json.message || 'Lỗi', 'error');
+    }
+
+    function trialPremium() {
+      showToast('Demo: Đã kích hoạt Premium 1 ngày + 100 credits AI!', 'success');
+      DemoStore.addNotification('Premium Trial', '1 ngày dùng thử đã kích hoạt', 'subscription');
+    }
+
+    async function cancelSub() {
+      confirmAction('Hủy subscription hiện tại?', async () => {
+        const json = await apiDelete('/api/plans/subscriptions');
+        if (json.success) { showToast('Đã hủy gói', 'success'); loadPlans(); }
+      });
     }
 
     loadPlans();

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin — AutoWork Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/demo.js"></script>
+  <script src="/js/layout.js"></script>
+  <script>
+    if (!Auth.requireAuth()) throw new Error('auth');
+    if (!isAdmin()) { location.href = '/app/dashboard.html'; throw new Error('forbidden'); }
+    renderAppLayout('/app/admin.html');
+    setPageTitle('Admin Panel');
+
+    async function load() {
+      setPageContent('<div class="empty-state">Đang tải...</div>');
+      try {
+        const [dash, users] = await Promise.all([
+          apiGet('/api/admin/dashboard'),
+          apiGet('/api/Users?page=1&pageSize=10')
+        ]);
+        const s = dash.data || {};
+        const userList = users.data?.items || [];
+
+        setPageContent(`
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-label">Tổng users</div><div class="stat-value">${s.totalUsers ?? userList.length}</div></div>
+            <div class="stat-card"><div class="stat-label">Bài viết</div><div class="stat-value">${s.totalPosts ?? '—'}</div></div>
+            <div class="stat-card"><div class="stat-label">Doanh thu</div><div class="stat-value" style="font-size:1.2rem">${formatCurrency(s.totalRevenue || 0)}</div></div>
+            <div class="stat-card"><div class="stat-label">Subscriptions</div><div class="stat-value">${s.activeSubscriptions ?? '—'}</div></div>
+          </div>
+          <div class="data-card">
+            <div style="padding:16px 20px;border-bottom:1px solid var(--color-border);font-weight:600;display:flex;justify-content:space-between">
+              <span>Quản lý người dùng</span>
+              <button class="btn-primary btn-sm" onclick="showAddUser()"><i class="bi bi-person-plus"></i> Thêm user</button>
+            </div>
+            <table class="data-table">
+              <thead><tr><th>Email</th><th>Tên</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+              <tbody>${userList.map(u => `<tr>
+                <td>${u.email}</td>
+                <td>${u.firstName} ${u.lastName}</td>
+                <td><span class="badge ${u.isActive ? 'badge-success' : 'badge-danger'}">${u.isActive ? 'Active' : 'Inactive'}</span></td>
+                <td>
+                  <button class="btn-outline btn-sm" onclick="toggleUser('${u.id}', ${!u.isActive})">${u.isActive ? 'Khóa' : 'Mở'}</button>
+                </td></tr>`).join('') || '<tr><td colspan="4" class="empty-state">Không có user</td></tr>'}
+              </tbody>
+            </table>
+          </div>`);
+      } catch (e) {
+        setPageContent(`<div class="empty-state">Cần quyền Admin. Lỗi: ${e.message}</div>`);
+      }
+    }
+
+    async function toggleUser(id, activate) {
+      const json = await apiPut(`/api/admin/users/${id}/status`, { isActive: activate });
+      if (json.success) { showToast('Đã cập nhật', 'success'); load(); }
+      else showToast(json.message, 'error');
+    }
+
+    function showAddUser() {
+      showModal('Thêm người dùng', `
+        <div class="form-group"><label>Email</label><input id="uEmail" class="form-control" /></div>
+        <div class="form-row">
+          <div class="form-group"><label>Họ</label><input id="uFn" class="form-control" /></div>
+          <div class="form-group"><label>Tên</label><input id="uLn" class="form-control" /></div>
+        </div>
+        <div class="form-group"><label>Mật khẩu</label><input id="uPw" type="password" class="form-control" /></div>`,
+        `<button class="btn-primary btn-sm" id="saveUser">Tạo</button>`);
+      document.getElementById('saveUser')?.addEventListener('click', async () => {
+        const json = await apiPost('/api/Users', {
+          email: document.getElementById('uEmail').value,
+          firstName: document.getElementById('uFn').value,
+          lastName: document.getElementById('uLn').value,
+          password: document.getElementById('uPw').value
+        });
+        closeModal();
+        if (json.success) { showToast('Đã tạo user', 'success'); load(); }
+        else showToast(json.message, 'error');
+      });
+    }
+
+    load();
+  </script>
+</body>
+</html>

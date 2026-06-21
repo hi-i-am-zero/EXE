@@ -9,3 +9,4 @@ D:\EXE01\AIMarketingAssistant\src\AutoWork.Shared\obj\Debug\net8.0\AutoWork.Shar
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Shared\obj\Debug\net8.0\refint\AutoWork.Shared.dll
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Shared\obj\Debug\net8.0\AutoWork.Shared.pdb
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Shared\obj\Debug\net8.0\ref\AutoWork.Shared.dll
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Shared\obj\Debug\net8.0\AutoWork.Shared.sourcelink.json
