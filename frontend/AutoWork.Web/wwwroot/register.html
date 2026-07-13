@@ -3,49 +3,103 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Đăng ký — AutoWork</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <title>Đăng ký - FlowMate</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <link rel="stylesheet" href="/css/app.css" />
 </head>
 <body>
   <div class="auth-page">
-    <div class="auth-card">
-      <h1>⚡ AutoWork</h1>
-      <p class="subtitle">Tạo tài khoản miễn phí</p>
-      <form id="registerForm">
-        <div class="form-group">
-          <label for="firstName">Họ</label>
-          <input type="text" id="firstName" class="form-control" required />
+    <div class="auth-split">
+      <div class="auth-left">
+        <div class="auth-card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-weight:800;font-size:1.4rem;">
+            <span style="color:#6b63ff">⚡</span> FlowMate
+          </div>
+          <h1>Đăng kí</h1>
+          <p class="subtitle">Tạo tài khoản mới để bắt đầu chiến dịch của bạn.</p>
+
+          <form id="registerForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="firstName">Họ</label>
+                <input type="text" id="firstName" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="lastName">Tên</label>
+                <input type="text" id="lastName" class="form-control" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="referralCode">Mã giới thiệu</label>
+                <input type="text" id="referralCode" class="form-control" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="password">Mật khẩu</label>
+              <input type="password" id="password" class="form-control" minlength="8" required />
+            </div>
+            <div class="form-group">
+              <label for="confirmPassword">Xác nhận mật khẩu</label>
+              <input type="password" id="confirmPassword" class="form-control" minlength="8" required />
+            </div>
+
+            <div style="display:flex;align-items:center;gap:8px;margin:8px 0 14px;color:#646b80;font-size:.9rem">
+              <input type="checkbox" id="acceptPolicy" required />
+              <label for="acceptPolicy" style="margin:0">Tôi đồng ý với điều khoản và chính sách riêng tư</label>
+            </div>
+
+            <button type="submit" class="btn-primary w-100" id="btnSubmit">Tạo tài khoản</button>
+            <div id="error" class="form-error" style="display:none;"></div>
+          </form>
+
+          <p class="auth-footer">
+            Đã có tài khoản?
+            <a href="/login.html?fresh=1" style="color:#5b4df2;font-weight:600">Đăng nhập</a>
+          </p>
+          <div style="display:flex;align-items:center;gap:10px;margin:14px 0;color:#9ca2b8;font-size:.88rem">
+            <div style="height:1px;background:#e9ecf8;flex:1"></div>
+            hoặc
+            <div style="height:1px;background:#e9ecf8;flex:1"></div>
+          </div>
+          <div class="action-bar" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <button class="btn-outline w-100" type="button" id="btnGoogleSocial">
+              <i class="bi bi-google"></i> Google
+            </button>
+            <button class="btn-outline w-100" type="button" id="btnFacebookSocial">
+              <i class="bi bi-facebook"></i> Facebook
+            </button>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="lastName">Tên</label>
-          <input type="text" id="lastName" class="form-control" required />
+      </div>
+
+      <div class="auth-right">
+        <div style="max-width:460px;padding:26px;text-align:left">
+          <h2 style="font-size:1.9rem;margin-bottom:12px">Tự động hóa marketing cho shop vừa và nhỏ</h2>
+          <p style="color:rgba(255,255,255,.83);margin-bottom:18px">
+            Từ ý tưởng đến bài đăng: lập timeline, sinh nội dung AI, preview đa nền tảng và xuất bản đúng lịch.
+          </p>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(120px,1fr));gap:10px">
+            <div style="background:rgba(255,255,255,.12);padding:10px;border-radius:12px">AI nội dung</div>
+            <div style="background:rgba(255,255,255,.12);padding:10px;border-radius:12px">Timeline mẫu</div>
+            <div style="background:rgba(255,255,255,.12);padding:10px;border-radius:12px">Đa kênh</div>
+            <div style="background:rgba(255,255,255,.12);padding:10px;border-radius:12px">Theo dõi hiệu suất</div>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" class="form-control" required />
-        </div>
-        <div class="form-group">
-          <label for="password">Mật khẩu</label>
-          <input type="password" id="password" class="form-control" minlength="8" required />
-        </div>
-        <div class="form-group">
-          <label for="confirmPassword">Xác nhận mật khẩu</label>
-          <input type="password" id="confirmPassword" class="form-control" minlength="8" required />
-        </div>
-        <div class="form-group">
-          <label for="referralCode">Mã giới thiệu (tuỳ chọn)</label>
-          <input type="text" id="referralCode" class="form-control" />
-        </div>
-        <button type="submit" class="btn-primary w-100" id="btnSubmit">Đăng ký</button>
-        <div id="error" class="form-error" style="display:none;"></div>
-      </form>
-      <p class="auth-footer">Đã có tài khoản? <a href="/login.html?fresh=1">Đăng nhập</a>
-        &nbsp;·&nbsp; <a href="/login.html?fresh=1&demo=demo">Demo từng bước</a></p>
+      </div>
     </div>
   </div>
+
   <script src="/js/api.js"></script>
   <script src="/js/auth.js"></script>
+  <script src="/js/social-auth.js"></script>
   <script>
     Auth.redirectIfLoggedIn();
 
@@ -63,7 +117,7 @@
       }
 
       btn.disabled = true;
-      btn.textContent = 'Đang đăng ký...';
+      btn.textContent = 'Đang tạo...';
       err.style.display = 'none';
 
       const referral = document.getElementById('referralCode').value;
@@ -89,9 +143,12 @@
         err.style.display = 'block';
       } finally {
         btn.disabled = false;
-        btn.textContent = 'Đăng ký';
+        btn.textContent = 'Tạo tài khoản';
       }
     });
+
+    document.getElementById('btnGoogleSocial')?.addEventListener('click', () => socialLogin('google'));
+    document.getElementById('btnFacebookSocial')?.addEventListener('click', () => socialLogin('facebook'));
   </script>
 </body>
 </html>

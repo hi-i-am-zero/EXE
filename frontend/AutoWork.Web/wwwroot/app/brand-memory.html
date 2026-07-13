@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Brand Memory - FlowMate</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/demo.js"></script>
+  <script src="/js/layout.js"></script>
+  <script>
+    if (!Auth.requireAuth()) throw new Error('auth');
+    renderAppLayout('/app/brand-memory.html');
+    setPageTitle('Brand Memory');
+
+    let projects = [];
+    let projectId = null;
+    let memory = {};
+    let summary = null;
+
+    function asTextArray(value) {
+      return Array.isArray(value) ? value : [];
+    }
+
+    function toArray(inputId) {
+      const raw = document.getElementById(inputId)?.value || '';
+      return raw.split(',').map(x => x.trim()).filter(Boolean);
+    }
+
+    async function loadProjects() {
+      const p = await apiGet('/api/workspace/projects');
+      if (!p.success) {
+        return setPageContent('<div class="empty-state">Không tải được workspace. Hãy tạo workspace trước trong trang Workspace.</div>');
+      }
+      projects = p.data || [];
+      if (!projects.length) {
+        return setPageContent('<div class="empty-state">Chưa có workspace để gắn Brand Memory.</div>');
+      }
+      projectId = projectId || projects[0].id;
+      await loadBrandMemory();
+    }
+
+    async function loadBrandMemory() {
+      const json = await apiGet(`/api/brand-memory/projects/${projectId}`);
+      if (!json.success) {
+        return setPageContent(`<div class="empty-state">${json.message || 'Không tải được Brand Memory'}</div>`);
+      }
+      memory = json.data?.data || {};
+      summary = json.data;
+      renderPage();
+    }
+
+    function renderPage() {
+      const channels = asTextArray(memory.salesChannels).join(', ');
+      const products = asTextArray(memory.productCategories).join(', ');
+      const styles = asTextArray(memory.styleTags).join(', ');
+      const tones = asTextArray(memory.toneKeywords).join(', ');
+      const keywords = asTextArray(memory.brandKeywords).join(', ');
+      const ctas = asTextArray(memory.ctaPhrases).join(', ');
+      const hashtags = asTextArray(memory.hashtags).join(', ');
+
+      setPageContent(`
+        <div class="data-card" style="padding:14px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+            <div>
+              <h3 style="font-size:1.08rem;">Thông tin thương hiệu cho AI</h3>
+              <p>AI dùng các thông tin này để tạo timeline, nội dung và chiến dịch nhất quán hơn.</p>
+            </div>
+            <div class="action-bar">
+              <select class="form-control" style="min-width:260px" onchange="changeProject(this.value)">
+                ${projects.map(p => `<option value="${p.id}" ${p.id === projectId ? 'selected' : ''}>${p.name}</option>`).join('')}
+              </select>
+              <button class="btn-primary" onclick="saveBrandMemory()"><i class="bi bi-save"></i> Lưu tất cả thông tin</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:2fr 1fr;gap:12px;">
+          <div style="display:grid;gap:12px;">
+            <div class="data-card" style="padding:14px;">
+              <h3 style="font-size:1rem;margin-bottom:8px;">1. Thông tin doanh nghiệp</h3>
+              <div class="form-row">
+                <div class="form-group"><label>Tên doanh nghiệp</label><input id="businessName" class="form-control" value="${escapeHtml(memory.businessName || '')}" /></div>
+                <div class="form-group"><label>Tên thương hiệu</label><input id="brandName" class="form-control" value="${escapeHtml(memory.brandName || '')}" /></div>
+              </div>
+              <div class="form-row">
+                <div class="form-group"><label>Ngành hàng</label><input id="industry" class="form-control" value="${escapeHtml(memory.industry || '')}" /></div>
+                <div class="form-group"><label>Năm thành lập</label><input id="establishedYear" type="number" class="form-control" value="${memory.establishedYear || ''}" /></div>
+              </div>
+              <div class="form-group"><label>Mô tả ngắn</label><textarea id="shortDescription" class="form-control">${escapeHtml(memory.shortDescription || '')}</textarea></div>
+            </div>
+
+            <div class="data-card" style="padding:14px;">
+              <h3 style="font-size:1rem;margin-bottom:8px;">2. Địa chỉ liên hệ</h3>
+              <div class="form-group"><label>Địa chỉ</label><input id="address" class="form-control" value="${escapeHtml(memory.address || '')}" /></div>
+              <div class="form-row">
+                <div class="form-group"><label>Số điện thoại</label><input id="phone" class="form-control" value="${escapeHtml(memory.phone || '')}" /></div>
+                <div class="form-group"><label>Email</label><input id="email" class="form-control" value="${escapeHtml(memory.email || '')}" /></div>
+              </div>
+              <div class="form-group"><label>Website</label><input id="website" class="form-control" value="${escapeHtml(memory.website || '')}" /></div>
+            </div>
+
+            <div class="data-card" style="padding:14px;">
+              <h3 style="font-size:1rem;margin-bottom:8px;">3. Kênh bán hàng & sản phẩm</h3>
+              <div class="form-group">
+                <label>Kênh bán hàng (phân tách bằng dấu phẩy)</label>
+                <input id="salesChannels" class="form-control" value="${escapeHtml(channels)}" placeholder="Facebook, TikTok, Shopee, Website" />
+              </div>
+              <div class="form-group">
+                <label>Danh mục sản phẩm (dấu phẩy)</label>
+                <input id="productCategories" class="form-control" value="${escapeHtml(products)}" placeholder="Váy, Áo, Quần, Phụ kiện" />
+              </div>
+            </div>
+
+            <div class="data-card" style="padding:14px;">
+              <h3 style="font-size:1rem;margin-bottom:8px;">4. Nhận diện thương hiệu</h3>
+              <div class="form-row">
+                <div class="form-group"><label>Màu chính</label><input id="primaryColor" class="form-control" value="${escapeHtml(memory.primaryColor || '')}" placeholder="#6B63FF" /></div>
+                <div class="form-group"><label>Màu phụ</label><input id="secondaryColor" class="form-control" value="${escapeHtml(memory.secondaryColor || '')}" placeholder="#F4AFC8" /></div>
+              </div>
+              <div class="form-row">
+                <div class="form-group"><label>Font tiêu đề</label><input id="fontTitle" class="form-control" value="${escapeHtml(memory.fontTitle || 'Poppins')}" /></div>
+                <div class="form-group"><label>Font nội dung</label><input id="fontBody" class="form-control" value="${escapeHtml(memory.fontBody || 'Inter')}" /></div>
+              </div>
+              <div class="form-group"><label>Phong cách (dấu phẩy)</label><input id="styleTags" class="form-control" value="${escapeHtml(styles)}" placeholder="Streetwear, Basic, Vintage..." /></div>
+              <div class="form-group"><label>Giọng văn (dấu phẩy)</label><input id="toneKeywords" class="form-control" value="${escapeHtml(tones)}" placeholder="Trẻ trung, thân thiện, tối giản..." /></div>
+              <div class="form-group"><label>Từ khóa thương hiệu (dấu phẩy)</label><input id="brandKeywords" class="form-control" value="${escapeHtml(keywords)}" placeholder="Thời trang, hiện đại, thanh lịch..." /></div>
+              <div class="form-group"><label>CTA hay dùng (dấu phẩy)</label><input id="ctaPhrases" class="form-control" value="${escapeHtml(ctas)}" placeholder="Chốt đơn ngay, Inbox tư vấn..." /></div>
+              <div class="form-group"><label>Hashtag hay dùng (dấu phẩy)</label><input id="hashtags" class="form-control" value="${escapeHtml(hashtags)}" placeholder="#flowmate, #thoitrangnu..." /></div>
+            </div>
+          </div>
+
+          <div style="display:grid;gap:12px;align-content:start;">
+            <div class="data-card" style="padding:14px;">
+              <div class="stat-label">Tiến độ hoàn thành</div>
+              <div style="font-size:2rem;font-weight:800;color:#5b4df2">${summary?.completionPercent || 0}%</div>
+              <p style="margin-top:6px;">Bạn đã điền ${summary?.completedSections || 0}/${summary?.totalSections || 5} mục.</p>
+              <div style="margin-top:10px;background:#eef1ff;border-radius:999px;height:8px;overflow:hidden;">
+                <div style="height:100%;width:${summary?.completionPercent || 0}%;background:#5b4df2;"></div>
+              </div>
+            </div>
+
+            <div class="data-card" style="padding:14px;">
+              <h4 style="margin-bottom:8px;">Thông tin nổi bật</h4>
+              <div style="display:grid;gap:6px;font-size:.88rem;">
+                <div><strong>Tone:</strong> ${escapeHtml((asTextArray(memory.toneKeywords).slice(0, 3).join(', ')) || 'Chưa cập nhật')}</div>
+                <div><strong>Màu:</strong> ${escapeHtml([memory.primaryColor, memory.secondaryColor].filter(Boolean).join(', ') || 'Chưa cập nhật')}</div>
+                <div><strong>Keywords:</strong> ${escapeHtml((asTextArray(memory.brandKeywords).slice(0, 4).join(', ')) || 'Chưa cập nhật')}</div>
+                <div><strong>Hashtags:</strong> ${escapeHtml((asTextArray(memory.hashtags).slice(0, 4).join(', ')) || 'Chưa cập nhật')}</div>
+              </div>
+            </div>
+
+            <div class="data-card" style="padding:14px;">
+              <h4 style="margin-bottom:8px;">Mẹo hay</h4>
+              <div id="tipsBox" style="display:grid;gap:8px;"></div>
+            </div>
+          </div>
+        </div>
+      `);
+
+      loadTips();
+    }
+
+    function loadTips() {
+      apiGet(`/api/brand-memory/projects/${projectId}/summary`).then(json => {
+        const tips = json.success ? (json.data?.tips || []) : [];
+        const box = document.getElementById('tipsBox');
+        if (!box) return;
+        box.innerHTML = tips.length
+          ? tips.map(t => `<div style="padding:9px;border:1px solid #e6eaf6;border-radius:10px;background:#fafbff;font-size:.86rem;">${escapeHtml(t)}</div>`).join('')
+          : '<div class="empty-state" style="padding:12px;">Không có gợi ý</div>';
+      });
+    }
+
+    function collectPayload() {
+      return {
+        businessName: document.getElementById('businessName').value.trim(),
+        brandName: document.getElementById('brandName').value.trim(),
+        industry: document.getElementById('industry').value.trim(),
+        establishedYear: document.getElementById('establishedYear').value ? Number(document.getElementById('establishedYear').value) : null,
+        shortDescription: document.getElementById('shortDescription').value.trim(),
+        address: document.getElementById('address').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        website: document.getElementById('website').value.trim(),
+        primaryColor: document.getElementById('primaryColor').value.trim(),
+        secondaryColor: document.getElementById('secondaryColor').value.trim(),
+        fontTitle: document.getElementById('fontTitle').value.trim(),
+        fontBody: document.getElementById('fontBody').value.trim(),
+        salesChannels: toArray('salesChannels'),
+        productCategories: toArray('productCategories'),
+        styleTags: toArray('styleTags'),
+        toneKeywords: toArray('toneKeywords'),
+        brandKeywords: toArray('brandKeywords'),
+        ctaPhrases: toArray('ctaPhrases'),
+        hashtags: toArray('hashtags')
+      };
+    }
+
+    async function saveBrandMemory() {
+      const payload = collectPayload();
+      const json = await apiPut(`/api/brand-memory/projects/${projectId}`, payload);
+      if (json.success) {
+        memory = json.data?.data || payload;
+        summary = json.data;
+        showToast('Đã lưu Brand Memory', 'success');
+        renderPage();
+      } else {
+        showToast(json.message || 'Không lưu được Brand Memory', 'error');
+      }
+    }
+
+    function changeProject(id) {
+      projectId = id;
+      loadBrandMemory();
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    loadProjects();
+  </script>
+</body>
+</html>

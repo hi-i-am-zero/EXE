@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dashboard — AutoWork Demo</title>
+  <title>Dashboard - FlowMate</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <link rel="stylesheet" href="/css/app.css" />
@@ -17,61 +17,122 @@
   <script>
     if (!Auth.requireAuth()) throw new Error('auth');
     renderAppLayout('/app/dashboard.html');
-    setPageTitle('Dashboard', `<span class="channel-badge connected"><i class="bi bi-circle-fill" style="font-size:.5rem"></i> Live</span>`);
+    setPageTitle('Tổng quan');
 
     const quickActions = [
-      { icon: 'bi-robot', label: 'Tạo AI', href: '/app/ai.html' },
-      { icon: 'bi-plus-circle', label: 'Bài mới', onclick: 'location.href="/app/posts.html?action=create"' },
-      { icon: 'bi-calendar-event', label: 'Lên lịch', href: '/app/schedules.html' },
-      { icon: 'bi-share', label: 'Kết nối kênh', href: '/app/channels.html' },
-      { icon: 'bi-gem', label: 'Nâng cấp gói', href: '/app/plans.html' },
-      { icon: 'bi-people', label: 'Affiliate', href: '/app/affiliate.html' }
+      { icon: 'bi-diagram-3', label: 'Chiến dịch tự động', href: '/app/schedules.html' },
+      { icon: 'bi-pencil-square', label: 'Tạo bài viết đơn', href: '/app/posts.html' },
+      { icon: 'bi-stars', label: 'AI Content', href: '/app/ai.html' },
+      { icon: 'bi-share', label: 'Kết nối kênh', href: '/app/channels.html' }
     ];
 
     (async () => {
-      setPageContent('<div class="empty-state">Đang tải...</div>');
+      setPageContent('<div class="empty-state">Đang tải dashboard...</div>');
       try {
         const json = await apiGet('/api/dashboard/stats');
         const s = json.data || {};
+        const postsData = s.postsChart?.length ? s.postsChart : [
+          { label: 'T2', value: 1 }, { label: 'T3', value: 2 }, { label: 'T4', value: 0 },
+          { label: 'T5', value: 3 }, { label: 'T6', value: 1 }, { label: 'T7', value: 2 }, { label: 'CN', value: s.postsToday || 1 }
+        ];
+        const aiData = s.aiUsageChart?.length ? s.aiUsageChart : postsData;
 
         setPageContent(`
+          <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr));">
+            <div class="stat-card"><div class="stat-label">Thời gian làm việc còn lại</div><div class="stat-value">${s.remainingWorkHours ?? 0}<span style="font-size:.95rem">h</span></div></div>
+            <div class="stat-card"><div class="stat-label">Bài đăng hôm nay</div><div class="stat-value">${s.postsToday ?? 0}</div></div>
+            <div class="stat-card"><div class="stat-label">Tổng bài viết</div><div class="stat-value">${s.totalPosts ?? 0}</div></div>
+            <div class="stat-card"><div class="stat-label">AI đã tạo</div><div class="stat-value">${s.aiGenerations ?? 0}</div></div>
+            <div class="stat-card"><div class="stat-label">Credits</div><div class="stat-value">${s.creditsRemaining ?? 0}</div></div>
+          </div>
+
           <div class="quick-grid">
-            ${quickActions.map(a => a.href
-              ? `<a href="${a.href}" class="quick-card" style="text-decoration:none;color:inherit"><i class="bi ${a.icon}"></i><span>${a.label}</span></a>`
-              : `<div class="quick-card" onclick="${a.onclick}"><i class="bi ${a.icon}"></i><span>${a.label}</span></div>`).join('')}
+            ${quickActions.map(a => `<a href="${a.href}" class="quick-card"><i class="bi ${a.icon}"></i><span>${a.label}</span></a>`).join('')}
           </div>
-          <div class="stats-grid">
-            <div class="stat-card"><div class="stat-icon" style="background:#eef2ff;color:#6366f1"><i class="bi bi-file-post"></i></div><div class="stat-label">Tổng bài viết</div><div class="stat-value">${s.totalPosts ?? 0}</div></div>
-            <div class="stat-card"><div class="stat-icon" style="background:#d1fae5;color:#059669"><i class="bi bi-calendar-day"></i></div><div class="stat-label">Hôm nay</div><div class="stat-value">${s.postsToday ?? 0}</div></div>
-            <div class="stat-card"><div class="stat-icon" style="background:#fef3c7;color:#d97706"><i class="bi bi-robot"></i></div><div class="stat-label">AI đã tạo</div><div class="stat-value">${s.aiGenerations ?? 0}</div></div>
-            <div class="stat-card"><div class="stat-icon" style="background:#dbeafe;color:#2563eb"><i class="bi bi-coin"></i></div><div class="stat-label">Credits</div><div class="stat-value">${s.creditsRemaining ?? 0}</div></div>
-          </div>
-          <div class="charts-row">
-            <div class="chart-card"><h3>Bài viết 7 ngày</h3><canvas id="postsChart"></canvas></div>
-            <div class="chart-card"><h3>AI Usage</h3><canvas id="aiChart"></canvas></div>
-          </div>
-          <div class="data-card">
-            <div style="padding:16px 20px;border-bottom:1px solid var(--color-border);font-weight:600">Hoạt động gần đây</div>
-            <table class="data-table"><thead><tr><th>Hoạt động</th><th>Thời gian</th></tr></thead>
-            <tbody id="activityBody"></tbody></table>
-          </div>`);
 
-        const chartOpts = { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } };
-        const postsData = s.postsChart?.length ? s.postsChart : [{label:'T2',value:1},{label:'T3',value:2},{label:'T4',value:0},{label:'T5',value:3},{label:'T6',value:1},{label:'T7',value:2},{label:'CN',value:s.postsToday||1}];
-        new Chart(document.getElementById('postsChart'), { type: 'line', data: { labels: postsData.map(c=>c.label), datasets: [{ data: postsData.map(c=>c.value), borderColor: '#6366f1', fill: true, backgroundColor: 'rgba(99,102,241,.1)', tension: .4 }] }, options: chartOpts });
-        const aiData = s.aiUsageChart?.length ? s.aiUsageChart : postsData;
-        new Chart(document.getElementById('aiChart'), { type: 'bar', data: { labels: aiData.map(c=>c.label), datasets: [{ data: aiData.map(c=>c.value||0), backgroundColor: '#0ea5e9' }] }, options: chartOpts });
+          <div style="display:grid;grid-template-columns:2fr 1fr;gap:12px;">
+            <div class="data-card" style="padding:14px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <h3 style="font-size:1.02rem">Công việc đã hoàn thành</h3>
+                <div class="tabs">
+                  <button class="tab-btn active">Đã hoàn thành</button>
+                  <button class="tab-btn">Công việc mới</button>
+                </div>
+              </div>
+              <div id="activityWrap" class="empty-state">Đang tải hoạt động...</div>
+            </div>
+            <div style="display:grid;gap:12px;">
+              <div class="data-card" style="padding:14px;">
+                <div class="stat-label">Hiệu suất trong ngày</div>
+                <div style="font-size:2rem;font-weight:800;color:#4f46e5">${s.dailyPerformance ?? 100}%</div>
+                <p>Tối ưu theo lịch đăng và mức tương tác gần nhất.</p>
+              </div>
+              <div class="data-card" style="padding:14px;">
+                <div class="stat-label">Lịch mini</div>
+                <div style="font-weight:700;margin-bottom:8px">Tháng ${new Date().getMonth() + 1}, ${new Date().getFullYear()}</div>
+                <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px;font-size:.76rem;color:#6f768f;">
+                  ${Array.from({length: 35}).map((_, i) => `<div style="padding:6px 0;text-align:center;border-radius:8px;background:${i % 6 === 0 ? '#ece9ff' : '#f7f8fd'}">${i + 1 <= 31 ? i + 1 : ''}</div>`).join('')}
+                </div>
+              </div>
+            </div>
+          </div>
 
-        const acts = s.recentActivities?.length ? s.recentActivities : DemoStore.getNotifications().slice(0,5).map(n => ({ description: n.title, createdAt: n.createdAt }));
-        document.getElementById('activityBody').innerHTML = acts.length
-          ? acts.map(a => `<tr><td>${a.description || a.action || '—'}</td><td>${formatDate(a.createdAt)}</td></tr>`).join('')
-          : '<tr><td colspan="2" class="empty-state">Chưa có hoạt động</td></tr>';
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="data-card" style="padding:14px;">
+              <h3 style="font-size:1.02rem;margin-bottom:10px;">Bài viết 7 ngày</h3>
+              <canvas id="postsChart"></canvas>
+            </div>
+            <div class="data-card" style="padding:14px;">
+              <h3 style="font-size:1.02rem;margin-bottom:10px;">AI Usage</h3>
+              <canvas id="aiChart"></canvas>
+            </div>
+          </div>
+        `);
+
+        const acts = s.recentActivities?.length
+          ? s.recentActivities
+          : DemoStore.getNotifications().slice(0, 6).map(n => ({ description: n.title, createdAt: n.createdAt }));
+        document.getElementById('activityWrap').innerHTML = acts.length
+          ? `<table class="data-table"><thead><tr><th>Hoạt động</th><th>Thời gian</th></tr></thead><tbody>
+            ${acts.map(a => `<tr><td>${a.description || a.action || '—'}</td><td>${formatDate(a.createdAt)}</td></tr>`).join('')}
+            </tbody></table>`
+          : '<div class="empty-state">Chưa có hoạt động</div>';
+
+        const chartOpts = {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+        };
+
+        new Chart(document.getElementById('postsChart'), {
+          type: 'line',
+          data: {
+            labels: postsData.map(c => c.label),
+            datasets: [{
+              data: postsData.map(c => c.value),
+              borderColor: '#6458f5',
+              fill: true,
+              backgroundColor: 'rgba(100,88,245,.14)',
+              tension: 0.36
+            }]
+          },
+          options: chartOpts
+        });
+
+        new Chart(document.getElementById('aiChart'), {
+          type: 'bar',
+          data: {
+            labels: aiData.map(c => c.label),
+            datasets: [{ data: aiData.map(c => c.value || 0), backgroundColor: '#0ea5e9' }]
+          },
+          options: chartOpts
+        });
 
         if (new URLSearchParams(location.search).get('welcome')) {
-          showToast('Bước 4 hoàn tất — Chào mừng đến AutoWork Demo!', 'success');
+          showToast('Chào mừng bạn quay lại FlowMate!', 'success');
         }
       } catch (e) {
-        setPageContent(`<div class="empty-state">Lỗi: ${e.message}. Chạy AutoWork.API trước.</div>`);
+        setPageContent(`<div class="empty-state">Lỗi tải dashboard: ${e.message}. Hãy chạy API trước.</div>`);
       }
     })();
   </script>

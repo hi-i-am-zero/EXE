@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lên lịch — AutoWork Demo</title>
+  <title>Timeline chiến dịch - FlowMate</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <link rel="stylesheet" href="/css/app.css" />
@@ -16,88 +16,256 @@
   <script>
     if (!Auth.requireAuth()) throw new Error('auth');
     renderAppLayout('/app/schedules.html');
-    setPageTitle('Lên lịch đăng bài', `<button class="btn-primary btn-sm" onclick="showCreateSchedule()"><i class="bi bi-plus"></i> Lên lịch mới</button>`);
+    setPageTitle('Chọn mẫu timeline phù hợp', `<button class="btn-primary btn-sm" onclick="showCreateSchedule()"><i class="bi bi-plus"></i> Lên lịch mới</button>`);
 
-    async function loadSchedules() {
-      setPageContent('<div class="empty-state">Đang tải...</div>');
-      try {
-        const json = await apiGet('/api/Schedules?page=1&pageSize=20');
-        const items = json.data?.items || json.data || [];
-        setPageContent(`
-          <div class="data-card">
-            <table class="data-table">
-              <thead><tr><th>Bài viết</th><th>Thời gian đăng</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
-              <tbody>${items.length ? items.map(s => `<tr>
-                <td>${s.postTitle || s.postId?.slice(0,8) + '...' || '—'}</td>
-                <td>${formatDate(s.scheduledAt)}</td>
-                <td><span class="badge ${s.isProcessed ? 'badge-success' : 'badge-warning'}">${s.isProcessed ? 'Đã chạy' : 'Chờ đăng'}</span></td>
-                <td>
-                  <button class="btn-outline btn-icon btn-sm" onclick="editSchedule('${s.id}')"><i class="bi bi-pencil"></i></button>
-                  <button class="btn-danger btn-icon btn-sm" onclick="deleteSchedule('${s.id}')"><i class="bi bi-trash"></i></button>
-                </td></tr>`).join('') : '<tr><td colspan="4" class="empty-state">Chưa có lịch. Nhấn "Lên lịch mới" hoặc tạo từ trang Bài viết.</td></tr>'}
-              </tbody>
-            </table>
-          </div>
-          <div style="margin-top:20px;padding:16px;background:#fffbeb;border-radius:12px;border:1px solid #fde68a;font-size:.9rem">
-            <i class="bi bi-clock"></i> <strong>Giờ vàng:</strong> Demo gợi ý đăng 7h, 12h, 19h — tối ưu tương tác Fanpage.
-          </div>`);
-      } catch (e) {
-        setPageContent(`<div class="empty-state">Lỗi: ${e.message}</div>`);
+    const templateCards = [
+      {
+        key: 'classic',
+        name: 'Classic Campaign Timeline',
+        desc: 'Timeline theo từng ngày, dễ nhìn và dễ quản lý.',
+        badge: 'Most popular'
+      },
+      {
+        key: 'roadmap',
+        name: 'Roadmap Timeline',
+        desc: 'Chia theo giai đoạn: chuẩn bị, ra mắt, quảng bá, tăng trưởng.',
+        badge: ''
+      },
+      {
+        key: 'calendar',
+        name: 'Calendar Timeline',
+        desc: 'Lên kế hoạch theo lịch thực tế, bám deadline.',
+        badge: ''
       }
-    }
+    ];
 
+    let selectedTemplate = 'classic';
+    let schedules = [];
     let postsCache = [];
 
+    async function loadSchedules() {
+      setPageContent('<div class="empty-state">Đang tải timeline...</div>');
+      try {
+        const json = await apiGet('/api/Schedules?page=1&pageSize=40');
+        schedules = json.data?.items || json.data || [];
+      } catch {
+        schedules = [];
+      }
+      renderPage();
+    }
+
+    function renderPage() {
+      setPageContent(`
+        <div class="data-card" style="padding:14px;">
+          <h3 style="font-size:1.1rem;margin-bottom:8px;"><i class="bi bi-lightning-charge" style="color:#6156f4"></i> Kế hoạch nội dung</h3>
+          <div class="form-group">
+            <label>Mục tiêu chiến dịch</label>
+            <div class="action-bar">
+              <button class="btn-outline btn-sm">Ra mắt sản phẩm mới</button>
+              <button class="btn-outline btn-sm">Tăng nhận diện thương hiệu</button>
+              <button class="btn-outline btn-sm">Giữ chân khách cũ</button>
+              <button class="btn-outline btn-sm">Flash sale</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Loại ưu đãi</label>
+            <div class="action-bar">
+              <button class="btn-outline btn-sm">Giảm %</button>
+              <button class="btn-outline btn-sm">Giảm số tiền cố định</button>
+              <button class="btn-outline btn-sm">Freeship</button>
+              <button class="btn-outline btn-sm">Không ưu đãi</button>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Bắt đầu</label>
+              <input class="form-control" type="date" />
+            </div>
+            <div class="form-group">
+              <label>Kết thúc</label>
+              <input class="form-control" type="date" />
+            </div>
+          </div>
+        </div>
+
+        <p style="margin-bottom:10px;">Bắt đầu nhanh với các mẫu timeline được thiết kế sẵn cho chiến dịch của bạn.</p>
+
+        <div style="display:grid;grid-template-columns:1fr;gap:12px;">
+          ${templateCards.map(t => `
+            <div class="data-card" style="padding:14px;border-color:${selectedTemplate === t.key ? '#c8c0ff' : '#e8ebf6'};">
+              <div style="display:grid;grid-template-columns:2fr 1fr;gap:12px;align-items:center;">
+                <div style="border:1px dashed #dce1f3;border-radius:12px;padding:14px;background:#fbfcff;">
+                  ${renderTemplateMini(t.key)}
+                </div>
+                <div>
+                  ${t.badge ? `<span class="badge badge-info">${t.badge}</span>` : ''}
+                  <h3 style="margin:6px 0;">${t.name}</h3>
+                  <p>${t.desc}</p>
+                  <button class="${selectedTemplate === t.key ? 'btn-primary' : 'btn-outline'} btn-sm" style="margin-top:10px" onclick="chooseTemplate('${t.key}')">
+                    ${selectedTemplate === t.key ? 'Đang dùng mẫu' : 'Sử dụng mẫu'}
+                  </button>
+                </div>
+              </div>
+            </div>`).join('')}
+        </div>
+
+        <div class="data-card" style="padding:14px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <h3 style="font-size:1.02rem;">Timeline hiện tại (${schedules.length} bài viết)</h3>
+            <button class="btn-outline btn-sm" onclick="showCreateSchedule()"><i class="bi bi-plus"></i> Thêm mốc mới</button>
+          </div>
+          ${renderScheduleList()}
+        </div>
+      `);
+    }
+
+    function renderTemplateMini(type) {
+      if (type === 'roadmap') {
+        return `
+          <div style="display:flex;justify-content:space-between;gap:8px;font-size:.78rem;">
+            ${['Chuẩn bị', 'Ra mắt', 'Quảng bá', 'Tăng trưởng', 'Tổng kết'].map((s, i) => `
+              <div style="text-align:center;flex:1">
+                <div style="width:26px;height:26px;border-radius:50%;margin:0 auto 6px;background:${['#60a5fa','#22c55e','#a855f7','#f59e0b','#f43f5e'][i]};"></div>
+                ${s}
+              </div>`).join('')}
+          </div>`;
+      }
+      if (type === 'calendar') {
+        return `
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;font-size:.75rem;">
+            ${Array.from({length: 21}).map((_, i) => `<div style="padding:6px 0;border-radius:8px;background:${i % 5 === 0 ? '#ece9ff' : '#fff'};text-align:center;border:1px solid #edf1fb;">${i + 10}</div>`).join('')}
+          </div>`;
+      }
+      return `
+        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:7px;font-size:.75rem;">
+          ${['Teaser', 'Ra mắt SP 1', 'Ra mắt SP 2', 'Review', 'Flash Sale', 'Tips'].map((s, i) => `
+            <div style="border:1px solid #e5e8f4;background:#fff;border-radius:10px;padding:8px;text-align:center;">
+              <div style="color:#9aa1b6;font-size:.67rem;">Day ${i + 1}</div>
+              <div style="margin-top:4px">${s}</div>
+            </div>`).join('')}
+        </div>`;
+    }
+
+    function chooseTemplate(key) {
+      selectedTemplate = key;
+      showToast('Đã chọn mẫu timeline: ' + key, 'success');
+      renderPage();
+    }
+
+    function renderScheduleList() {
+      if (!schedules.length) {
+        return '<div class="empty-state">Chưa có lịch đăng. Nhấn "Lên lịch mới" để bắt đầu.</div>';
+      }
+      return `
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;">
+          ${schedules.map(s => `
+            <article style="border:1px solid #e7eaf6;border-radius:12px;padding:12px;background:#fff;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <div style="font-size:.78rem;color:#8f95ab">${formatDate(s.scheduledAt)}</div>
+                <span class="badge ${s.isProcessed ? 'badge-success' : 'badge-warning'}">${s.isProcessed ? 'Đã chạy' : 'Đã lên lịch'}</span>
+              </div>
+              <div style="font-weight:600;margin-bottom:8px;">Post ID: ${String(s.postId).slice(0, 8)}...</div>
+              <div class="action-bar">
+                <button class="btn-outline btn-sm" onclick="editSchedule('${s.id}')"><i class="bi bi-pencil"></i> Sửa</button>
+                <button class="btn-danger btn-sm" onclick="deleteSchedule('${s.id}')"><i class="bi bi-trash"></i> Xóa</button>
+              </div>
+            </article>`).join('')}
+        </div>
+      `;
+    }
+
     async function showCreateSchedule() {
-      const pJson = await apiGet('/api/Posts?page=1&pageSize=50');
-      postsCache = pJson.data?.items || [];
+      try {
+        const pJson = await apiGet('/api/Posts?page=1&pageSize=50');
+        postsCache = pJson.data?.items || [];
+      } catch {
+        postsCache = [];
+      }
+
       showModal('Lên lịch đăng bài', `
-        <div class="form-group"><label>Chọn bài viết</label>
-          <select id="schPost" class="form-control">${postsCache.map(p => `<option value="${p.id}">${p.title}</option>`).join('') || '<option value="">— Chưa có bài —</option>'}</select></div>
-        <div class="form-group"><label>Thời gian đăng</label>
-          <input id="schTime" type="datetime-local" class="form-control" /></div>
+        <div class="form-group">
+          <label>Chọn bài viết</label>
+          <select id="schPost" class="form-control">
+            ${postsCache.map(p => `<option value="${p.id}">${p.title}</option>`).join('') || '<option value="">- Chưa có bài viết -</option>'}
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Thời gian đăng</label>
+          <input id="schTime" type="datetime-local" class="form-control" />
+        </div>
         <div class="action-bar">
-          <button class="btn-outline btn-sm" onclick="document.getElementById('schTime').value='${tomorrowAt(7)}'">7:00 sáng</button>
-          <button class="btn-outline btn-sm" onclick="document.getElementById('schTime').value='${tomorrowAt(12)}'">12:00 trưa</button>
-          <button class="btn-outline btn-sm" onclick="document.getElementById('schTime').value='${tomorrowAt(19)}'">19:00 tối</button>
-        </div>`,
-        `<button class="btn-outline btn-sm" onclick="closeModal()">Hủy</button>
-         <button class="btn-primary btn-sm" id="saveSch">Lên lịch</button>`);
+          <button class="btn-outline btn-sm" onclick="setQuickTime(7)">7:00 sáng</button>
+          <button class="btn-outline btn-sm" onclick="setQuickTime(12)">12:00 trưa</button>
+          <button class="btn-outline btn-sm" onclick="setQuickTime(19)">19:00 tối</button>
+        </div>
+      `, `
+        <button class="btn-outline btn-sm" onclick="closeModal()">Hủy</button>
+        <button class="btn-primary btn-sm" id="saveSch">Lên lịch</button>
+      `);
       document.getElementById('saveSch')?.addEventListener('click', saveSchedule);
     }
 
-    function tomorrowAt(hour) {
-      const d = new Date(); d.setDate(d.getDate() + 1); d.setHours(hour, 0, 0, 0);
-      return d.toISOString().slice(0, 16);
+    function setQuickTime(hour) {
+      const d = new Date();
+      d.setDate(d.getDate() + 1);
+      d.setHours(hour, 0, 0, 0);
+      document.getElementById('schTime').value = d.toISOString().slice(0, 16);
     }
 
     async function saveSchedule() {
       const postId = document.getElementById('schPost').value;
       const time = document.getElementById('schTime').value;
-      if (!postId || !time) return showToast('Chọn bài và thời gian', 'error');
-      const json = await apiPost('/api/Schedules', { postId, scheduledAt: new Date(time).toISOString(), recurrenceType: 0 });
+      if (!postId || !time) return showToast('Vui lòng chọn bài viết và thời gian', 'error');
+      const json = await apiPost('/api/Schedules', {
+        postId,
+        scheduledAt: new Date(time).toISOString(),
+        recurrenceType: 0
+      });
       closeModal();
       if (json.success) {
-        showToast('Đã lên lịch!', 'success');
-        DemoStore.addNotification('Lên lịch', `Bài sẽ đăng lúc ${formatDate(time)}`, 'post');
-        loadSchedules();
-      } else showToast(json.message || 'Lỗi', 'error');
+        showToast('Đã tạo lịch đăng', 'success');
+        await loadSchedules();
+      } else {
+        showToast(json.message || 'Không tạo được lịch', 'error');
+      }
     }
 
     function editSchedule(id) {
-      showModal('Sửa lịch', `<div class="form-group"><label>Thời gian mới</label><input id="editTime" type="datetime-local" class="form-control" /></div>`,
-        `<button class="btn-primary btn-sm" id="doEdit">Cập nhật</button>`);
+      showModal('Sửa lịch', `
+        <div class="form-group">
+          <label>Thời gian mới</label>
+          <input id="editTime" type="datetime-local" class="form-control" />
+        </div>
+      `, `
+        <button class="btn-outline btn-sm" onclick="closeModal()">Hủy</button>
+        <button class="btn-primary btn-sm" id="doEdit">Cập nhật</button>
+      `);
       document.getElementById('doEdit')?.addEventListener('click', async () => {
-        const json = await apiPut(`/api/Schedules/${id}`, { scheduledAt: new Date(document.getElementById('editTime').value).toISOString(), recurrenceType: 0 });
+        const value = document.getElementById('editTime').value;
+        if (!value) return showToast('Chọn thời gian mới', 'error');
+        const json = await apiPut(`/api/Schedules/${id}`, {
+          scheduledAt: new Date(value).toISOString(),
+          recurrenceType: 0
+        });
         closeModal();
-        if (json.success) { showToast('Đã cập nhật', 'success'); loadSchedules(); }
+        if (json.success) {
+          showToast('Đã cập nhật lịch', 'success');
+          await loadSchedules();
+        } else {
+          showToast(json.message || 'Cập nhật thất bại', 'error');
+        }
       });
     }
 
     function deleteSchedule(id) {
       confirmAction('Xóa lịch này?', async () => {
         const json = await apiDelete(`/api/Schedules/${id}`);
-        if (json.success) { showToast('Đã xóa', 'success'); loadSchedules(); }
+        if (json.success) {
+          showToast('Đã xóa lịch', 'success');
+          await loadSchedules();
+        } else {
+          showToast(json.message || 'Xóa thất bại', 'error');
+        }
       });
     }
 

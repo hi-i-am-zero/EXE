@@ -22,6 +22,7 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
+        services.Configure<GoogleSettings>(configuration.GetSection(GoogleSettings.SectionName));
         services.Configure<EmailSettings>(configuration.GetSection(EmailSettings.SectionName));
         services.Configure<AiSettings>(configuration.GetSection(AiSettings.SectionName));
         services.Configure<FacebookSettings>(configuration.GetSection(FacebookSettings.SectionName));

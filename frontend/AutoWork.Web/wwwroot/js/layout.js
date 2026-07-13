@@ -1,28 +1,27 @@
 function renderAppLayout(activePage) {
   const user = Auth.getUser();
-  const unread = typeof DemoStore !== 'undefined' ? DemoStore.unreadCount() : 0;
+  const unread = typeof DemoStore !== "undefined" ? DemoStore.unreadCount() : 0;
 
-  const nav = [
-    { section: 'Tổng quan' },
-    { href: '/app/dashboard.html', icon: 'bi-speedometer2', label: 'Dashboard' },
-    { section: 'Nội dung' },
-    { href: '/app/ai.html', icon: 'bi-robot', label: 'AI Content' },
-    { href: '/app/posts.html', icon: 'bi-file-post', label: 'Bài viết' },
-    { href: '/app/schedules.html', icon: 'bi-calendar-event', label: 'Lên lịch' },
-    { href: '/app/media.html', icon: 'bi-images', label: 'Thư viện Media' },
-    { section: 'Kênh' },
-    { href: '/app/channels.html', icon: 'bi-share', label: 'Kết nối kênh' },
-    { section: 'Tài chính' },
-    { href: '/app/credits.html', icon: 'bi-coin', label: 'Credits' },
-    { href: '/app/plans.html', icon: 'bi-gem', label: 'Gói dịch vụ' },
-    { href: '/app/affiliate.html', icon: 'bi-people', label: 'Affiliate' },
-    { section: 'Hệ thống' },
-    { href: '/app/notifications.html', icon: 'bi-bell', label: 'Thông báo', badge: unread },
-    { href: '/app/settings.html', icon: 'bi-gear', label: 'Cài đặt' },
+  const mainNav = [
+    { href: "/app/dashboard.html", icon: "bi-house-door", label: "Trang chủ" },
+    { href: "/app/workspace.html", icon: "bi-kanban", label: "Workspace & Task" },
+    { href: "/app/brand-memory.html", icon: "bi-journal-richtext", label: "Brand Memory" },
+    { href: "/app/schedules.html", icon: "bi-diagram-3", label: "Chiến dịch tự động" },
+    { href: "/app/posts.html", icon: "bi-pencil-square", label: "Tạo bài viết đơn" },
+    { href: "/app/ai.html", icon: "bi-stars", label: "Tạo ảnh AI" }
   ];
 
-  if (typeof isAdmin === 'function' && isAdmin()) {
-    nav.push({ href: '/app/admin.html', icon: 'bi-shield-lock', label: 'Admin' });
+  const manageNav = [
+    { href: "/app/channels.html", icon: "bi-share", label: "Kết nối kênh" },
+    { href: "/app/media.html", icon: "bi-images", label: "Thư viện Media" },
+    { href: "/app/plans.html", icon: "bi-gem", label: "Gói dịch vụ" },
+    { href: "/app/credits.html", icon: "bi-coin", label: "Credits" },
+    { href: "/app/affiliate.html", icon: "bi-people", label: "Affiliate" },
+    { href: "/app/notifications.html", icon: "bi-bell", label: "Thông báo", badge: unread }
+  ];
+
+  if (typeof isAdmin === "function" && isAdmin()) {
+    manageNav.push({ href: "/app/admin.html", icon: "bi-shield-lock", label: "Admin" });
   }
 
   document.body.innerHTML = `
@@ -30,56 +29,97 @@ function renderAppLayout(activePage) {
       <aside class="sidebar">
         <a href="/" class="sidebar-brand">
           <span class="brand-icon">⚡</span>
-          <span>AutoWork</span>
+          <span>FlowMate</span>
           <span class="demo-pill">DEMO</span>
         </a>
-        <nav class="sidebar-nav">
-          ${nav.map(n => n.section
-            ? `<div class="nav-section">${n.section}</div>`
-            : `<a href="${n.href}" class="sidebar-link ${activePage === n.href ? 'active' : ''}">
-                <i class="bi ${n.icon}"></i> ${n.label}
-                ${n.badge ? `<span class="nav-badge">${n.badge}</span>` : ''}
-              </a>`).join('')}
-        </nav>
-        <div class="sidebar-footer">
+
+        <div class="sidebar-profile">
           <div class="user-chip">
-            <div class="user-avatar">${(user?.firstName?.[0] || user?.email?.[0] || 'U').toUpperCase()}</div>
+            <div class="user-avatar">${(user?.firstName?.[0] || user?.email?.[0] || "U").toUpperCase()}</div>
             <div>
               <div class="user-name">${Auth.displayName()}</div>
-              <div class="user-email">${user?.email || ''}</div>
+              <div class="user-email">${user?.email || ""}</div>
             </div>
           </div>
-          <button class="btn btn-outline-light btn-sm w-100 mt-2" id="btnLogout">
+        </div>
+
+        <nav class="sidebar-nav">
+          <div class="nav-section">Menu chính</div>
+          ${mainNav.map(n => `
+            <a href="${n.href}" class="sidebar-link ${activePage === n.href ? "active" : ""}">
+              <i class="bi ${n.icon}"></i>
+              <span>${n.label}</span>
+            </a>`).join("")}
+
+          <div class="nav-section">Hệ thống</div>
+          ${manageNav.map(n => `
+            <a href="${n.href}" class="sidebar-link ${activePage === n.href ? "active" : ""}">
+              <i class="bi ${n.icon}"></i>
+              <span>${n.label}</span>
+              ${n.badge ? `<span class="nav-badge">${n.badge}</span>` : ""}
+            </a>`).join("")}
+        </nav>
+
+        <div class="sidebar-footer">
+          <a href="/app/settings.html" class="sidebar-link ${activePage === "/app/settings.html" ? "active" : ""}">
+            <i class="bi bi-gear"></i>
+            <span>Cài đặt</span>
+          </a>
+          <button class="btn-outline btn-sm w-100" id="btnLogout">
             <i class="bi bi-box-arrow-right"></i> Đăng xuất
           </button>
         </div>
       </aside>
+
       <main class="app-main">
-        <div class="demo-banner">
-          <i class="bi bi-info-circle"></i>
-          Bản <strong>DEMO</strong> tương tác — trải nghiệm đầy đủ nút chức năng. Một số tính năng dùng dữ liệu mô phỏng khi API chưa cấu hình.
-        </div>
-        <header class="app-header">
-          <h1 id="pageTitle" class="page-title"></h1>
-          <div id="headerActions"></div>
+        <header class="topbar">
+          <div class="topbar-search">
+            <i class="bi bi-search" style="color:#99a1b7"></i>
+            <input type="text" placeholder="Tìm kiếm..." />
+          </div>
+          <div class="topbar-actions">
+            <button class="btn-outline btn-sm"><i class="bi bi-robot"></i> Hỏi Flowmate AI</button>
+            <button class="btn-outline btn-sm"><i class="bi bi-plus-circle"></i> Tạo nhanh</button>
+            <i class="bi bi-bell" style="color:#7d8499"></i>
+          </div>
         </header>
-        <div id="pageContent" class="page-content animate-fade-in"></div>
+
+        <div class="workspace-banner">
+          <span>Bạn đang dùng bản FREE với tính năng giới hạn. Nâng cấp ngay để khai thác toàn bộ sức mạnh của Flowmate.</span>
+          <button class="btn-outline btn-sm">Xem và chọn gói</button>
+        </div>
+
+        <div class="workspace-tabs">
+          <a class="workspace-tab active" href="#">Tổng quan</a>
+          <a class="workspace-tab" href="#">Thành viên</a>
+          <a class="workspace-tab" href="#">Nhóm của tôi</a>
+          <a class="workspace-tab" href="#">Lĩnh vực, dự án</a>
+          <button class="btn-primary btn-sm" style="margin-left:auto"><i class="bi bi-plus"></i> Thêm thành viên</button>
+        </div>
+
+        <section class="page-wrap">
+          <header class="app-header">
+            <h1 id="pageTitle" class="page-title"></h1>
+            <div id="headerActions" class="header-actions"></div>
+          </header>
+          <div id="pageContent" class="page-content animate-fade-in"></div>
+        </section>
       </main>
     </div>
     <div id="toast" class="toast-msg"></div>`;
 
-  document.getElementById('btnLogout')?.addEventListener('click', () => Auth.logout('/login.html?fresh=1'));
+  document.getElementById("btnLogout")?.addEventListener("click", () => Auth.logout("/login.html?fresh=1"));
 }
 
-function setPageTitle(title, actionsHtml = '') {
-  const t = document.getElementById('pageTitle');
-  const a = document.getElementById('headerActions');
+function setPageTitle(title, actionsHtml = "") {
+  const t = document.getElementById("pageTitle");
+  const a = document.getElementById("headerActions");
   if (t) t.textContent = title;
   if (a) a.innerHTML = actionsHtml;
 }
 
 function setPageContent(html) {
-  const el = document.getElementById('pageContent');
+  const el = document.getElementById("pageContent");
   if (el) el.innerHTML = html;
 }
 

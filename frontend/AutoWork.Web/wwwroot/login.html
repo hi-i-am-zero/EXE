@@ -3,51 +3,94 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Đăng nhập — AutoWork</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <title>Đăng nhập - FlowMate</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <link rel="stylesheet" href="/css/app.css" />
 </head>
 <body>
   <div class="auth-page">
-    <div class="auth-card">
-      <h1>⚡ AutoWork</h1>
-      <p class="subtitle">Đăng nhập vào tài khoản của bạn</p>
+    <div class="auth-split">
+      <div class="auth-left">
+        <div class="auth-card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-weight:800;font-size:1.4rem;">
+            <span style="color:#6b63ff">⚡</span> FlowMate
+          </div>
+          <h1>Đăng nhập</h1>
+          <p class="subtitle">Vui lòng đăng nhập tài khoản của bạn.</p>
 
-      <ol class="login-steps" id="loginSteps">
-        <li id="step1" class="active">1. Trang chủ</li>
-        <li id="step2">2. Nhập TK</li>
-        <li id="step3">3. Xác thực</li>
-        <li id="step4">4. Dashboard</li>
-      </ol>
-      <div class="login-step-status" id="stepStatus">Bước 2: Nhập email và mật khẩu</div>
+          <ol class="login-steps" id="loginSteps">
+            <li id="step1" class="active">1. Nhập tài khoản</li>
+            <li id="step2">2. Xác thực</li>
+            <li id="step3">3. Vào hệ thống</li>
+          </ol>
+          <div class="login-step-status" id="stepStatus">Bước 1: Nhập email và mật khẩu</div>
 
-      <form id="loginForm">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" class="form-control" placeholder="demo@autowork.com" required />
+          <form id="loginForm">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" class="form-control" placeholder="demo@autowork.com" required />
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" class="form-control" placeholder="••••••••" required />
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin:8px 0 16px;color:#646b80;font-size:.92rem">
+              <input type="checkbox" id="remember" />
+              <label for="remember" style="margin:0;cursor:pointer">Ghi nhớ mật khẩu</label>
+            </div>
+
+            <button type="submit" class="btn-primary w-100" id="btnSubmit">Đăng nhập</button>
+            <div id="error" class="form-error" style="display:none;"></div>
+          </form>
+
+          <div style="display:flex;align-items:center;gap:10px;margin:16px 0;color:#9ca2b8;font-size:.88rem">
+            <div style="height:1px;background:#e9ecf8;flex:1"></div>
+            hoặc
+            <div style="height:1px;background:#e9ecf8;flex:1"></div>
+          </div>
+
+          <div class="action-bar" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <button class="btn-outline w-100" type="button" id="btnGoogleLogin">
+              <i class="bi bi-google"></i> Google
+            </button>
+            <button class="btn-outline w-100" type="button" id="btnFacebookLogin">
+              <i class="bi bi-facebook"></i> Facebook
+            </button>
+          </div>
+
+          <p class="auth-footer">
+            Chưa có tài khoản? <a href="/register.html" style="color:#5b4df2;font-weight:600">Tạo tài khoản mới</a>
+            <br />
+            <a href="/login.html?fresh=1&demo=demo" style="font-size:.85rem;color:#8b90a8">Dùng tài khoản demo điền sẵn</a>
+          </p>
         </div>
-        <div class="form-group">
-          <label for="password">Mật khẩu</label>
-          <input type="password" id="password" class="form-control" placeholder="••••••••" required />
+      </div>
+
+      <div class="auth-right">
+        <div style="max-width:460px;padding:28px;text-align:left">
+          <h2 style="font-size:2rem;margin-bottom:12px">FlowMate Campaign Studio</h2>
+          <p style="color:rgba(255,255,255,.82);margin-bottom:20px">
+            Tạo chiến dịch, tối ưu nội dung và xuất bản đa kênh trong một quy trình liền mạch.
+          </p>
+          <div style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:18px;padding:14px">
+            <div style="font-size:.88rem;opacity:.9">Bảng điều khiển realtime</div>
+            <div style="font-size:1.8rem;font-weight:800;margin-top:6px">12 chiến dịch đang chạy</div>
+          </div>
         </div>
-        <button type="submit" class="btn-primary w-100" id="btnSubmit">Đăng nhập</button>
-        <div id="error" class="form-error" style="display:none;"></div>
-      </form>
-      <p class="auth-footer">
-        Chưa có tài khoản? <a href="/register.html">Đăng ký miễn phí</a>
-        &nbsp;·&nbsp; <a href="/login.html?fresh=1&demo=demo">Demo (điền sẵn)</a>
-      </p>
+      </div>
     </div>
   </div>
+
   <script src="/js/api.js"></script>
   <script src="/js/auth.js"></script>
   <script src="/js/demo.js"></script>
+  <script src="/js/social-auth.js"></script>
   <script>
     const params = new URLSearchParams(location.search);
     const returnUrl = params.get('return') || '/app/dashboard.html?welcome=1';
     const isFresh = params.has('fresh') || params.has('logout');
 
-    // Xóa session cũ để luôn thấy màn hình đăng nhập
     if (isFresh) {
       Auth.clearSession();
     } else if (Auth.isLoggedIn()) {
@@ -55,7 +98,7 @@
     }
 
     function setStep(n, msg) {
-      for (let i = 1; i <= 4; i++) {
+      for (let i = 1; i <= 3; i++) {
         const el = document.getElementById('step' + i);
         el.classList.remove('active', 'done');
         if (i < n) el.classList.add('done');
@@ -64,12 +107,12 @@
       document.getElementById('stepStatus').textContent = msg;
     }
 
-    setStep(2, 'Bước 2: Nhập email và mật khẩu');
+    setStep(1, 'Bước 1: Nhập email và mật khẩu');
 
     if (params.get('demo') === 'demo') {
       document.getElementById('email').value = 'demo@autowork.com';
       document.getElementById('password').value = 'Demo@123!';
-      document.getElementById('stepStatus').textContent = 'Bước 2: Tài khoản demo đã điền sẵn — bấm Đăng nhập';
+      document.getElementById('stepStatus').textContent = 'Tài khoản demo đã điền sẵn - nhấn Đăng nhập';
     }
 
     const wait = ms => new Promise(r => setTimeout(r, ms));
@@ -80,8 +123,7 @@
       const err = document.getElementById('error');
       btn.disabled = true;
       err.style.display = 'none';
-
-      setStep(3, 'Bước 3: Đang gọi API đăng nhập...');
+      setStep(2, 'Bước 2: Đang xác thực tài khoản...');
       btn.textContent = 'Đang xác thực...';
 
       try {
@@ -91,34 +133,31 @@
         });
 
         if (json.success && json.data) {
-          setStep(3, 'Bước 3: Xác thực thành công ✓');
-          btn.textContent = 'Đăng nhập thành công!';
-          await wait(600);
-
           Auth.saveSession(json.data);
-          DemoStore.addNotification('Chào mừng!', 'Bạn đã đăng nhập AutoWork Demo', 'system');
-
-          setStep(4, 'Bước 4: Đang chuyển đến Dashboard...');
-          btn.textContent = 'Đang vào Dashboard...';
-          await wait(900);
-
+          DemoStore.addNotification('Chào mừng!', 'Bạn đã đăng nhập FlowMate Demo', 'system');
+          setStep(3, 'Bước 3: Đăng nhập thành công, đang chuyển trang...');
+          btn.textContent = 'Thành công';
+          await wait(650);
           window.location.href = returnUrl;
         } else {
-          setStep(2, 'Bước 2: Nhập lại thông tin đăng nhập');
+          setStep(1, 'Bước 1: Kiểm tra lại thông tin đăng nhập');
           err.textContent = json.message || 'Email hoặc mật khẩu không đúng';
           err.style.display = 'block';
           btn.textContent = 'Đăng nhập';
           btn.disabled = false;
         }
       } catch (ex) {
-        setStep(2, 'Bước 2: Kiểm tra API đang chạy chưa');
-        err.textContent = 'Không kết nối được API. Hãy chạy AutoWork.API (https://localhost:7165) trước, rồi thử lại.';
+        setStep(1, 'Bước 1: Kiểm tra API đang chạy');
+        err.textContent = 'Không kết nối được API. Hãy chạy AutoWork.API trước rồi thử lại.';
         err.style.display = 'block';
         btn.textContent = 'Đăng nhập';
         btn.disabled = false;
         console.error('Login API error:', ex);
       }
     });
+
+    document.getElementById('btnGoogleLogin')?.addEventListener('click', () => socialLogin('google', { redirectUrl: returnUrl }));
+    document.getElementById('btnFacebookLogin')?.addEventListener('click', () => socialLogin('facebook', { redirectUrl: returnUrl }));
   </script>
 </body>
 </html>
