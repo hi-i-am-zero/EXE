@@ -1,0 +1,6 @@
+@AutoWork.API_HostAddress = http://localhost:5241
+
+GET {{AutoWork.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

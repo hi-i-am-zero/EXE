@@ -1,0 +1,240 @@
+erDiagram
+
+    %% ===================== ACCOUNT & WORKSPACE =====================
+    Users {
+        int UserId PK
+        nvarchar Email UK
+        nvarchar Phone UK
+    }
+    Workspaces {
+        int WorkspaceId PK
+        int OwnerUserId FK
+        nvarchar WorkspaceType
+    }
+    WorkspaceMembers {
+        int WorkspaceMemberId PK
+        int WorkspaceId FK
+        int UserId FK
+        nvarchar Role
+    }
+    WorkspaceProjects {
+        int ProjectId PK
+        int WorkspaceId FK
+    }
+
+    Users ||--o{ Workspaces : "owns"
+    Users ||--o{ WorkspaceMembers : "joins"
+    Workspaces ||--o{ WorkspaceMembers : "has"
+    Workspaces ||--o{ WorkspaceProjects : "has"
+
+    %% ===================== SUBSCRIPTION =====================
+    SubscriptionPlans {
+        int PlanId PK
+        nvarchar PlanName UK
+        decimal Price
+    }
+    WorkspaceSubscriptions {
+        int SubscriptionId PK
+        int WorkspaceId FK
+        int PlanId FK
+        nvarchar Status
+    }
+
+    Workspaces ||--o{ WorkspaceSubscriptions : "subscribes"
+    SubscriptionPlans ||--o{ WorkspaceSubscriptions : "defines"
+
+    %% ===================== BRAND MEMORY =====================
+    BrandProfiles {
+        int BrandProfileId PK
+        int WorkspaceId FK "UNIQUE (1-1)"
+        int VoiceSampleId FK
+        nvarchar BrandName
+    }
+    BrandStyles {
+        int StyleId PK
+        nvarchar StyleName UK
+    }
+    BrandProfileStyles {
+        int BrandProfileId FK
+        int StyleId FK
+    }
+    ToneKeywords {
+        int ToneKeywordId PK
+        nvarchar Keyword UK
+    }
+    BrandProfileKeywords {
+        int BrandProfileId FK
+        int ToneKeywordId FK
+    }
+    VoiceSampleTemplates {
+        int VoiceSampleId PK
+        nvarchar SampleText
+    }
+    BrandColors {
+        int BrandColorId PK
+        int BrandProfileId FK
+        nvarchar ColorHex
+        nvarchar ColorType
+    }
+    BrandFonts {
+        int BrandFontId PK
+        int BrandProfileId FK
+        nvarchar FontName
+    }
+    CTATemplates {
+        int CTAId PK
+        nvarchar CTAText UK
+    }
+    BrandCTAs {
+        int BrandProfileId FK
+        int CTAId FK
+    }
+    Hashtags {
+        int HashtagId PK
+        nvarchar Tag UK
+    }
+    BrandHashtags {
+        int BrandProfileId FK
+        int HashtagId FK
+    }
+    Platforms {
+        int PlatformId PK
+        nvarchar Code UK
+    }
+    SalesChannels {
+        int SalesChannelId PK
+        int BrandProfileId FK
+        int PlatformId FK
+    }
+    ProductCategories {
+        int ProductCategoryId PK
+        int BrandProfileId FK
+        nvarchar CategoryName
+    }
+    Products {
+        int ProductId PK
+        int BrandProfileId FK
+        int ProductCategoryId FK
+        nvarchar ProductName
+    }
+    ProductImages {
+        int ProductImageId PK
+        int ProductId FK
+        nvarchar ImageUrl
+    }
+
+    Workspaces ||--|| BrandProfiles : "has (1-1)"
+    VoiceSampleTemplates ||--o{ BrandProfiles : "selected as"
+    BrandProfiles ||--o{ BrandProfileStyles : "chooses (max 2)"
+    BrandStyles ||--o{ BrandProfileStyles : "used by"
+    BrandProfiles ||--o{ BrandProfileKeywords : "chooses (3-5)"
+    ToneKeywords ||--o{ BrandProfileKeywords : "used by"
+    BrandProfiles ||--o{ BrandColors : "has"
+    BrandProfiles ||--o{ BrandFonts : "has"
+    BrandProfiles ||--o{ BrandCTAs : "chooses"
+    CTATemplates ||--o{ BrandCTAs : "used by"
+    BrandProfiles ||--o{ BrandHashtags : "chooses"
+    Hashtags ||--o{ BrandHashtags : "used by"
+    BrandProfiles ||--o{ SalesChannels : "connects"
+    Platforms ||--o{ SalesChannels : "used by"
+    BrandProfiles ||--o{ ProductCategories : "has"
+    BrandProfiles ||--o{ Products : "has"
+    ProductCategories ||--o{ Products : "categorizes"
+    Products ||--o{ ProductImages : "has"
+
+    %% ===================== CAMPAIGN / TIMELINE / POST =====================
+    CampaignGoals {
+        int GoalId PK
+        nvarchar GoalName UK
+    }
+    PromotionTypes {
+        int PromotionTypeId PK
+        nvarchar TypeName UK
+    }
+    TimelineTemplateTypes {
+        int TemplateTypeId PK
+        nvarchar TypeName UK
+    }
+    Campaigns {
+        int CampaignId PK
+        int WorkspaceId FK
+        int GoalId FK
+        int PromotionTypeId FK
+        decimal DiscountPercent
+    }
+    CampaignPlatforms {
+        int CampaignId FK
+        int PlatformId FK
+    }
+    Timelines {
+        int TimelineId PK
+        int WorkspaceId FK
+        int CampaignId FK
+        int TemplateTypeId FK
+        nvarchar Status
+    }
+    Posts {
+        int PostId PK
+        int WorkspaceId FK
+        int TimelineId FK
+        int VoiceSampleId FK
+        nvarchar Title
+        datetime2 ScheduledAt
+    }
+    PostImages {
+        int PostImageId PK
+        int PostId FK
+        nvarchar ImageUrl
+    }
+    PostHashtags {
+        int PostId FK
+        int HashtagId FK
+    }
+    PostPlatforms {
+        int PostPlatformId PK
+        int PostId FK
+        int PlatformId FK
+        nvarchar Status "riêng theo từng platform"
+        datetime2 PublishedAt "riêng theo từng platform"
+    }
+    PostAnalytics {
+        int PostAnalyticsId PK
+        int PostPlatformId FK "UNIQUE (1-1)"
+        int Reach
+        int Likes
+    }
+
+    Workspaces ||--o{ Campaigns : "has"
+    CampaignGoals ||--o{ Campaigns : "has goal"
+    PromotionTypes ||--o{ Campaigns : "has promo"
+    Campaigns ||--o{ CampaignPlatforms : "targets"
+    Platforms ||--o{ CampaignPlatforms : "used by"
+    Campaigns ||--o{ Timelines : "generates"
+    Workspaces ||--o{ Timelines : "has"
+    TimelineTemplateTypes ||--o{ Timelines : "uses template"
+    Timelines ||--o{ Posts : "contains"
+    Workspaces ||--o{ Posts : "has"
+    VoiceSampleTemplates ||--o{ Posts : "selected as"
+    Posts ||--o{ PostImages : "has"
+    Posts ||--o{ PostHashtags : "tagged with"
+    Hashtags ||--o{ PostHashtags : "used by"
+    Posts ||--o{ PostPlatforms : "published to (N-N chính)"
+    Platforms ||--o{ PostPlatforms : "receives"
+    PostPlatforms ||--|| PostAnalytics : "measured by"
+
+    %% ===================== AI IMAGES & NOTIFICATIONS =====================
+    AIGeneratedImages {
+        int AIImageId PK
+        int WorkspaceId FK
+        int UserId FK
+        int ProductId FK
+    }
+    Notifications {
+        int NotificationId PK
+        int UserId FK
+    }
+
+    Workspaces ||--o{ AIGeneratedImages : "has"
+    Users ||--o{ AIGeneratedImages : "creates"
+    Products ||--o{ AIGeneratedImages : "relates to"
+    Users ||--o{ Notifications : "receives"
