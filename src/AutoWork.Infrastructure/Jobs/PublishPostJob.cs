@@ -29,8 +29,10 @@ public class PublishPostJob
         try
         {
             var content = post.Contents.OrderBy(c => c.SortOrder).FirstOrDefault()?.Content ?? post.Title;
-            if (string.IsNullOrWhiteSpace(post.ChannelAccount.ExternalId)) throw new InvalidOperationException("Channel not linked.");
-            var externalId = await PublishAsync(post.ChannelAccount.UserId, post.ChannelAccount.Channel?.Code ?? string.Empty, Guid.Parse(post.ChannelAccount.ExternalId), post.Title, content, cancellationToken);
+            if (string.IsNullOrWhiteSpace(post.ChannelAccount?.ExternalId))
+                throw new InvalidOperationException("Channel not linked.");
+            var channelAccount = post.ChannelAccount!;
+            var externalId = await PublishAsync(channelAccount.UserId, channelAccount.Channel?.Code ?? string.Empty, Guid.Parse(channelAccount.ExternalId!), post.Title, content, cancellationToken);
             post.ExternalPostId = externalId; post.PublishedAt = DateTime.UtcNow; post.Status = (int)PostStatus.Published; post.UpdatedAt = DateTime.UtcNow;
             schedule.Status = (int)PostScheduleStatus.Completed; schedule.ExecutedAt = DateTime.UtcNow; schedule.UpdatedAt = DateTime.UtcNow;
             await _unitOfWork.Posts.UpdateAsync(post, cancellationToken);

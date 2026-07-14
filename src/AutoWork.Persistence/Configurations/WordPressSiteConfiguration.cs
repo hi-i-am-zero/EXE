@@ -14,6 +14,10 @@ public class WordPressSiteConfiguration : IEntityTypeConfiguration<WordPressSite
         builder.Property(ws => ws.SiteUrl).HasMaxLength(500).IsRequired();
         builder.Property(ws => ws.SiteName).HasMaxLength(200).IsRequired();
         builder.Property(ws => ws.Username).HasMaxLength(100).IsRequired();
+        builder.Ignore(ws => ws.ApplicationPassword);
+        builder.Ignore(ws => ws.IsWooCommerce);
+        builder.Ignore(ws => ws.IsConnected);
+        builder.Ignore(ws => ws.LastSyncedAt);
 
         builder.HasIndex(ws => ws.UserId);
 

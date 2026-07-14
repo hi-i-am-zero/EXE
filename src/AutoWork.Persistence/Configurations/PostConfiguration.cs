@@ -15,6 +15,11 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
         builder.Property(p => p.ExternalPostId).HasMaxLength(128);
         builder.Property(p => p.PublishedUrl).HasMaxLength(1000);
 
+        // FlowMate v2 columns (ignored by older DBs if not present — compat script adds legacy cols)
+        builder.Property(p => p.TimelineId).IsRequired(false);
+        builder.Property(p => p.ScheduledAt).IsRequired(false);
+        builder.Property(p => p.ChannelAccountId).IsRequired(false);
+
         builder.HasIndex(p => p.ProjectId);
         builder.HasIndex(p => p.ChannelAccountId);
         builder.HasIndex(p => p.Status);
@@ -28,6 +33,7 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
         builder.HasOne(p => p.ChannelAccount)
             .WithMany(ca => ca.Posts)
             .HasForeignKey(p => p.ChannelAccountId)
+            .IsRequired(false)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

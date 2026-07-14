@@ -13,8 +13,8 @@ public class WordPressPostConfiguration : IEntityTypeConfiguration<WordPressPost
 
         builder.Property(wp => wp.ExternalPostId).HasMaxLength(128).IsRequired();
         builder.Property(wp => wp.Title).HasMaxLength(500).IsRequired();
-        builder.Property(wp => wp.Excerpt).HasMaxLength(2000);
-        builder.Property(wp => wp.Permalink).HasMaxLength(1000);
+        builder.Ignore(wp => wp.Excerpt);
+        builder.Property(wp => wp.Permalink).HasMaxLength(1000).HasColumnName("PublishedUrl");
 
         builder.HasIndex(wp => wp.WordPressSiteId);
         builder.HasIndex(wp => wp.Status);

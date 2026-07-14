@@ -17,7 +17,7 @@ public class PostRepository : Repository<Post>, IPostRepository
             .Include(p => p.Contents)
             .Include(p => p.Schedule)
             .Include(p => p.Logs)
-            .Include(p => p.ChannelAccount)
+            .Include(p => p.ChannelAccount!)
             .ThenInclude(ca => ca.Channel)
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
 

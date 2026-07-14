@@ -12,8 +12,10 @@ public class PostScheduleConfiguration : IEntityTypeConfiguration<PostSchedule>
         builder.ConfigureBaseEntity();
 
         builder.Property(ps => ps.FailureReason).HasMaxLength(1000);
+        // FlowMate v2 uses PostChannelAccountId; EF legacy uses PostId (compat column).
+        builder.Property<Guid?>("PostChannelAccountId");
 
-        builder.HasIndex(ps => ps.PostId).IsUnique();
+        builder.HasIndex(ps => ps.PostId);
         builder.HasIndex(ps => new { ps.Status, ps.ScheduledAt });
 
         builder.HasOne(ps => ps.Post)

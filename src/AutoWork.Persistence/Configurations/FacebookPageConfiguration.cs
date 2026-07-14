@@ -14,7 +14,9 @@ public class FacebookPageConfiguration : IEntityTypeConfiguration<FacebookPage>
         builder.Property(fp => fp.PageId).HasMaxLength(128).IsRequired();
         builder.Property(fp => fp.Name).HasMaxLength(200).IsRequired();
         builder.Property(fp => fp.Category).HasMaxLength(100);
-        builder.Property(fp => fp.ProfilePictureUrl).HasMaxLength(500);
+        builder.Property(fp => fp.ProfilePictureUrl).HasMaxLength(500).HasColumnName("AvatarUrl");
+        builder.Property(fp => fp.IsConnected).HasColumnName("IsActive");
+        builder.Ignore(fp => fp.LastSyncedAt);
 
         builder.HasIndex(fp => fp.FacebookAccountId);
         builder.HasIndex(fp => fp.PageId);

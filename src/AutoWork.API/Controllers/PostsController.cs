@@ -75,7 +75,7 @@ public class PostsController : ApiControllerBase
     {
         Id = post.Id,
         ProjectId = post.ProjectId,
-        ChannelAccountId = post.ChannelAccountId,
+        ChannelAccountId = post.ChannelAccountId ?? Guid.Empty,
         Title = post.Title,
         Status = post.Status,
         ExternalPostId = post.ExternalPostId,

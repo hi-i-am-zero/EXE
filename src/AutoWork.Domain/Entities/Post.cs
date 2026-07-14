@@ -7,11 +7,16 @@ public class Post : BaseEntity
 {
     public Guid ProjectId { get; set; }
 
-    public Guid ChannelAccountId { get; set; }
+    /// <summary>Legacy channel link (compat với bản AutoWork cũ / EF). Nullable trên FlowMate schema v2.</summary>
+    public Guid? ChannelAccountId { get; set; }
+
+    public Guid? TimelineId { get; set; }
 
     public string Title { get; set; } = string.Empty;
 
     public int Status { get; set; }
+
+    public DateTime? ScheduledAt { get; set; }
 
     public string? ExternalPostId { get; set; }
 
@@ -21,7 +26,7 @@ public class Post : BaseEntity
 
     public Project Project { get; set; } = null!;
 
-    public ChannelAccount ChannelAccount { get; set; } = null!;
+    public ChannelAccount? ChannelAccount { get; set; }
 
     public ICollection<PostContent> Contents { get; set; } = new List<PostContent>();
 

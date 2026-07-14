@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AutoWork.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+58a6a083c60b4e3f2313fd4172c1d59dd0838849")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a2feacf38280bb94befd2802b4bfb48cb08f887d")]
 [assembly: System.Reflection.AssemblyProductAttribute("AutoWork.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AutoWork.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

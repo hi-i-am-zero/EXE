@@ -1,6 +1,7 @@
 wwwroot\app\admin.html
 wwwroot\app\affiliate.html
 wwwroot\app\ai.html
+wwwroot\app\brand-memory.html
 wwwroot\app\channels.html
 wwwroot\app\credits.html
 wwwroot\app\dashboard.html
@@ -10,11 +11,13 @@ wwwroot\app\plans.html
 wwwroot\app\posts.html
 wwwroot\app\schedules.html
 wwwroot\app\settings.html
+wwwroot\app\workspace.html
 wwwroot\css\app.css
 wwwroot\index.html
 wwwroot\js\api.js
 wwwroot\js\auth.js
 wwwroot\js\demo.js
 wwwroot\js\layout.js
+wwwroot\js\social-auth.js
 wwwroot\login.html
 wwwroot\register.html

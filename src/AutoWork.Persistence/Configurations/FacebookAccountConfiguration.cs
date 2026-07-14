@@ -14,7 +14,8 @@ public class FacebookAccountConfiguration : IEntityTypeConfiguration<FacebookAcc
         builder.Property(fa => fa.FacebookUserId).HasMaxLength(128).IsRequired();
         builder.Property(fa => fa.Name).HasMaxLength(200).IsRequired();
         builder.Property(fa => fa.Email).HasMaxLength(256);
-        builder.Property(fa => fa.ProfilePictureUrl).HasMaxLength(500);
+        builder.Property(fa => fa.ProfilePictureUrl).HasMaxLength(500).HasColumnName("AvatarUrl");
+        builder.Ignore(fa => fa.LastSyncedAt);
 
         builder.HasIndex(fa => fa.UserId);
         builder.HasIndex(fa => fa.FacebookUserId);
