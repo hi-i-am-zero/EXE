@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Workspace & Task - FlowMate</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/demo.js"></script>
+  <script src="/js/layout.js"></script>
+  <script>
+    if (!Auth.requireAuth()) throw new Error('auth');
+    renderAppLayout('/app/workspace.html');
+    setPageTitle('Workspace & Task Domain');
+
+    let projects = [];
+    let currentProjectId = null;
+    let overview = null;
+
+    function statusLabel(status) {
+      const s = (status || '').toLowerCase();
+      if (s === 'inprogress') return 'Đang làm';
+      if (s === 'done') return 'Hoàn thành';
+      return 'Cần làm';
+    }
+
+    function statusClass(status) {
+      const s = (status || '').toLowerCase();
+      if (s === 'inprogress') return 'badge-warning';
+      if (s === 'done') return 'badge-success';
+      return 'badge-secondary';
+    }
+
+    async function loadProjects() {
+      setPageContent('<div class="empty-state">Đang tải workspace...</div>');
+      const json = await apiGet('/api/workspace/projects');
+      if (!json.success) {
+        return setPageContent(`<div class="empty-state">${json.message || 'Không tải được workspace'}</div>`);
+      }
+
+      projects = json.data || [];
+      if (!projects.length) {
+        setPageContent(`
+          <div class="data-card" style="padding:18px;">
+            <h3 style="margin-bottom:8px;">Chưa có workspace</h3>
+            <p style="margin-bottom:12px;">Tạo workspace đầu tiên để quản lý thành viên và task.</p>
+            <button class="btn-primary" onclick="showCreateProject()"><i class="bi bi-plus"></i> Tạo workspace</button>
+          </div>
+        `);
+        return;
+      }
+
+      if (!currentProjectId || !projects.some(p => p.id === currentProjectId)) {
+        currentProjectId = projects[0].id;
+      }
+      await loadOverview();
+    }
+
+    async function loadOverview() {
+      const json = await apiGet(`/api/workspace/projects/${currentProjectId}/overview`);
+      if (!json.success) {
+        return setPageContent(`<div class="empty-state">${json.message || 'Không tải được overview'}</div>`);
+      }
+
+      overview = json.data;
+      renderOverview();
+    }
+
+    function renderOverview() {
+      const selected = projects.find(p => p.id === currentProjectId);
+      const members = overview?.members || [];
+      const tasks = overview?.tasks || [];
+
+      const todo = tasks.filter(t => (t.status || '').toLowerCase() === 'todo');
+      const inProgress = tasks.filter(t => (t.status || '').toLowerCase() === 'inprogress');
+      const done = tasks.filter(t => (t.status || '').toLowerCase() === 'done');
+
+      setPageContent(`
+        <div class="data-card" style="padding:14px;">
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-size:.8rem;color:#8a92a9">Workspace hiện tại</div>
+              <div style="font-weight:700;font-size:1.1rem">${selected?.name || '—'}</div>
+              <div style="font-size:.85rem;color:#7c859d">${selected?.description || ''}</div>
+            </div>
+            <div class="action-bar">
+              <select class="form-control" style="min-width:260px" onchange="changeProject(this.value)">
+                ${projects.map(p => `<option value="${p.id}" ${p.id === currentProjectId ? 'selected' : ''}>${p.name}</option>`).join('')}
+              </select>
+              <button class="btn-outline" onclick="showCreateProject()"><i class="bi bi-plus-circle"></i> Tạo workspace</button>
+              <button class="btn-primary" onclick="showAddTask()"><i class="bi bi-plus"></i> Task mới</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr));">
+          <div class="stat-card"><div class="stat-label">Tổng task</div><div class="stat-value">${overview.totalTasks || 0}</div></div>
+          <div class="stat-card"><div class="stat-label">Cần làm</div><div class="stat-value">${overview.todoTasks || 0}</div></div>
+          <div class="stat-card"><div class="stat-label">Đang làm</div><div class="stat-value">${overview.inProgressTasks || 0}</div></div>
+          <div class="stat-card"><div class="stat-label">Hoàn thành</div><div class="stat-value">${overview.completedTasks || 0}</div></div>
+          <div class="stat-card"><div class="stat-label">Thành viên</div><div class="stat-value">${members.length}</div></div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1.2fr .8fr;gap:12px;">
+          <div class="data-card" style="padding:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <h3 style="font-size:1rem;">Bảng công việc</h3>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+              ${renderTaskColumn('Cần làm', 'todo', todo)}
+              ${renderTaskColumn('Đang làm', 'inprogress', inProgress)}
+              ${renderTaskColumn('Hoàn thành', 'done', done)}
+            </div>
+          </div>
+
+          <div class="data-card" style="padding:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <h3 style="font-size:1rem;">Thành viên workspace</h3>
+              ${overview.isOwner ? '<button class="btn-outline btn-sm" onclick="showAddMember()"><i class="bi bi-person-plus"></i> Thêm</button>' : ''}
+            </div>
+            <div style="display:grid;gap:8px;">
+              ${members.length ? members.map(m => `
+                <div style="border:1px solid #e7ebf6;border-radius:10px;padding:10px;background:#fff;">
+                  <div style="display:flex;justify-content:space-between;gap:8px;">
+                    <div>
+                      <div style="font-weight:600">${m.fullName || m.email}</div>
+                      <div style="font-size:.8rem;color:#8d95aa">${m.email}</div>
+                    </div>
+                    <span class="badge ${m.role === 'Owner' ? 'badge-info' : 'badge-secondary'}">${m.role}</span>
+                  </div>
+                  ${overview.isOwner && m.role !== 'Owner' ? `
+                    <button class="btn-danger btn-sm" style="margin-top:8px" onclick="removeMember('${m.userId}')">Gỡ thành viên</button>
+                  ` : ''}
+                </div>
+              `).join('') : '<div class="empty-state">Chưa có thành viên</div>'}
+            </div>
+          </div>
+        </div>
+      `);
+    }
+
+    function renderTaskColumn(title, statusKey, items) {
+      return `
+        <div style="background:#fafbff;border:1px solid #e7ebf6;border-radius:12px;padding:10px;">
+          <div style="font-weight:700;font-size:.92rem;margin-bottom:8px;">${title} (${items.length})</div>
+          <div style="display:grid;gap:8px;max-height:460px;overflow:auto;">
+            ${items.length ? items.map(t => `
+              <article style="border:1px solid #e4e8f4;background:#fff;border-radius:10px;padding:9px;">
+                <div style="font-weight:600;margin-bottom:6px;">${t.title}</div>
+                <div style="font-size:.82rem;color:#7f879e;margin-bottom:6px;">${t.description || 'Không có mô tả'}</div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                  <span class="badge ${statusClass(t.status)}">${statusLabel(t.status)}</span>
+                  <span style="font-size:.75rem;color:#8f96ab">${t.priority || 'Medium'}</span>
+                </div>
+                <div style="font-size:.75rem;color:#8f96ab;margin-bottom:6px;">
+                  Hạn: ${t.dueDate ? formatDate(t.dueDate) : 'Chưa đặt'}
+                </div>
+                <div class="action-bar">
+                  ${statusKey !== 'todo' ? `<button class="btn-outline btn-sm" onclick="updateTaskStatus('${t.id}','Todo')">To do</button>` : ''}
+                  ${statusKey !== 'inprogress' ? `<button class="btn-outline btn-sm" onclick="updateTaskStatus('${t.id}','InProgress')">Đang làm</button>` : ''}
+                  ${statusKey !== 'done' ? `<button class="btn-outline btn-sm" onclick="updateTaskStatus('${t.id}','Done')">Done</button>` : ''}
+                  <button class="btn-danger btn-sm" onclick="deleteTask('${t.id}')"><i class="bi bi-trash"></i></button>
+                </div>
+              </article>
+            `).join('') : '<div class="empty-state" style="padding:12px;">Chưa có task</div>'}
+          </div>
+        </div>
+      `;
+    }
+
+    function changeProject(projectId) {
+      currentProjectId = projectId;
+      loadOverview();
+    }
+
+    function showCreateProject() {
+      showModal('Tạo workspace mới', `
+        <div class="form-group">
+          <label>Tên workspace</label>
+          <input id="wsName" class="form-control" placeholder="Ví dụ: Team Fashion Campaign" />
+        </div>
+        <div class="form-group">
+          <label>Mô tả</label>
+          <textarea id="wsDesc" class="form-control" placeholder="Mục tiêu hoặc phạm vi hoạt động..."></textarea>
+        </div>
+      `, `
+        <button class="btn-outline btn-sm" onclick="closeModal()">Hủy</button>
+        <button class="btn-primary btn-sm" id="saveWs">Tạo workspace</button>
+      `);
+      document.getElementById('saveWs')?.addEventListener('click', async () => {
+        const name = document.getElementById('wsName').value.trim();
+        const description = document.getElementById('wsDesc').value.trim();
+        if (!name) return showToast('Nhập tên workspace', 'error');
+        const json = await apiPost('/api/workspace/projects', { name, description });
+        closeModal();
+        if (json.success && json.data) {
+          currentProjectId = json.data.id;
+          await loadProjects();
+          showToast('Đã tạo workspace', 'success');
+        } else {
+          showToast(json.message || 'Không tạo được workspace', 'error');
+        }
+      });
+    }
+
+    function showAddMember() {
+      showModal('Thêm thành viên', `
+        <div class="form-group">
+          <label>Email thành viên</label>
+          <input id="mEmail" class="form-control" placeholder="email@domain.com" />
+        </div>
+        <div class="form-group">
+          <label>Vai trò</label>
+          <select id="mRole" class="form-control">
+            <option value="Admin">Admin (được sửa Brand Memory, Campaign...)</option>
+            <option value="Member">Member (chỉ xem)</option>
+          </select>
+        </div>
+      `, `
+        <button class="btn-outline btn-sm" onclick="closeModal()">Hủy</button>
+        <button class="btn-primary btn-sm" id="saveMember">Thêm</button>
+      `);
+
+      document.getElementById('saveMember')?.addEventListener('click', async () => {
+        const email = document.getElementById('mEmail').value.trim();
+        const role = document.getElementById('mRole').value;
+        if (!email) return showToast('Nhập email', 'error');
+        const json = await apiPost(`/api/workspace/projects/${currentProjectId}/members`, { email, role });
+        closeModal();
+        if (json.success) {
+          showToast('Đã thêm thành viên', 'success');
+          await loadOverview();
+        } else {
+          showToast(json.message || 'Không thêm được thành viên', 'error');
+        }
+      });
+    }
+
+    async function removeMember(memberUserId) {
+      const json = await apiDelete(`/api/workspace/projects/${currentProjectId}/members/${memberUserId}`);
+      if (json.success) {
+        showToast('Đã gỡ thành viên', 'success');
+        await loadOverview();
+      } else {
+        showToast(json.message || 'Không gỡ được thành viên', 'error');
+      }
+    }
+
+    function showAddTask() {
+      const members = overview?.members || [];
+      showModal('Tạo task mới', `
+        <div class="form-group">
+          <label>Tiêu đề task</label>
+          <input id="tTitle" class="form-control" placeholder="Ví dụ: Chuẩn bị nội dung teaser tuần 1" />
+        </div>
+        <div class="form-group">
+          <label>Mô tả</label>
+          <textarea id="tDesc" class="form-control"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Priority</label>
+            <select id="tPriority" class="form-control">
+              <option value="Low">Low</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Hạn hoàn thành</label>
+            <input id="tDue" type="datetime-local" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Giao cho</label>
+          <select id="tAssignee" class="form-control">
+            <option value="">- Chưa giao -</option>
+            ${members.map(m => `<option value="${m.userId}">${m.fullName || m.email}</option>`).join('')}
+          </select>
+        </div>
+      `, `
+        <button class="btn-outline btn-sm" onclick="closeModal()">Hủy</button>
+        <button class="btn-primary btn-sm" id="saveTask">Tạo task</button>
+      `);
+
+      document.getElementById('saveTask')?.addEventListener('click', async () => {
+        const title = document.getElementById('tTitle').value.trim();
+        if (!title) return showToast('Nhập tiêu đề task', 'error');
+        const payload = {
+          title,
+          description: document.getElementById('tDesc').value.trim(),
+          priority: document.getElementById('tPriority').value,
+          status: 'Todo',
+          dueDate: document.getElementById('tDue').value ? new Date(document.getElementById('tDue').value).toISOString() : null,
+          assignedToUserId: document.getElementById('tAssignee').value || null
+        };
+        const json = await apiPost(`/api/workspace/projects/${currentProjectId}/tasks`, payload);
+        closeModal();
+        if (json.success) {
+          showToast('Đã tạo task', 'success');
+          await loadOverview();
+        } else {
+          showToast(json.message || 'Không tạo được task', 'error');
+        }
+      });
+    }
+
+    async function updateTaskStatus(taskId, status) {
+      const json = await apiPut(`/api/workspace/projects/${currentProjectId}/tasks/${taskId}/status`, { status });
+      if (json.success) {
+        await loadOverview();
+      } else {
+        showToast(json.message || 'Không cập nhật được trạng thái', 'error');
+      }
+    }
+
+    async function deleteTask(taskId) {
+      const json = await apiDelete(`/api/workspace/projects/${currentProjectId}/tasks/${taskId}`);
+      if (json.success) {
+        showToast('Đã xóa task', 'success');
+        await loadOverview();
+      } else {
+        showToast(json.message || 'Không xóa được task', 'error');
+      }
+    }
+
+    loadProjects();
+  </script>
+</body>
+</html>
