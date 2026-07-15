@@ -1,6 +1,8 @@
 using System.Reflection;
 using AutoWork.Application.Common.Behaviors;
 using AutoWork.Application.Common.Mappings;
+using AutoWork.Application.Common.Services;
+using AutoWork.Application.Interfaces.Services;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +24,9 @@ public static class DependencyInjection
             cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
         services.AddValidatorsFromAssembly(assembly);
+
+        // FlowMate v2: dùng chung cho mọi feature thao tác trong phạm vi workspace
+        services.AddScoped<IProjectAccessGuard, ProjectAccessGuard>();
 
         return services;
     }

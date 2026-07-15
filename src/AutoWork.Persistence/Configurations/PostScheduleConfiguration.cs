@@ -12,15 +12,21 @@ public class PostScheduleConfiguration : IEntityTypeConfiguration<PostSchedule>
         builder.ConfigureBaseEntity();
 
         builder.Property(ps => ps.FailureReason).HasMaxLength(1000);
-        // FlowMate v2 uses PostChannelAccountId; EF legacy uses PostId (compat column).
-        builder.Property<Guid?>("PostChannelAccountId");
 
         builder.HasIndex(ps => ps.PostId);
+        builder.HasIndex(ps => ps.PostChannelAccountId);
         builder.HasIndex(ps => new { ps.Status, ps.ScheduledAt });
 
         builder.HasOne(ps => ps.Post)
             .WithOne(p => p.Schedule)
             .HasForeignKey<PostSchedule>(ps => ps.PostId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // FlowMate v2: cho phép retry/lịch riêng theo từng ChannelAccount của 1 bài viết
+        builder.HasOne(ps => ps.PostChannelAccount)
+            .WithMany(pca => pca.Schedules)
+            .HasForeignKey(ps => ps.PostChannelAccountId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

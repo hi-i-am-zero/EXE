@@ -19,6 +19,8 @@ public class PostRepository : Repository<Post>, IPostRepository
             .Include(p => p.Logs)
             .Include(p => p.ChannelAccount!)
             .ThenInclude(ca => ca.Channel)
+            .Include(p => p.PostChannelAccounts).ThenInclude(pca => pca.ChannelAccount).ThenInclude(ca => ca.Channel)
+            .Include(p => p.PostHashtags).ThenInclude(ph => ph.Hashtag)
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
 
     public async Task<IReadOnlyList<Post>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default) =>
@@ -34,6 +36,7 @@ public class PostRepository : Repository<Post>, IPostRepository
         int pageNumber,
         int pageSize,
         int? status = null,
+        Guid? timelineId = null,
         CancellationToken cancellationToken = default)
     {
         var query = DbSet
@@ -46,8 +49,14 @@ public class PostRepository : Repository<Post>, IPostRepository
             query = query.Where(p => p.Status == status.Value);
         }
 
+        if (timelineId.HasValue)
+        {
+            query = query.Where(p => p.TimelineId == timelineId.Value);
+        }
+
         return await query
-            .OrderByDescending(p => p.CreatedAt)
+            .OrderBy(p => p.DayNumber ?? int.MaxValue) // trong 1 timeline, hiển thị đúng thứ tự Day 1/2/3...
+            .ThenByDescending(p => p.CreatedAt)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(cancellationToken);
@@ -56,6 +65,7 @@ public class PostRepository : Repository<Post>, IPostRepository
     public async Task<int> CountByUserIdAsync(
         Guid userId,
         int? status = null,
+        Guid? timelineId = null,
         CancellationToken cancellationToken = default)
     {
         var query = DbSet.Where(p => p.Project.UserId == userId);
@@ -63,6 +73,11 @@ public class PostRepository : Repository<Post>, IPostRepository
         if (status.HasValue)
         {
             query = query.Where(p => p.Status == status.Value);
+        }
+
+        if (timelineId.HasValue)
+        {
+            query = query.Where(p => p.TimelineId == timelineId.Value);
         }
 
         return await query.CountAsync(cancellationToken);

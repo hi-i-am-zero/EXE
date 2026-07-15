@@ -35,5 +35,17 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
             .HasForeignKey(p => p.ChannelAccountId)
             .IsRequired(false)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(p => p.Timeline)
+            .WithMany(t => t.Posts)
+            .HasForeignKey(p => p.TimelineId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(p => p.VoiceSample)
+            .WithMany(v => v.Posts)
+            .HasForeignKey(p => p.VoiceSampleId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -39,7 +39,12 @@ public class MappingProfile : Profile
 
         CreateMap<Post, PostDto>()
             .ForMember(d => d.ProjectName, opt => opt.MapFrom(s => s.Project.Name))
-            .ForMember(d => d.Schedule, opt => opt.MapFrom(s => s.Schedule));
+            .ForMember(d => d.Schedule, opt => opt.MapFrom(s => s.Schedule))
+            // FlowMate v2: GetPostsQuery (danh sách) không Include PostChannelAccounts/PostHashtags
+            // vì lý do hiệu năng (tránh N+1 khi phân trang) — 2 field này chỉ được điền đầy đủ
+            // ở GetPostByIdWithDetailsAsync (map thủ công trong Handler/Controller tương ứng).
+            .ForMember(d => d.Channels, opt => opt.Ignore())
+            .ForMember(d => d.Hashtags, opt => opt.Ignore());
 
         CreateMap<CreatePostDto, Post>()
             .ForMember(d => d.Id, opt => opt.Ignore())

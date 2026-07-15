@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AutoWork.Persistence")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a2feacf38280bb94befd2802b4bfb48cb08f887d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+672ee8be1a36157757258ab4bee4c176efa54730")]
 [assembly: System.Reflection.AssemblyProductAttribute("AutoWork.Persistence")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AutoWork.Persistence")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

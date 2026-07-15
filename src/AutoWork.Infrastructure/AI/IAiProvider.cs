@@ -16,6 +16,12 @@ public class AiGenerationRequest
     public string UserPrompt { get; set; } = string.Empty;
 
     public int MaxTokens { get; set; } = 2048;
+
+    /// <summary>Ảnh đính kèm cho yêu cầu có vision (VD: sinh mô tả sản phẩm từ ảnh).
+    /// Dùng base64 data URI (vd: "data:image/jpeg;base64,...") để nhất quán giữa các provider —
+    /// Claude bắt buộc base64, còn OpenAI/Gemini có thể nhận URL trực tiếp nhưng base64 an toàn
+    /// hơn khi ảnh không public (VD: file mới upload chưa có CDN công khai).</summary>
+    public List<string> ImageDataUris { get; set; } = [];
 }
 
 public class AiGenerationResult

@@ -45,6 +45,38 @@ public class ApplicationDbContext : DbContext
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
     public DbSet<PasswordResetToken> PasswordResetTokens => Set<PasswordResetToken>();
 
+    // ===== FlowMate v2: Workspace collaboration =====
+    public DbSet<ProjectMember> ProjectMembers => Set<ProjectMember>();
+
+    // ===== FlowMate v2: Brand Memory =====
+    public DbSet<BrandProfile> BrandProfiles => Set<BrandProfile>();
+    public DbSet<VoiceSampleTemplate> VoiceSampleTemplates => Set<VoiceSampleTemplate>();
+    public DbSet<BrandStyle> BrandStyles => Set<BrandStyle>();
+    public DbSet<BrandProfileStyle> BrandProfileStyles => Set<BrandProfileStyle>();
+    public DbSet<ToneKeyword> ToneKeywords => Set<ToneKeyword>();
+    public DbSet<BrandProfileKeyword> BrandProfileKeywords => Set<BrandProfileKeyword>();
+    public DbSet<CtaTemplate> CtaTemplates => Set<CtaTemplate>();
+    public DbSet<BrandCta> BrandCtas => Set<BrandCta>();
+    public DbSet<Hashtag> Hashtags => Set<Hashtag>();
+    public DbSet<BrandHashtag> BrandHashtags => Set<BrandHashtag>();
+    public DbSet<BrandColor> BrandColors => Set<BrandColor>();
+    public DbSet<BrandFont> BrandFonts => Set<BrandFont>();
+    public DbSet<ProductCategory> ProductCategories => Set<ProductCategory>();
+    public DbSet<Product> Products => Set<Product>();
+
+    // ===== FlowMate v2: Campaign & Timeline =====
+    public DbSet<CampaignGoal> CampaignGoals => Set<CampaignGoal>();
+    public DbSet<PromotionType> PromotionTypes => Set<PromotionType>();
+    public DbSet<TimelineTemplateType> TimelineTemplateTypes => Set<TimelineTemplateType>();
+    public DbSet<Campaign> Campaigns => Set<Campaign>();
+    public DbSet<CampaignChannelAccount> CampaignChannelAccounts => Set<CampaignChannelAccount>();
+    public DbSet<Timeline> Timelines => Set<Timeline>();
+
+    // ===== FlowMate v2: Đăng 1 bài lên nhiều nền tảng =====
+    public DbSet<PostHashtag> PostHashtags => Set<PostHashtag>();
+    public DbSet<PostChannelAccount> PostChannelAccounts => Set<PostChannelAccount>();
+    public DbSet<PostAnalytics> PostAnalytics => Set<PostAnalytics>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);

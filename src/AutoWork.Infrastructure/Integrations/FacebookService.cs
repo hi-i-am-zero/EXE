@@ -18,6 +18,8 @@ public class FacebookService : IFacebookService
 {
     private readonly HttpClient _httpClient;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IRepository<ChannelAccount> _channelAccounts;
+    private readonly IRepository<Channel> _channels;
     private readonly IntegrationTokenStore _tokenStore;
     private readonly FacebookSettings _settings;
     private readonly ILogger<FacebookService> _logger;
@@ -25,24 +27,28 @@ public class FacebookService : IFacebookService
     public FacebookService(
         HttpClient httpClient,
         IUnitOfWork unitOfWork,
+        IRepository<ChannelAccount> channelAccounts,
+        IRepository<Channel> channels,
         IntegrationTokenStore tokenStore,
         IOptions<FacebookSettings> settings,
         ILogger<FacebookService> logger)
     {
         _httpClient = httpClient;
         _unitOfWork = unitOfWork;
+        _channelAccounts = channelAccounts;
+        _channels = channels;
         _tokenStore = tokenStore;
         _settings = settings.Value;
         _logger = logger;
     }
 
-    public Task<string> GetAuthorizationUrlAsync(Guid userId, string redirectUri, CancellationToken cancellationToken = default)
+    public Task<string> GetAuthorizationUrlAsync(Guid userId, Guid projectId, string redirectUri, CancellationToken cancellationToken = default)
     {
         var scopes = string.Join(",", _settings.Scopes);
         var url = $"https://www.facebook.com/{_settings.GraphApiVersion}/dialog/oauth" +
                   $"?client_id={Uri.EscapeDataString(_settings.AppId)}" +
                   $"&redirect_uri={Uri.EscapeDataString(redirectUri)}" +
-                  $"&state={Uri.EscapeDataString(userId.ToString())}" +
+                  $"&state={Uri.EscapeDataString($"{userId}|{projectId}")}" +
                   $"&scope={Uri.EscapeDataString(scopes)}" +
                   "&response_type=code";
         return Task.FromResult(url);
@@ -50,6 +56,7 @@ public class FacebookService : IFacebookService
 
     public async Task<FacebookAccountDto> ConnectAccountAsync(
         Guid userId,
+        Guid projectId,
         string authorizationCode,
         string redirectUri,
         CancellationToken cancellationToken = default)
@@ -59,7 +66,7 @@ public class FacebookService : IFacebookService
         var profile = await GetUserProfileAsync(tokenResponse.AccessToken, cancellationToken);
 
         var existing = (await _unitOfWork.Facebook.GetAccountsByUserIdAsync(userId, cancellationToken))
-            .FirstOrDefault(a => a.FacebookUserId == profile.Id);
+            .FirstOrDefault(a => a.FacebookUserId == profile.Id && a.ProjectId == projectId);
 
         FacebookAccount account;
         if (existing is not null)
@@ -81,6 +88,7 @@ public class FacebookService : IFacebookService
             account = new FacebookAccount
             {
                 UserId = userId,
+                ProjectId = projectId,
                 FacebookUserId = profile.Id,
                 Name = profile.Name,
                 Email = profile.Email,
@@ -168,6 +176,7 @@ public class FacebookService : IFacebookService
     {
         var graphPages = await GetManagedPagesAsync(userAccessToken, cancellationToken);
         var synced = new List<FacebookPageDto>();
+        var facebookChannel = await GetOrCreateFacebookChannelAsync(cancellationToken);
 
         foreach (var graphPage in graphPages)
         {
@@ -186,6 +195,7 @@ public class FacebookService : IFacebookService
                 };
                 await _unitOfWork.Facebook.AddPageAsync(page, cancellationToken);
                 account.Pages.Add(page);
+                await _unitOfWork.SaveChangesAsync(cancellationToken); // cần page.Id trước khi tạo ChannelAccount tương ứng
             }
             else
             {
@@ -202,6 +212,8 @@ public class FacebookService : IFacebookService
                 _tokenStore.Set(IntegrationTokenStore.FacebookPageTokenKey(page.Id), graphPage.AccessToken);
             }
 
+            await UpsertChannelAccountForPageAsync(account, page, facebookChannel, graphPage.AccessToken, cancellationToken);
+
             synced.Add(MapPage(page));
         }
 
@@ -210,6 +222,58 @@ public class FacebookService : IFacebookService
         await _unitOfWork.Facebook.UpdateAsync(account, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         return synced;
+    }
+
+    /// <summary>Bắc cầu model Facebook cũ (FacebookAccount/FacebookPage, theo UserId) sang model
+    /// ChannelAccount mới (theo ProjectId) mà Post/Campaign/Timeline đang dùng để chọn nền tảng đích.
+    /// ExternalId lưu FacebookPage.Id (Guid nội bộ, KHÔNG phải PageId thật của Facebook) để lúc đăng
+    /// bài có thể tra ngược lại FacebookPage + gọi FacebookService.PublishPostAsync.</summary>
+    private async Task UpsertChannelAccountForPageAsync(
+        FacebookAccount account, FacebookPage page, Channel facebookChannel, string? pageAccessToken, CancellationToken cancellationToken)
+    {
+        var existing = (await _channelAccounts.FindAsync(
+            ca => ca.ProjectId == account.ProjectId && ca.ChannelId == facebookChannel.Id && ca.ExternalId == page.Id.ToString(),
+            cancellationToken)).FirstOrDefault();
+
+        if (existing is null)
+        {
+            await _channelAccounts.AddAsync(new ChannelAccount
+            {
+                ProjectId = account.ProjectId,
+                ChannelId = facebookChannel.Id,
+                UserId = account.UserId,
+                Name = page.Name,
+                ExternalId = page.Id.ToString(),
+                ProfileUrl = $"https://facebook.com/{page.PageId}",
+                AvatarUrl = page.ProfilePictureUrl,
+                AccessToken = pageAccessToken, // token thật — đúng như bạn yêu cầu, phần API thật đã có sẵn ở đây
+                IsActive = true,
+                LastSyncedAt = DateTime.UtcNow
+            }, cancellationToken);
+        }
+        else
+        {
+            existing.Name = page.Name;
+            existing.AvatarUrl = page.ProfilePictureUrl;
+            existing.IsActive = true;
+            existing.LastSyncedAt = DateTime.UtcNow;
+            if (!string.IsNullOrWhiteSpace(pageAccessToken))
+            {
+                existing.AccessToken = pageAccessToken;
+            }
+            await _channelAccounts.UpdateAsync(existing, cancellationToken);
+        }
+    }
+
+    private async Task<Channel> GetOrCreateFacebookChannelAsync(CancellationToken cancellationToken)
+    {
+        var channel = (await _channels.FindAsync(c => c.Code == "facebook", cancellationToken)).FirstOrDefault();
+        if (channel is not null) return channel;
+
+        channel = new Channel { Name = "Facebook", Code = "facebook", IsActive = true };
+        await _channels.AddAsync(channel, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        return channel;
     }
 
     private async Task<FacebookPage> _TestPageAccessAsync(Guid userId, Guid pageId, CancellationToken cancellationToken)

@@ -20,16 +20,23 @@
 
     let projects = [];
     let projectId = null;
-    let memory = {};
-    let summary = null;
+    let profile = null;
+    let lookups = null;
+    let channels = [];
 
-    function asTextArray(value) {
-      return Array.isArray(value) ? value : [];
-    }
+    let selectedStyleIds = [];
+    let selectedKeywordIds = [];
+    let selectedCtaIds = [];
+    let selectedHashtagIds = [];
+    let localColors = [];
+    let localFonts = [];
+    let sessionProducts = []; // sản phẩm tạo trong phiên làm việc này (chưa có endpoint list-products riêng)
+    let wizardStep = 1; // 1 = mục 1-4 (Thông tin/Địa chỉ/Kênh/Sản phẩm), 2 = mục 5 (Nhận diện thương hiệu) — đúng luồng "Tiếp tục"
 
-    function toArray(inputId) {
-      const raw = document.getElementById(inputId)?.value || '';
-      return raw.split(',').map(x => x.trim()).filter(Boolean);
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;').replaceAll("'", '&#039;');
     }
 
     async function loadProjects() {
@@ -42,6 +49,10 @@
         return setPageContent('<div class="empty-state">Chưa có workspace để gắn Brand Memory.</div>');
       }
       projectId = projectId || projects[0].id;
+
+      const lk = await apiGet('/api/brand-memory/lookup-options');
+      lookups = lk.success ? lk.data : { styles: [], toneKeywords: [], ctaTemplates: [], hashtags: [], voiceSamples: [] };
+
       await loadBrandMemory();
     }
 
@@ -50,169 +61,14 @@
       if (!json.success) {
         return setPageContent(`<div class="empty-state">${json.message || 'Không tải được Brand Memory'}</div>`);
       }
-      memory = json.data?.data || {};
-      summary = json.data;
+      profile = json.data;
+      selectedStyleIds = (profile.styles || []).map(s => s.id);
+      selectedKeywordIds = (profile.keywords || []).map(k => k.id);
+      selectedCtaIds = (profile.ctas || []).map(c => c.id);
+      selectedHashtagIds = (profile.hashtags || []).map(h => h.id);
+      localColors = [...(profile.colors || [])];
+      localFonts = [...(profile.fonts || [])];
       renderPage();
-    }
-
-    function renderPage() {
-      const channels = asTextArray(memory.salesChannels).join(', ');
-      const products = asTextArray(memory.productCategories).join(', ');
-      const styles = asTextArray(memory.styleTags).join(', ');
-      const tones = asTextArray(memory.toneKeywords).join(', ');
-      const keywords = asTextArray(memory.brandKeywords).join(', ');
-      const ctas = asTextArray(memory.ctaPhrases).join(', ');
-      const hashtags = asTextArray(memory.hashtags).join(', ');
-
-      setPageContent(`
-        <div class="data-card" style="padding:14px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
-            <div>
-              <h3 style="font-size:1.08rem;">Thông tin thương hiệu cho AI</h3>
-              <p>AI dùng các thông tin này để tạo timeline, nội dung và chiến dịch nhất quán hơn.</p>
-            </div>
-            <div class="action-bar">
-              <select class="form-control" style="min-width:260px" onchange="changeProject(this.value)">
-                ${projects.map(p => `<option value="${p.id}" ${p.id === projectId ? 'selected' : ''}>${p.name}</option>`).join('')}
-              </select>
-              <button class="btn-primary" onclick="saveBrandMemory()"><i class="bi bi-save"></i> Lưu tất cả thông tin</button>
-            </div>
-          </div>
-        </div>
-
-        <div style="display:grid;grid-template-columns:2fr 1fr;gap:12px;">
-          <div style="display:grid;gap:12px;">
-            <div class="data-card" style="padding:14px;">
-              <h3 style="font-size:1rem;margin-bottom:8px;">1. Thông tin doanh nghiệp</h3>
-              <div class="form-row">
-                <div class="form-group"><label>Tên doanh nghiệp</label><input id="businessName" class="form-control" value="${escapeHtml(memory.businessName || '')}" /></div>
-                <div class="form-group"><label>Tên thương hiệu</label><input id="brandName" class="form-control" value="${escapeHtml(memory.brandName || '')}" /></div>
-              </div>
-              <div class="form-row">
-                <div class="form-group"><label>Ngành hàng</label><input id="industry" class="form-control" value="${escapeHtml(memory.industry || '')}" /></div>
-                <div class="form-group"><label>Năm thành lập</label><input id="establishedYear" type="number" class="form-control" value="${memory.establishedYear || ''}" /></div>
-              </div>
-              <div class="form-group"><label>Mô tả ngắn</label><textarea id="shortDescription" class="form-control">${escapeHtml(memory.shortDescription || '')}</textarea></div>
-            </div>
-
-            <div class="data-card" style="padding:14px;">
-              <h3 style="font-size:1rem;margin-bottom:8px;">2. Địa chỉ liên hệ</h3>
-              <div class="form-group"><label>Địa chỉ</label><input id="address" class="form-control" value="${escapeHtml(memory.address || '')}" /></div>
-              <div class="form-row">
-                <div class="form-group"><label>Số điện thoại</label><input id="phone" class="form-control" value="${escapeHtml(memory.phone || '')}" /></div>
-                <div class="form-group"><label>Email</label><input id="email" class="form-control" value="${escapeHtml(memory.email || '')}" /></div>
-              </div>
-              <div class="form-group"><label>Website</label><input id="website" class="form-control" value="${escapeHtml(memory.website || '')}" /></div>
-            </div>
-
-            <div class="data-card" style="padding:14px;">
-              <h3 style="font-size:1rem;margin-bottom:8px;">3. Kênh bán hàng & sản phẩm</h3>
-              <div class="form-group">
-                <label>Kênh bán hàng (phân tách bằng dấu phẩy)</label>
-                <input id="salesChannels" class="form-control" value="${escapeHtml(channels)}" placeholder="Facebook, TikTok, Shopee, Website" />
-              </div>
-              <div class="form-group">
-                <label>Danh mục sản phẩm (dấu phẩy)</label>
-                <input id="productCategories" class="form-control" value="${escapeHtml(products)}" placeholder="Váy, Áo, Quần, Phụ kiện" />
-              </div>
-            </div>
-
-            <div class="data-card" style="padding:14px;">
-              <h3 style="font-size:1rem;margin-bottom:8px;">4. Nhận diện thương hiệu</h3>
-              <div class="form-row">
-                <div class="form-group"><label>Màu chính</label><input id="primaryColor" class="form-control" value="${escapeHtml(memory.primaryColor || '')}" placeholder="#6B63FF" /></div>
-                <div class="form-group"><label>Màu phụ</label><input id="secondaryColor" class="form-control" value="${escapeHtml(memory.secondaryColor || '')}" placeholder="#F4AFC8" /></div>
-              </div>
-              <div class="form-row">
-                <div class="form-group"><label>Font tiêu đề</label><input id="fontTitle" class="form-control" value="${escapeHtml(memory.fontTitle || 'Poppins')}" /></div>
-                <div class="form-group"><label>Font nội dung</label><input id="fontBody" class="form-control" value="${escapeHtml(memory.fontBody || 'Inter')}" /></div>
-              </div>
-              <div class="form-group"><label>Phong cách (dấu phẩy)</label><input id="styleTags" class="form-control" value="${escapeHtml(styles)}" placeholder="Streetwear, Basic, Vintage..." /></div>
-              <div class="form-group"><label>Giọng văn (dấu phẩy)</label><input id="toneKeywords" class="form-control" value="${escapeHtml(tones)}" placeholder="Trẻ trung, thân thiện, tối giản..." /></div>
-              <div class="form-group"><label>Từ khóa thương hiệu (dấu phẩy)</label><input id="brandKeywords" class="form-control" value="${escapeHtml(keywords)}" placeholder="Thời trang, hiện đại, thanh lịch..." /></div>
-              <div class="form-group"><label>CTA hay dùng (dấu phẩy)</label><input id="ctaPhrases" class="form-control" value="${escapeHtml(ctas)}" placeholder="Chốt đơn ngay, Inbox tư vấn..." /></div>
-              <div class="form-group"><label>Hashtag hay dùng (dấu phẩy)</label><input id="hashtags" class="form-control" value="${escapeHtml(hashtags)}" placeholder="#flowmate, #thoitrangnu..." /></div>
-            </div>
-          </div>
-
-          <div style="display:grid;gap:12px;align-content:start;">
-            <div class="data-card" style="padding:14px;">
-              <div class="stat-label">Tiến độ hoàn thành</div>
-              <div style="font-size:2rem;font-weight:800;color:#5b4df2">${summary?.completionPercent || 0}%</div>
-              <p style="margin-top:6px;">Bạn đã điền ${summary?.completedSections || 0}/${summary?.totalSections || 5} mục.</p>
-              <div style="margin-top:10px;background:#eef1ff;border-radius:999px;height:8px;overflow:hidden;">
-                <div style="height:100%;width:${summary?.completionPercent || 0}%;background:#5b4df2;"></div>
-              </div>
-            </div>
-
-            <div class="data-card" style="padding:14px;">
-              <h4 style="margin-bottom:8px;">Thông tin nổi bật</h4>
-              <div style="display:grid;gap:6px;font-size:.88rem;">
-                <div><strong>Tone:</strong> ${escapeHtml((asTextArray(memory.toneKeywords).slice(0, 3).join(', ')) || 'Chưa cập nhật')}</div>
-                <div><strong>Màu:</strong> ${escapeHtml([memory.primaryColor, memory.secondaryColor].filter(Boolean).join(', ') || 'Chưa cập nhật')}</div>
-                <div><strong>Keywords:</strong> ${escapeHtml((asTextArray(memory.brandKeywords).slice(0, 4).join(', ')) || 'Chưa cập nhật')}</div>
-                <div><strong>Hashtags:</strong> ${escapeHtml((asTextArray(memory.hashtags).slice(0, 4).join(', ')) || 'Chưa cập nhật')}</div>
-              </div>
-            </div>
-
-            <div class="data-card" style="padding:14px;">
-              <h4 style="margin-bottom:8px;">Mẹo hay</h4>
-              <div id="tipsBox" style="display:grid;gap:8px;"></div>
-            </div>
-          </div>
-        </div>
-      `);
-
-      loadTips();
-    }
-
-    function loadTips() {
-      apiGet(`/api/brand-memory/projects/${projectId}/summary`).then(json => {
-        const tips = json.success ? (json.data?.tips || []) : [];
-        const box = document.getElementById('tipsBox');
-        if (!box) return;
-        box.innerHTML = tips.length
-          ? tips.map(t => `<div style="padding:9px;border:1px solid #e6eaf6;border-radius:10px;background:#fafbff;font-size:.86rem;">${escapeHtml(t)}</div>`).join('')
-          : '<div class="empty-state" style="padding:12px;">Không có gợi ý</div>';
-      });
-    }
-
-    function collectPayload() {
-      return {
-        businessName: document.getElementById('businessName').value.trim(),
-        brandName: document.getElementById('brandName').value.trim(),
-        industry: document.getElementById('industry').value.trim(),
-        establishedYear: document.getElementById('establishedYear').value ? Number(document.getElementById('establishedYear').value) : null,
-        shortDescription: document.getElementById('shortDescription').value.trim(),
-        address: document.getElementById('address').value.trim(),
-        phone: document.getElementById('phone').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        website: document.getElementById('website').value.trim(),
-        primaryColor: document.getElementById('primaryColor').value.trim(),
-        secondaryColor: document.getElementById('secondaryColor').value.trim(),
-        fontTitle: document.getElementById('fontTitle').value.trim(),
-        fontBody: document.getElementById('fontBody').value.trim(),
-        salesChannels: toArray('salesChannels'),
-        productCategories: toArray('productCategories'),
-        styleTags: toArray('styleTags'),
-        toneKeywords: toArray('toneKeywords'),
-        brandKeywords: toArray('brandKeywords'),
-        ctaPhrases: toArray('ctaPhrases'),
-        hashtags: toArray('hashtags')
-      };
-    }
-
-    async function saveBrandMemory() {
-      const payload = collectPayload();
-      const json = await apiPut(`/api/brand-memory/projects/${projectId}`, payload);
-      if (json.success) {
-        memory = json.data?.data || payload;
-        summary = json.data;
-        showToast('Đã lưu Brand Memory', 'success');
-        renderPage();
-      } else {
-        showToast(json.message || 'Không lưu được Brand Memory', 'error');
-      }
     }
 
     function changeProject(id) {
@@ -220,13 +76,516 @@
       loadBrandMemory();
     }
 
-    function escapeHtml(str) {
-      return String(str || '')
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#039;');
+    function renderPage() {
+      if (wizardStep === 1) return renderStep1();
+      return renderStep2();
+    }
+
+    function goToStep2() {
+      wizardStep = 2;
+      renderPage();
+    }
+
+    function backToStep1() {
+      wizardStep = 1;
+      renderPage();
+    }
+
+    // ===== Bước 1: mục 1-4 (Thông tin doanh nghiệp, Địa chỉ, Kênh bán hàng, Sản phẩm) =====
+    function renderStep1() {
+      setPageContent(`
+        <div class="data-card" style="padding:14px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+            <div>
+              <h3 style="font-size:1.08rem;">AI sẽ ghi nhớ thông tin thương hiệu của bạn</h3>
+              <p>Dùng để tạo timeline, nội dung và chiến dịch phù hợp hơn.</p>
+            </div>
+            <select class="form-control" style="min-width:260px" onchange="changeProject(this.value)">
+              ${projects.map(p => `<option value="${p.id}" ${p.id === projectId ? 'selected' : ''}>${escapeHtml(p.name)}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:2fr 1fr;gap:12px;">
+          <div style="display:grid;gap:12px;">
+            ${renderCoreSection()}
+            ${renderSalesChannelsSection()}
+            ${renderProductsSection()}
+          </div>
+          <div style="display:grid;gap:12px;align-content:start;">
+            ${renderProgressCard()}
+          </div>
+        </div>
+
+        <div class="data-card" style="padding:14px;display:flex;justify-content:flex-end;">
+          <button class="btn-primary" onclick="goToStep2()">Tiếp tục <i class="bi bi-arrow-right"></i></button>
+        </div>
+      `);
+    }
+
+    // ===== Bước 2: mục 5 (Nhận diện thương hiệu) — trang riêng, đúng ảnh gốc =====
+    function renderStep2() {
+      setPageContent(`
+        <div class="data-card" style="padding:14px;display:flex;justify-content:space-between;align-items:center;">
+          <button class="btn-outline btn-sm" onclick="backToStep1()"><i class="bi bi-arrow-left"></i> Quay lại</button>
+          <div style="font-size:.85rem;color:#8f95aa;">Bước 2/2 — Nhận diện thương hiệu</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:2fr 1fr;gap:12px;">
+          <div style="display:grid;gap:12px;">
+            ${renderIdentitySection()}
+          </div>
+          <div style="display:grid;gap:12px;align-content:start;">
+            ${renderProgressCard()}
+          </div>
+        </div>
+
+        <div class="data-card" style="padding:14px;display:flex;justify-content:flex-end;">
+          <button class="btn-primary" onclick="saveAllIdentity()"><i class="bi bi-save"></i> Lưu tất cả thông tin</button>
+        </div>
+      `);
+    }
+
+    /// Lưu tất cả các mục ở bước 2 cùng lúc (đúng nút "Lưu tất cả thông tin" trong ảnh gốc) —
+    /// gọi tuần tự các API PUT riêng từng mục (styles/keywords/colors/fonts/ctas/hashtags) đã có,
+    /// gộp lại thành 1 hành động cho người dùng.
+    async function saveAllIdentity() {
+      showToast('Đang lưu...', 'info');
+      const results = await Promise.all([
+        apiPut(`/api/brand-memory/projects/${projectId}/styles`, { selectedIds: selectedStyleIds }),
+        apiPut(`/api/brand-memory/projects/${projectId}/keywords`, { selectedIds: selectedKeywordIds }),
+        apiPut(`/api/brand-memory/projects/${projectId}/ctas`, { selectedIds: selectedCtaIds }),
+        apiPut(`/api/brand-memory/projects/${projectId}/hashtags`, { selectedIds: selectedHashtagIds }),
+        apiPut(`/api/brand-memory/projects/${projectId}/colors`, { colors: localColors }),
+        apiPut(`/api/brand-memory/projects/${projectId}/fonts`, { fonts: localFonts })
+      ]);
+      const allOk = results.every(r => r.success);
+      if (allOk) {
+        showToast('Đã lưu tất cả thông tin nhận diện thương hiệu.', 'success');
+        await loadBrandMemory();
+        wizardStep = 2;
+        renderPage();
+      } else {
+        showToast('Một số mục lưu chưa thành công — kiểm tra lại (VD: chọn quá 2 phong cách).', 'error');
+      }
+    }
+
+    function renderProgressCard() {
+      const pct = profile?.completionPercent || 0;
+      return `
+        <div class="data-card" style="padding:14px;">
+          <div class="stat-label">Tiến độ hoàn thành</div>
+          <div style="font-size:2rem;font-weight:800;color:#5b4df2">${pct}%</div>
+          <p style="margin-top:6px;">Bạn đã điền ${profile?.completedSections || 0}/${profile?.totalSections || 5} mục.</p>
+          <div style="margin-top:10px;background:#eef1ff;border-radius:999px;height:8px;overflow:hidden;">
+            <div style="height:100%;width:${pct}%;background:#5b4df2;"></div>
+          </div>
+        </div>
+        <div class="data-card" style="padding:14px;">
+          <h4 style="margin-bottom:8px;">Mẹo hay</h4>
+          <p style="font-size:.86rem;">Điền thông tin càng chi tiết, AI càng hiểu rõ thương hiệu của bạn và tạo ra timeline & nội dung phù hợp hơn.</p>
+        </div>
+      `;
+    }
+
+    function renderCoreSection() {
+      const p = profile || {};
+      const voiceOptions = (lookups?.voiceSamples || []).map(v => `
+        <option value="${v.id}" ${p.voiceSampleId === v.id ? 'selected' : ''}>${escapeHtml(v.sampleText)}</option>
+      `).join('');
+
+      return `
+        <div class="data-card" style="padding:14px;">
+          <h3 style="font-size:1rem;margin-bottom:8px;">1. Thông tin doanh nghiệp &amp; 2. Địa chỉ liên hệ</h3>
+          <div class="form-row">
+            <div class="form-group"><label>Tên doanh nghiệp</label><input id="businessName" class="form-control" value="${escapeHtml(p.businessName)}" /></div>
+            <div class="form-group"><label>Tên thương hiệu</label><input id="brandName" class="form-control" value="${escapeHtml(p.brandName)}" /></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Ngành hàng</label><input id="industry" class="form-control" value="${escapeHtml(p.industry)}" /></div>
+            <div class="form-group"><label>Năm thành lập</label><input id="foundingYear" type="number" class="form-control" value="${p.foundingYear ?? ''}" /></div>
+          </div>
+          <div class="form-group"><label>Mô tả ngắn</label><textarea id="shortDescription" class="form-control">${escapeHtml(p.shortDescription)}</textarea></div>
+
+          <div class="form-group"><label>Địa chỉ</label><input id="address" class="form-control" value="${escapeHtml(p.address)}" /></div>
+          <div class="form-row">
+            <div class="form-group"><label>Số điện thoại</label><input id="contactPhone" class="form-control" value="${escapeHtml(p.contactPhone)}" /></div>
+            <div class="form-group"><label>Email</label><input id="contactEmail" class="form-control" value="${escapeHtml(p.contactEmail)}" /></div>
+          </div>
+          <div class="form-group"><label>Website</label><input id="website" class="form-control" value="${escapeHtml(p.website)}" /></div>
+
+          <div class="form-group">
+            <label>Giọng văn mẫu (dùng để AI viết caption theo đúng tông giọng shop bạn)</label>
+            <select id="voiceSampleId" class="form-control">
+              <option value="">- Chưa chọn -</option>
+              ${voiceOptions}
+            </select>
+          </div>
+
+          <button class="btn-primary" onclick="saveCore()"><i class="bi bi-save"></i> Lưu thông tin doanh nghiệp</button>
+        </div>
+      `;
+    }
+
+    async function saveCore() {
+      const payload = {
+        businessName: document.getElementById('businessName').value.trim(),
+        brandName: document.getElementById('brandName').value.trim(),
+        industry: document.getElementById('industry').value.trim(),
+        foundingYear: document.getElementById('foundingYear').value ? Number(document.getElementById('foundingYear').value) : null,
+        shortDescription: document.getElementById('shortDescription').value.trim(),
+        address: document.getElementById('address').value.trim(),
+        contactPhone: document.getElementById('contactPhone').value.trim(),
+        contactEmail: document.getElementById('contactEmail').value.trim(),
+        website: document.getElementById('website').value.trim(),
+        voiceSampleId: document.getElementById('voiceSampleId').value || null
+      };
+      if (!payload.businessName || !payload.brandName) {
+        return showToast('Vui lòng nhập Tên doanh nghiệp và Tên thương hiệu', 'error');
+      }
+      const json = await apiPut(`/api/brand-memory/projects/${projectId}/core`, payload);
+      if (json.success) {
+        profile = json.data;
+        showToast('Đã lưu thông tin thương hiệu', 'success');
+        renderPage();
+      } else {
+        showToast(json.message || 'Không lưu được', 'error');
+      }
+    }
+
+    function renderSalesChannelsSection() {
+      const list = profile?.salesChannels || [];
+      return `
+        <div class="data-card" style="padding:14px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h3 style="font-size:1rem;">3. Kênh bán hàng</h3>
+            <button class="btn-outline btn-sm" onclick="showAddChannel()"><i class="bi bi-plus"></i> Thêm kênh bán hàng</button>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;">
+            ${list.length ? list.map(c => `
+              <div style="display:flex;align-items:center;gap:8px;border:1px solid #e5e8f4;border-radius:12px;padding:8px 12px;">
+                <i class="bi bi-share"></i>
+                <div>
+                  <div style="font-weight:600;font-size:.86rem;">${escapeHtml(c.channelName)}</div>
+                  <div style="font-size:.76rem;color:#8f95aa;">${escapeHtml(c.accountHandle || '')}</div>
+                </div>
+                <span class="badge ${c.isConnected ? 'badge-success' : 'badge-secondary'}">${c.isConnected ? 'Đang dùng' : 'Tắt'}</span>
+              </div>
+            `).join('') : '<div class="empty-state">Chưa có kênh bán hàng nào.</div>'}
+          </div>
+        </div>
+      `;
+    }
+
+    async function showAddChannel() {
+      if (!channels.length) {
+        const c = await apiGet('/api/channel-accounts/channels');
+        channels = c.success ? c.data : [];
+      }
+      showModal('Thêm kênh bán hàng', `
+        <div class="form-group">
+          <label>Nền tảng</label>
+          <select id="chChannelId" class="form-control">
+            ${channels.map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('')}
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tên hiển thị / Handle</label>
+          <input id="chName" class="form-control" placeholder="VD: @abcfashion hoặc FlowMate Store" />
+        </div>
+        <p style="font-size:.8rem;color:#8f95aa;">Đây là liên kết thủ công (chưa qua đăng nhập API thật) — dùng để chọn nền tảng khi tạo bài viết/chiến dịch. Kết nối API Facebook/Zalo thật sẽ có ở bản cập nhật sau.</p>
+      `, `
+        <button class="btn-outline btn-sm" onclick="closeModal()">Hủy</button>
+        <button class="btn-primary btn-sm" id="saveCh">Thêm</button>
+      `);
+      document.getElementById('saveCh')?.addEventListener('click', async () => {
+        const channelId = document.getElementById('chChannelId').value;
+        const name = document.getElementById('chName').value.trim();
+        if (!channelId || !name) return showToast('Vui lòng chọn nền tảng và nhập tên hiển thị', 'error');
+        const json = await apiPost(`/api/channel-accounts/projects/${projectId}`, { channelId, name });
+        closeModal();
+        if (json.success) {
+          showToast('Đã thêm kênh bán hàng', 'success');
+          await loadBrandMemory();
+        } else {
+          showToast(json.message || 'Không thêm được kênh', 'error');
+        }
+      });
+    }
+
+    function renderProductsSection() {
+      const cats = profile?.productCategories || [];
+      return `
+        <div class="data-card" style="padding:14px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h3 style="font-size:1rem;">4. Sản phẩm</h3>
+            <div class="action-bar">
+              <button class="btn-outline btn-sm" onclick="showAddCategory()"><i class="bi bi-plus"></i> Thêm danh mục</button>
+              <button class="btn-outline btn-sm" onclick="showAddProduct()" ${cats.length ? '' : 'disabled'}><i class="bi bi-plus"></i> Thêm sản phẩm</button>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
+            ${cats.length ? cats.map(c => `
+              <div style="border:1px solid #e5e8f4;border-radius:12px;padding:10px 14px;text-align:center;min-width:110px;">
+                <div style="font-weight:700;">${escapeHtml(c.categoryName)}</div>
+                <div style="font-size:.78rem;color:#8f95aa;">${c.productCount} sản phẩm</div>
+              </div>
+            `).join('') : '<div class="empty-state">Chưa có danh mục sản phẩm.</div>'}
+          </div>
+          ${sessionProducts.length ? `
+            <p style="font-size:.78rem;color:#8f95aa;margin:0 0 8px;">Sản phẩm vừa tạo trong phiên này:</p>
+            <div style="display:grid;gap:8px;">
+              ${sessionProducts.map(p => `
+                <div style="border:1px solid #eef0f7;border-radius:10px;padding:10px;display:flex;gap:10px;align-items:flex-start;">
+                  ${p.imageUrls?.[0] ? `<img src="${p.imageUrls[0]}" style="width:56px;height:56px;object-fit:cover;border-radius:8px;" />` : '<div style="width:56px;height:56px;border-radius:8px;background:#f1f2f8;"></div>'}
+                  <div style="flex:1;">
+                    <div style="font-weight:600;">${escapeHtml(p.productName)}</div>
+                    <div style="font-size:.8rem;color:#8f95aa;">${p.aiGeneratedDescription ? escapeHtml(p.aiGeneratedDescription).slice(0, 140) + '…' : (p.imageUrls?.length ? 'Chưa có mô tả AI' : 'Chưa có ảnh — không thể sinh mô tả AI')}</div>
+                  </div>
+                  <button class="btn-outline btn-sm" onclick="generateProductDescription('${p.id}')" ${p.imageUrls?.length ? '' : 'disabled'}>
+                    <i class="bi bi-stars"></i> Sinh mô tả AI
+                  </button>
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    async function generateProductDescription(productId) {
+      showToast('AI đang phân tích ảnh sản phẩm (Claude Vision)...', 'info');
+      const json = await apiPost(`/api/brand-memory/products/${productId}/generate-description`, { provider: 2 });
+      if (json.success) {
+        const p = sessionProducts.find(x => x.id === productId);
+        if (p) p.aiGeneratedDescription = json.data.description;
+        showToast('AI đã sinh mô tả sản phẩm.', 'success');
+        renderPage();
+      } else {
+        showToast(json.message || 'AI sinh mô tả thất bại — kiểm tra API key AI trong appsettings.', 'error');
+      }
+    }
+
+    function showAddCategory() {
+      showModal('Thêm danh mục sản phẩm', `
+        <div class="form-group">
+          <label>Tên danh mục</label>
+          <input id="catName" class="form-control" placeholder="VD: Váy, Áo, Quần, Phụ kiện..." />
+        </div>
+      `, `
+        <button class="btn-outline btn-sm" onclick="closeModal()">Hủy</button>
+        <button class="btn-primary btn-sm" id="saveCat">Thêm</button>
+      `);
+      document.getElementById('saveCat')?.addEventListener('click', async () => {
+        const categoryName = document.getElementById('catName').value.trim();
+        if (!categoryName) return showToast('Nhập tên danh mục', 'error');
+        const json = await apiPost(`/api/brand-memory/projects/${projectId}/product-categories`, { categoryName });
+        closeModal();
+        if (json.success) {
+          showToast('Đã thêm danh mục', 'success');
+          await loadBrandMemory();
+        } else {
+          showToast(json.message || 'Không thêm được danh mục', 'error');
+        }
+      });
+    }
+
+    function showAddProduct() {
+      const cats = profile?.productCategories || [];
+      showModal('Thêm sản phẩm', `
+        <div class="form-group">
+          <label>Danh mục</label>
+          <select id="prodCat" class="form-control">
+            ${cats.map(c => `<option value="${c.id}">${escapeHtml(c.categoryName)}</option>`).join('')}
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tên sản phẩm</label>
+          <input id="prodName" class="form-control" placeholder="VD: Váy hoa nhí siêu xinh" />
+        </div>
+        <div class="form-group">
+          <label>Giá (VNĐ, có thể để trống)</label>
+          <input id="prodPrice" type="number" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label>Ảnh sản phẩm (để AI phân tích sinh mô tả — tối đa 4 ảnh)</label>
+          <input id="prodImages" type="file" accept="image/*" multiple class="form-control" />
+        </div>
+      `, `
+        <button class="btn-outline btn-sm" onclick="closeModal()">Hủy</button>
+        <button class="btn-primary btn-sm" id="saveProd">Thêm</button>
+      `);
+      document.getElementById('saveProd')?.addEventListener('click', async () => {
+        const productName = document.getElementById('prodName').value.trim();
+        if (!productName) return showToast('Nhập tên sản phẩm', 'error');
+
+        const saveBtn = document.getElementById('saveProd');
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Đang tải ảnh lên...';
+
+        const files = Array.from(document.getElementById('prodImages').files || []).slice(0, 4);
+        const mediaFileIds = [];
+        const imageUrls = [];
+        for (const file of files) {
+          await apiReady;
+          const fd = new FormData();
+          fd.append('file', file);
+          const token = localStorage.getItem('accessToken');
+          const res = await fetch(apiUrl(`/api/Media/upload?projectId=${projectId}`), {
+            method: 'POST', headers: token ? { Authorization: `Bearer ${token}` } : {}, body: fd
+          });
+          const uploadJson = await res.json();
+          if (uploadJson.success) {
+            mediaFileIds.push(uploadJson.data.id);
+            imageUrls.push(uploadJson.data.publicUrl);
+          }
+        }
+
+        const json = await apiPost(`/api/brand-memory/projects/${projectId}/products`, {
+          productCategoryId: document.getElementById('prodCat').value || null,
+          productName,
+          price: document.getElementById('prodPrice').value ? Number(document.getElementById('prodPrice').value) : null,
+          mediaFileIds
+        });
+        closeModal();
+        if (json.success) {
+          sessionProducts.push({ ...json.data, imageUrls });
+          showToast('Đã thêm sản phẩm.', 'success');
+          await loadBrandMemory();
+        } else {
+          showToast(json.message || 'Không thêm được sản phẩm', 'error');
+        }
+      });
+    }
+
+    function renderIdentitySection() {
+      const styles = lookups?.styles || [];
+      const keywords = lookups?.toneKeywords || [];
+      const ctas = lookups?.ctaTemplates || [];
+      const hashtags = lookups?.hashtags || [];
+
+      return `
+        <div class="data-card" style="padding:14px;">
+          <h3 style="font-size:1rem;margin-bottom:10px;">5. Nhận diện thương hiệu</h3>
+
+          <div class="form-group">
+            <label>Phong cách (chọn tối đa 2)</label>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              ${styles.map(s => renderToggleChip(s, selectedStyleIds, 'toggleStyle')).join('')}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Giọng văn — chọn thêm 3-5 từ mô tả</label>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              ${keywords.map(k => renderToggleChip(k, selectedKeywordIds, 'toggleKeyword')).join('')}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Màu thương hiệu</label>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+              ${localColors.map((c, i) => `
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <input type="color" value="${c.colorHex}" onchange="updateColor(${i}, this.value)" style="width:34px;height:34px;border:none;border-radius:8px;padding:0;" />
+                  <button class="btn-danger btn-sm" onclick="removeColor(${i})">x</button>
+                </div>
+              `).join('')}
+              <button class="btn-outline btn-sm" onclick="addColor()"><i class="bi bi-plus"></i></button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Font thương hiệu</label>
+            <div style="display:grid;gap:6px;">
+              ${localFonts.map((f, i) => `
+                <div style="display:flex;gap:8px;align-items:center;">
+                  <input class="form-control" value="${escapeHtml(f.fontName)}" onchange="updateFontName(${i}, this.value)" style="max-width:200px;" />
+                  <select class="form-control" style="max-width:130px;" onchange="updateFontUsage(${i}, this.value)">
+                    <option value="Title" ${f.usageType === 'Title' ? 'selected' : ''}>Tiêu đề</option>
+                    <option value="Body" ${f.usageType === 'Body' ? 'selected' : ''}>Nội dung</option>
+                  </select>
+                  <button class="btn-danger btn-sm" onclick="removeFont(${i})">x</button>
+                </div>
+              `).join('')}
+              <button class="btn-outline btn-sm" style="width:fit-content;" onclick="addFont()"><i class="bi bi-plus"></i> Thêm font</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>CTA hay dùng</label>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              ${ctas.map(c => renderToggleChip(c, selectedCtaIds, 'toggleCta')).join('')}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Hashtag hay dùng</label>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              ${hashtags.map(h => renderToggleChip({ id: h.id, name: '#' + h.name }, selectedHashtagIds, 'toggleHashtag')).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderToggleChip(item, selectedArray, toggleFnName) {
+      const active = selectedArray.includes(item.id);
+      return `
+        <button type="button" class="${active ? 'btn-primary' : 'btn-outline'} btn-sm" onclick="${toggleFnName}('${item.id}')">
+          ${escapeHtml(item.name)}
+        </button>
+      `;
+    }
+
+    function toggleFrom(array, id, max) {
+      const idx = array.indexOf(id);
+      if (idx >= 0) { array.splice(idx, 1); return true; }
+      if (max && array.length >= max) {
+        showToast(`Chỉ được chọn tối đa ${max} mục.`, 'error');
+        return false;
+      }
+      array.push(id);
+      return true;
+    }
+
+    function toggleStyle(id) { if (toggleFrom(selectedStyleIds, id, 2)) renderPage(); }
+    function toggleKeyword(id) { if (toggleFrom(selectedKeywordIds, id, 5)) renderPage(); }
+    function toggleCta(id) { toggleFrom(selectedCtaIds, id); renderPage(); }
+    function toggleHashtag(id) { if (toggleFrom(selectedHashtagIds, id, 30)) renderPage(); }
+
+    async function saveStyles() {
+      const json = await apiPut(`/api/brand-memory/projects/${projectId}/styles`, { selectedIds: selectedStyleIds });
+      json.success ? showToast('Đã lưu phong cách', 'success') : showToast(json.message || 'Lỗi', 'error');
+    }
+    async function saveKeywords() {
+      const json = await apiPut(`/api/brand-memory/projects/${projectId}/keywords`, { selectedIds: selectedKeywordIds });
+      json.success ? showToast('Đã lưu từ khóa', 'success') : showToast(json.message || 'Lỗi', 'error');
+    }
+    async function saveCtas() {
+      const json = await apiPut(`/api/brand-memory/projects/${projectId}/ctas`, { selectedIds: selectedCtaIds });
+      json.success ? showToast('Đã lưu CTA', 'success') : showToast(json.message || 'Lỗi', 'error');
+    }
+    async function saveHashtags() {
+      const json = await apiPut(`/api/brand-memory/projects/${projectId}/hashtags`, { selectedIds: selectedHashtagIds });
+      json.success ? showToast('Đã lưu hashtag', 'success') : showToast(json.message || 'Lỗi', 'error');
+    }
+
+    function addColor() { localColors.push({ colorHex: '#6C4CE0', colorType: localColors.length === 0 ? 'Primary' : 'Secondary', sortOrder: localColors.length }); renderPage(); }
+    function removeColor(i) { localColors.splice(i, 1); renderPage(); }
+    function updateColor(i, hex) { localColors[i].colorHex = hex; }
+    async function saveColors() {
+      const json = await apiPut(`/api/brand-memory/projects/${projectId}/colors`, { colors: localColors });
+      if (json.success) { localColors = json.data; showToast('Đã lưu màu thương hiệu', 'success'); } else showToast(json.message || 'Lỗi', 'error');
+    }
+
+    function addFont() { localFonts.push({ fontName: 'Inter', usageType: 'Body' }); renderPage(); }
+    function removeFont(i) { localFonts.splice(i, 1); renderPage(); }
+    function updateFontName(i, v) { localFonts[i].fontName = v; }
+    function updateFontUsage(i, v) { localFonts[i].usageType = v; }
+    async function saveFonts() {
+      const json = await apiPut(`/api/brand-memory/projects/${projectId}/fonts`, { fonts: localFonts });
+      if (json.success) { localFonts = json.data; showToast('Đã lưu font thương hiệu', 'success'); } else showToast(json.message || 'Lỗi', 'error');
     }
 
     loadProjects();

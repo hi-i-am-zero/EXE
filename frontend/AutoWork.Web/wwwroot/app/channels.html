@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kết nối kênh — AutoWork Demo</title>
+  <title>Kết nối kênh - FlowMate</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <link rel="stylesheet" href="/css/app.css" />
@@ -18,92 +18,126 @@
     renderAppLayout('/app/channels.html');
     setPageTitle('Kết nối kênh');
 
-    const channels = [
-      { key: 'facebook', name: 'Facebook Fanpage', icon: 'bi-facebook', cls: 'facebook',
-        desc: 'Đăng bài, auto comment, nhận diện lead', apiConnect: '/api/facebook/connect' },
-      { key: 'wordpress', name: 'WordPress / WooCommerce', icon: 'bi-wordpress', cls: 'wordpress',
-        desc: 'Bài SEO, meta, link sản phẩm WooCommerce', apiConnect: null },
-      { key: 'zalo', name: 'Zalo Official Account', icon: 'bi-chat-dots', cls: 'zalo',
-        desc: 'Đăng tin OA, chăm sóc khách hàng', apiConnect: '/api/zalo/connect' }
-    ];
+    let projects = [];
+    let projectId = null;
+    let facebookPages = [];
 
-    function render() {
-      const connected = DemoStore.getChannels();
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+    }
+
+    function redirectUri() {
+      return `${location.origin}/app/channels.html`;
+    }
+
+    async function bootstrap() {
+      const p = await apiGet('/api/workspace/projects');
+      if (!p.success || !(p.data || []).length) {
+        return setPageContent('<div class="empty-state">Chưa có workspace. Hãy tạo workspace trước trong trang Workspace.</div>');
+      }
+      projects = p.data;
+      projectId = projectId || projects[0].id;
+
+      // Xử lý callback OAuth Facebook: nếu URL có ?code=...&state=... nghĩa là vừa quay lại từ Facebook
+      const qs = new URLSearchParams(location.search);
+      const code = qs.get('code');
+      const state = qs.get('state'); // "userId|projectId"
+      if (code) {
+        history.replaceState(null, '', location.pathname); // xoá query khỏi URL sau khi lấy được code
+        const statedProjectId = state?.split('|')?.[1];
+        await completeFacebookConnect(code, statedProjectId || projectId);
+      }
+
+      await loadFacebookPages();
+    }
+
+    async function loadFacebookPages() {
+      const json = await apiGet('/api/facebook/pages');
+      facebookPages = json.success ? json.data : [];
+      renderPage();
+    }
+
+    function changeProject(id) {
+      projectId = id;
+      renderPage();
+    }
+
+    function renderPage() {
       setPageContent(`
-        <div class="channel-grid">
-          ${channels.map(c => `
-            <div class="channel-card ${c.cls} ${connected[c.key] ? 'connected' : ''}">
-              <div class="ch-icon"><i class="bi ${c.icon}"></i></div>
-              <h3>${c.name}</h3>
-              <p style="color:var(--color-text-muted);font-size:.9rem">${c.desc}</p>
-              <p style="margin:16px 0">${renderChannelBadge(c.key, connected[c.key])}</p>
-              <div class="action-bar" style="justify-content:center">
-                ${connected[c.key]
-                  ? `<button class="btn-outline btn-sm" onclick="disconnect('${c.key}')"><i class="bi bi-x-circle"></i> Ngắt kết nối</button>
-                     <button class="btn-primary btn-sm" onclick="publishDemo('${c.key}')"><i class="bi bi-send"></i> Đăng thử</button>`
-                  : `<button class="btn-primary btn-sm" onclick="connect('${c.key}')"><i class="bi bi-link-45deg"></i> Kết nối</button>`}
+        <div class="data-card" style="padding:14px;margin-bottom:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+            <div>
+              <h3 style="margin:0;">Facebook Fanpage</h3>
+              <p style="margin:4px 0 0;color:var(--color-text-muted,#8f95aa);font-size:.88rem;">
+                Kết nối tài khoản Facebook để đăng bài tự động qua Graph API thật.
+              </p>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <select class="form-control" style="min-width:220px" onchange="changeProject(this.value)">
+                ${projects.map(p => `<option value="${p.id}" ${p.id === projectId ? 'selected' : ''}>${escapeHtml(p.name)}</option>`).join('')}
+              </select>
+              <button class="btn-primary btn-sm" onclick="startFacebookConnect()"><i class="bi bi-facebook"></i> Kết nối Facebook</button>
+            </div>
+          </div>
+
+          <div style="margin-top:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;">
+            ${facebookPages.length ? facebookPages.map(page => `
+              <div style="border:1px solid #e7eaf6;border-radius:12px;padding:12px;background:#fff;">
+                <div style="font-weight:700;">${escapeHtml(page.pageName)}</div>
+                <div style="font-size:.78rem;color:#8f95aa;">${escapeHtml(page.category || '')}</div>
+                <span class="badge ${page.isActive ? 'badge-success' : 'badge-secondary'}" style="margin-top:6px;display:inline-block;">
+                  ${page.isActive ? 'Đã đồng bộ — sẵn sàng đăng bài' : 'Ngừng hoạt động'}
+                </span>
               </div>
-            </div>`).join('')}
+            `).join('') : '<div class="empty-state">Chưa có Fanpage nào được kết nối.</div>'}
+          </div>
+          <p style="font-size:.78rem;color:#8f95aa;margin-top:10px;">
+            Sau khi kết nối, các Fanpage này sẽ tự động xuất hiện trong danh sách "Nền tảng đăng"
+            ở trang Tạo bài viết đơn / Chiến dịch tự động.
+          </p>
         </div>
-        <div class="data-card" style="padding:20px;margin-top:24px">
-          <h3 style="margin:0 0 12px"><i class="bi bi-lightning"></i> Auto Comment Fanpage</h3>
-          <p style="color:var(--color-text-muted);font-size:.9rem">Demo trả lời comment tự động, ẩn comment nhạy cảm.</p>
-          <button class="btn-outline btn-sm" onclick="showAutoComment()"><i class="bi bi-chat-quote"></i> Thử Auto Comment</button>
-        </div>`);
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
+          <div class="data-card" style="padding:14px;text-align:center;opacity:.6;">
+            <i class="bi bi-wordpress" style="font-size:1.8rem;"></i>
+            <h3 style="margin:8px 0 4px;">WordPress / WooCommerce</h3>
+            <span class="badge badge-secondary">Sắp ra mắt</span>
+          </div>
+          <div class="data-card" style="padding:14px;text-align:center;opacity:.6;">
+            <i class="bi bi-chat-dots" style="font-size:1.8rem;"></i>
+            <h3 style="margin:8px 0 4px;">Zalo Official Account</h3>
+            <span class="badge badge-secondary">Sắp ra mắt</span>
+          </div>
+        </div>
+      `);
     }
 
-    function connect(key) {
-      showModal(`Kết nối ${key}`, `
-        <p style="text-align:center;padding:20px 0">
-          <i class="bi bi-shield-lock" style="font-size:3rem;color:var(--color-primary)"></i><br><br>
-          Mô phỏng OAuth — trong bản production sẽ redirect đến ${key}.
-        </p>
-        <div class="form-group"><label>Tên tài khoản demo</label>
-          <input id="accName" class="form-control" value="Fanpage Shop Hương" /></div>`,
-        `<button class="btn-outline btn-sm" onclick="closeModal()">Hủy</button>
-         <button class="btn-primary btn-sm" id="doConnect">Kết nối ngay</button>`);
-      document.getElementById('doConnect')?.addEventListener('click', async () => {
-        DemoStore.connectChannel(key);
-        closeModal();
-        showToast(`Đã kết nối ${key}! (demo)`, 'success');
-        DemoStore.addNotification('Kênh mới', `Đã kết nối ${key}`, 'system');
-        render();
+    async function startFacebookConnect() {
+      const json = await apiGet(`/api/facebook/connect?projectId=${projectId}&redirectUri=${encodeURIComponent(redirectUri())}`);
+      if (json.success && json.data?.url) {
+        location.href = json.data.url;
+      } else {
+        showToast(json.message || 'Không tạo được liên kết Facebook. Kiểm tra cấu hình FacebookSettings (AppId/AppSecret).', 'error');
+      }
+    }
+
+    async function completeFacebookConnect(code, forProjectId) {
+      showToast('Đang hoàn tất kết nối Facebook...', 'info');
+      const json = await apiPost('/api/facebook/connect', {
+        projectId: forProjectId,
+        code,
+        redirectUri: redirectUri()
       });
+      if (json.success) {
+        showToast(`Đã kết nối Facebook: ${json.data?.name || ''}`, 'success');
+      } else {
+        showToast(json.message || 'Kết nối Facebook thất bại.', 'error');
+      }
     }
 
-    function disconnect(key) {
-      confirmAction(`Ngắt kết nối ${key}?`, () => {
-        const ch = DemoStore.getChannels();
-        ch[key] = false;
-        DemoStore.set('channels', ch);
-        showToast('Đã ngắt kết nối', 'info');
-        render();
-      });
-    }
-
-    async function publishDemo(key) {
-      showToast(`Demo: Đang đăng bài lên ${key}...`, 'info');
-      await new Promise(r => setTimeout(r, 1500));
-      showToast(`Đã đăng bài lên ${key} thành công! (demo)`, 'success');
-      DemoStore.addNotification('Đăng bài thành công', `Bài đã đăng lên ${key}`, 'post');
-    }
-
-    function showAutoComment() {
-      showModal('Auto Comment Demo', `
-        <div class="form-group"><label>Bình luận khách</label>
-          <textarea id="cmt" class="form-control">Cho em xin giá bộ sương mù size M ạ?</textarea></div>
-        <div id="cmtReply" class="ai-output demo" style="display:none;margin-top:12px"></div>`,
-        `<button class="btn-primary btn-sm" id="genReply">Tạo phản hồi AI</button>`);
-      document.getElementById('genReply')?.addEventListener('click', () => {
-        const reply = mockAiContent('phản hồi khách hàng', 'zalo');
-        document.getElementById('cmtReply').style.display = 'block';
-        document.getElementById('cmtReply').textContent =
-          '💬 Phản hồi gợi ý:\n\nDạ chào chị! Bộ sương mù size M giá 450K, đang giảm 20% còn 360K ạ. Chị inbox để shop giữ size nhé! 🛍️';
-        showToast('AI đã tạo phản hồi comment', 'success');
-      });
-    }
-
-    render();
+    bootstrap();
   </script>
 </body>
 </html>

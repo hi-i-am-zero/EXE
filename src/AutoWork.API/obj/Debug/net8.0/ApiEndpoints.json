@@ -396,6 +396,681 @@
     ]
   },
   {
+    "ContainingType": "AutoWork.API.Controllers.AuthSocialController",
+    "Method": "GetConfig",
+    "RelativePath": "api/auth/social/config",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.API.Controllers.AuthSocialController\u002BSocialAuthConfigResponse, AutoWork.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.AuthSocialController",
+    "Method": "Facebook",
+    "RelativePath": "api/auth/social/facebook",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoWork.API.Controllers.AuthSocialController\u002BFacebookSocialLoginRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.Auth.AuthResponse, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.AuthSocialController",
+    "Method": "Google",
+    "RelativePath": "api/auth/social/google",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoWork.API.Controllers.AuthSocialController\u002BGoogleSocialLoginRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.Auth.AuthResponse, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.BrandMemoryController",
+    "Method": "GetLookupOptions",
+    "RelativePath": "api/brand-memory/lookup-options",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.BrandMemory.BrandMemoryLookupOptionsDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.BrandMemoryController",
+    "Method": "GenerateProductDescription",
+    "RelativePath": "api/brand-memory/products/{productId}/generate-description",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "productId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "AutoWork.API.Controllers.GenerateProductDescriptionRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.AI.GenerateProductDescriptionResponse, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.BrandMemoryController",
+    "Method": "Get",
+    "RelativePath": "api/brand-memory/projects/{projectId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.BrandMemory.BrandProfileDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.BrandMemoryController",
+    "Method": "SetColors",
+    "RelativePath": "api/brand-memory/projects/{projectId}/colors",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "AutoWork.Application.DTOs.BrandMemory.SetBrandColorsDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[AutoWork.Application.DTOs.BrandMemory.BrandColorDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.BrandMemoryController",
+    "Method": "UpsertCore",
+    "RelativePath": "api/brand-memory/projects/{projectId}/core",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "AutoWork.Application.DTOs.BrandMemory.UpsertBrandProfileCoreDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.BrandMemory.BrandProfileDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.BrandMemoryController",
+    "Method": "SetCtas",
+    "RelativePath": "api/brand-memory/projects/{projectId}/ctas",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "AutoWork.Application.DTOs.BrandMemory.SetBrandTagsDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[AutoWork.Application.DTOs.BrandMemory.LookupItemDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.BrandMemoryController",
+    "Method": "SetFonts",
+    "RelativePath": "api/brand-memory/projects/{projectId}/fonts",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "AutoWork.Application.DTOs.BrandMemory.SetBrandFontsDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[AutoWork.Application.DTOs.BrandMemory.BrandFontDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.BrandMemoryController",
+    "Method": "SetHashtags",
+    "RelativePath": "api/brand-memory/projects/{projectId}/hashtags",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "AutoWork.Application.DTOs.BrandMemory.SetBrandTagsDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[AutoWork.Application.DTOs.BrandMemory.LookupItemDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.BrandMemoryController",
+    "Method": "SetKeywords",
+    "RelativePath": "api/brand-memory/projects/{projectId}/keywords",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "AutoWork.Application.DTOs.BrandMemory.SetBrandTagsDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[AutoWork.Application.DTOs.BrandMemory.LookupItemDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.BrandMemoryController",
+    "Method": "CreateProductCategory",
+    "RelativePath": "api/brand-memory/projects/{projectId}/product-categories",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "AutoWork.Application.DTOs.BrandMemory.CreateProductCategoryDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.BrandMemory.ProductCategoryDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.BrandMemoryController",
+    "Method": "CreateProduct",
+    "RelativePath": "api/brand-memory/projects/{projectId}/products",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "AutoWork.Application.DTOs.BrandMemory.CreateProductDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.BrandMemory.ProductDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.BrandMemoryController",
+    "Method": "SetStyles",
+    "RelativePath": "api/brand-memory/projects/{projectId}/styles",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "AutoWork.Application.DTOs.BrandMemory.SetBrandTagsDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[AutoWork.Application.DTOs.BrandMemory.LookupItemDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.CampaignsController",
+    "Method": "ConfirmTimelineOption",
+    "RelativePath": "api/campaigns/{campaignId}/confirm-timeline",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "campaignId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "AutoWork.API.Controllers.ConfirmTimelineOptionBodyDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.Timelines.TimelineDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.CampaignsController",
+    "Method": "GenerateProductDescription",
+    "RelativePath": "api/campaigns/{campaignId}/product-description",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "campaignId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "AutoWork.API.Controllers.GenerateCampaignProductDescriptionBodyDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.AI.GenerateCampaignProductDescriptionResponse, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.CampaignsController",
+    "Method": "GenerateTimelineOptions",
+    "RelativePath": "api/campaigns/{campaignId}/timeline-options",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "campaignId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "AutoWork.API.Controllers.GenerateTimelineOptionsBodyDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.AI.GenerateTimelineOptionsResponse, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.CampaignsController",
+    "Method": "GetLookupOptions",
+    "RelativePath": "api/campaigns/lookup-options",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.Campaigns.CampaignLookupOptionsDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.CampaignsController",
+    "Method": "GetCampaigns",
+    "RelativePath": "api/campaigns/projects/{projectId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[AutoWork.Application.DTOs.Campaigns.CampaignDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.CampaignsController",
+    "Method": "CreateCampaign",
+    "RelativePath": "api/campaigns/projects/{projectId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "AutoWork.Application.DTOs.Campaigns.CreateCampaignDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.Campaigns.CampaignDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.ChannelAccountsController",
+    "Method": "GetChannels",
+    "RelativePath": "api/channel-accounts/channels",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[AutoWork.Application.DTOs.Channels.ChannelDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.ChannelAccountsController",
+    "Method": "GetChannelAccounts",
+    "RelativePath": "api/channel-accounts/projects/{projectId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[AutoWork.Application.DTOs.Channels.ChannelAccountDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.ChannelAccountsController",
+    "Method": "CreateChannelAccount",
+    "RelativePath": "api/channel-accounts/projects/{projectId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "AutoWork.Application.DTOs.Channels.CreateChannelAccountDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.Channels.ChannelAccountDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "AutoWork.API.Controllers.CreditsController",
     "Method": "GetBalance",
     "RelativePath": "api/credits",
@@ -474,6 +1149,11 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
       {
         "Name": "redirectUri",
         "Type": "System.String",
@@ -658,6 +1338,11 @@
       {
         "Name": "folder",
         "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "projectId",
+        "Type": "System.Nullable\u00601[[System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
       }
     ],
@@ -1059,6 +1744,11 @@
         "Name": "status",
         "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
+      },
+      {
+        "Name": "timelineId",
+        "Type": "System.Nullable\u00601[[System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [
@@ -1173,6 +1863,32 @@
     "ReturnTypes": [
       {
         "Type": "AutoWork.Shared.Models.ApiResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.PostsController",
+    "Method": "Publish",
+    "RelativePath": "api/Posts/{id}/publish",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.Posts.PublishPostResponse, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1308,6 +2024,94 @@
     "ReturnTypes": [
       {
         "Type": "AutoWork.Shared.Models.ApiResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.TimelinesController",
+    "Method": "ScheduleTimeline",
+    "RelativePath": "api/timelines/{timelineId}/schedule",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "timelineId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "AutoWork.API.Controllers.ScheduleTimelineBodyDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.Timelines.ScheduleTimelineResponse, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.TimelinesController",
+    "Method": "GetTimelines",
+    "RelativePath": "api/timelines/projects/{projectId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[AutoWork.Application.DTOs.Timelines.TimelineDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.TimelinesController",
+    "Method": "CreateTimeline",
+    "RelativePath": "api/timelines/projects/{projectId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "AutoWork.Application.DTOs.Timelines.CreateTimelineDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.Timelines.TimelineDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1608,6 +2412,326 @@
     "ReturnTypes": [
       {
         "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[AutoWork.Application.DTOs.WordPress.WordPressPostDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.WorkspaceController",
+    "Method": "GetProjects",
+    "RelativePath": "api/workspace/projects",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[AutoWork.Application.DTOs.Workspace.ProjectDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.WorkspaceController",
+    "Method": "CreateProject",
+    "RelativePath": "api/workspace/projects",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoWork.Application.DTOs.Workspace.CreateProjectDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.Workspace.ProjectDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.WorkspaceController",
+    "Method": "GetMembers",
+    "RelativePath": "api/workspace/projects/{projectId}/members",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[AutoWork.Application.DTOs.Workspace.ProjectMemberDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.WorkspaceController",
+    "Method": "AddMember",
+    "RelativePath": "api/workspace/projects/{projectId}/members",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "AutoWork.Application.DTOs.Workspace.AddProjectMemberDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.Workspace.ProjectMemberDto, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.WorkspaceController",
+    "Method": "RemoveMember",
+    "RelativePath": "api/workspace/projects/{projectId}/members/{memberUserId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "memberUserId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.WorkspaceController",
+    "Method": "UpdateMemberRole",
+    "RelativePath": "api/workspace/projects/{projectId}/members/{memberUserId}/role",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "memberUserId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "AutoWork.Application.DTOs.Workspace.UpdateProjectMemberRoleDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.WorkspaceController",
+    "Method": "GetOverview",
+    "RelativePath": "api/workspace/projects/{projectId}/overview",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.WorkspaceController",
+    "Method": "GetTasks",
+    "RelativePath": "api/workspace/projects/{projectId}/tasks",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[System.Collections.Generic.List\u00601[[AutoWork.API.Controllers.WorkspaceController\u002BWorkspaceTaskState, AutoWork.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.WorkspaceController",
+    "Method": "CreateTask",
+    "RelativePath": "api/workspace/projects/{projectId}/tasks",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "AutoWork.API.Controllers.WorkspaceController\u002BCreateWorkspaceTaskRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.API.Controllers.WorkspaceController\u002BWorkspaceTaskState, AutoWork.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.WorkspaceController",
+    "Method": "DeleteTask",
+    "RelativePath": "api/workspace/projects/{projectId}/tasks/{taskId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "taskId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.WorkspaceController",
+    "Method": "UpdateTaskStatus",
+    "RelativePath": "api/workspace/projects/{projectId}/tasks/{taskId}/status",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "taskId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "AutoWork.API.Controllers.WorkspaceController\u002BUpdateWorkspaceTaskStatusRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.API.Controllers.WorkspaceController\u002BWorkspaceTaskState, AutoWork.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

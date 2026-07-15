@@ -23,14 +23,18 @@ public class FacebookController : ApiControllerBase
     }
 
     [HttpGet("connect")]
-    public async Task<ActionResult<ApiResponse<object>>> Connect([FromQuery] string redirectUri) =>
-        OkResponse<object>(new { url = await _facebookService.GetAuthorizationUrlAsync(_currentUser.UserId!.Value, redirectUri) });
+    public async Task<ActionResult<ApiResponse<object>>> Connect(
+        [FromQuery] Guid projectId, [FromQuery] string redirectUri) =>
+        OkResponse<object>(new
+        {
+            url = await _facebookService.GetAuthorizationUrlAsync(_currentUser.UserId!.Value, projectId, redirectUri)
+        });
 
     [HttpPost("connect")]
     public async Task<ActionResult<ApiResponse<FacebookAccountDto>>> ConnectCallback(
         [FromBody] FacebookConnectRequest request) =>
         OkResponse(await _facebookService.ConnectAccountAsync(
-            _currentUser.UserId!.Value, request.Code, request.RedirectUri));
+            _currentUser.UserId!.Value, request.ProjectId, request.Code, request.RedirectUri));
 
     [HttpGet("pages")]
     public async Task<ActionResult<ApiResponse<List<FacebookPageDto>>>> GetPages()
@@ -60,6 +64,7 @@ public class FacebookController : ApiControllerBase
 
 public class FacebookConnectRequest
 {
+    public Guid ProjectId { get; set; }
     public string Code { get; set; } = string.Empty;
     public string RedirectUri { get; set; } = string.Empty;
 }

@@ -18,11 +18,17 @@ public class FacebookAccountConfiguration : IEntityTypeConfiguration<FacebookAcc
         builder.Ignore(fa => fa.LastSyncedAt);
 
         builder.HasIndex(fa => fa.UserId);
+        builder.HasIndex(fa => fa.ProjectId);
         builder.HasIndex(fa => fa.FacebookUserId);
 
         builder.HasOne(fa => fa.User)
             .WithMany(u => u.FacebookAccounts)
             .HasForeignKey(fa => fa.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne<Project>()
+            .WithMany()
+            .HasForeignKey(fa => fa.ProjectId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

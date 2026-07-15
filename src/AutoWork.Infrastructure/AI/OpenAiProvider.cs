@@ -37,7 +37,7 @@ public class OpenAiProvider : IAiProvider
             messages = new object[]
             {
                 new { role = "system", content = request.SystemPrompt },
-                new { role = "user", content = request.UserPrompt }
+                new { role = "user", content = BuildUserContent(request) }
             }
         };
 
@@ -58,6 +58,18 @@ public class OpenAiProvider : IAiProvider
         var tokensUsed = parsed?.Usage?.TotalTokens ?? 0;
 
         return AiResponseParser.ParseStructuredResponse(content, tokensUsed);
+    }
+
+    private static object BuildUserContent(AiGenerationRequest request)
+    {
+        if (request.ImageDataUris.Count == 0)
+        {
+            return request.UserPrompt;
+        }
+
+        var parts = new List<object> { new { type = "text", text = request.UserPrompt } };
+        parts.AddRange(request.ImageDataUris.Select(uri => (object)new { type = "image_url", image_url = new { url = uri } }));
+        return parts;
     }
 
     private void ValidateApiKey()

@@ -13,6 +13,7 @@ public class MediaFileConfiguration : IEntityTypeConfiguration<MediaFile>
 
         builder.Property(m => m.FileName).HasMaxLength(255).IsRequired();
         builder.Property(m => m.FileUrl).HasMaxLength(1000).IsRequired();
+        builder.Property(m => m.StoragePath).HasMaxLength(1000).IsRequired();
         builder.Property(m => m.MimeType).HasMaxLength(100).IsRequired();
         builder.Property(m => m.ThumbnailUrl).HasMaxLength(1000);
 
@@ -29,5 +30,11 @@ public class MediaFileConfiguration : IEntityTypeConfiguration<MediaFile>
             .WithMany(p => p.MediaFiles)
             .HasForeignKey(m => m.ProjectId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        builder.HasOne(m => m.Product)
+            .WithMany(p => p.Images)
+            .HasForeignKey(m => m.ProductId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

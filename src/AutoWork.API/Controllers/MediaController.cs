@@ -1,6 +1,7 @@
 using AutoWork.Application.DTOs.Media;
 using AutoWork.Application.Interfaces.Repositories;
 using AutoWork.Application.Interfaces.Services;
+using AutoWork.Domain.Entities;
 using AutoWork.Shared.Enums;
 using AutoWork.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -41,19 +42,36 @@ public class MediaController : ApiControllerBase
     [HttpPost("upload")]
     [RequestSizeLimit(20 * 1024 * 1024)]
     public async Task<ActionResult<ApiResponse<UploadMediaResponse>>> Upload(
-        IFormFile file, [FromQuery] string? folder = null)
+        IFormFile file, [FromQuery] string? folder = null, [FromQuery] Guid? projectId = null)
     {
         if (file.Length == 0)
             return FailResponse<UploadMediaResponse>("File is empty.");
 
         await using var stream = file.OpenReadStream();
-        var url = await _storageService.UploadAsync(stream, file.FileName, file.ContentType, folder);
+        var storagePath = await _storageService.UploadAsync(stream, file.FileName, file.ContentType, folder);
+        var publicUrl = _storageService.GetPublicUrl(storagePath);
+
+        // Bug cũ: trước đây không lưu MediaFile vào DB, khiến mọi tham chiếu MediaFileId ở nơi khác
+        // (VD: gắn ảnh sản phẩm ở Brand Memory, gắn ảnh vào bài viết) không tìm thấy dữ liệu.
+        var mediaFile = new MediaFile
+        {
+            UserId = _currentUser.UserId!.Value,
+            ProjectId = projectId,
+            FileName = file.FileName,
+            FileUrl = publicUrl,
+            StoragePath = storagePath,
+            MimeType = file.ContentType,
+            FileSize = file.Length
+        };
+        await _unitOfWork.Media.AddAsync(mediaFile);
+        await _unitOfWork.SaveChangesAsync();
 
         return OkResponse(new UploadMediaResponse
         {
-            FileName = file.FileName,
-            PublicUrl = url,
-            FileSize = file.Length
+            Id = mediaFile.Id,
+            FileName = mediaFile.FileName,
+            PublicUrl = mediaFile.FileUrl,
+            FileSize = mediaFile.FileSize
         }, "File uploaded.");
     }
 
@@ -66,7 +84,7 @@ public class MediaController : ApiControllerBase
         if (media.UserId != _currentUser.UserId)
             throw new UnauthorizedAccessException();
 
-        await _storageService.DeleteAsync(media.FileUrl);
+        await _storageService.DeleteAsync(media.StoragePath);
         await _unitOfWork.Media.DeleteAsync(media);
         await _unitOfWork.SaveChangesAsync();
         return OkResponse("Media deleted.");

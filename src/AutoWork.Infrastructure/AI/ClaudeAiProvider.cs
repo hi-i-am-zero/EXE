@@ -38,7 +38,7 @@ public class ClaudeAiProvider : IAiProvider
             system = request.SystemPrompt,
             messages = new[]
             {
-                new { role = "user", content = request.UserPrompt }
+                new { role = "user", content = BuildContentBlocks(request) }
             }
         };
 
@@ -60,6 +60,48 @@ public class ClaudeAiProvider : IAiProvider
         var tokensUsed = (parsed?.Usage?.InputTokens ?? 0) + (parsed?.Usage?.OutputTokens ?? 0);
 
         return AiResponseParser.ParseStructuredResponse(content, tokensUsed);
+    }
+
+    private static object BuildContentBlocks(AiGenerationRequest request)
+    {
+        if (request.ImageDataUris.Count == 0)
+        {
+            return request.UserPrompt;
+        }
+
+        var blocks = new List<object>();
+        foreach (var dataUri in request.ImageDataUris)
+        {
+            var (mediaType, base64Data) = ParseDataUri(dataUri);
+            if (base64Data is null) continue;
+
+            blocks.Add(new
+            {
+                type = "image",
+                source = new { type = "base64", media_type = mediaType, data = base64Data }
+            });
+        }
+
+        blocks.Add(new { type = "text", text = request.UserPrompt });
+        return blocks;
+    }
+
+    private static (string MediaType, string? Base64Data) ParseDataUri(string dataUri)
+    {
+        // Định dạng: data:image/jpeg;base64,XXXXX
+        const string prefix = "data:";
+        if (!dataUri.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+        {
+            return ("image/jpeg", null);
+        }
+
+        var commaIndex = dataUri.IndexOf(',');
+        if (commaIndex < 0) return ("image/jpeg", null);
+
+        var header = dataUri[prefix.Length..commaIndex]; // "image/jpeg;base64"
+        var mediaType = header.Split(';')[0];
+        var data = dataUri[(commaIndex + 1)..];
+        return (mediaType, data);
     }
 
     private sealed class ClaudeResponse

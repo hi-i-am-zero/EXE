@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using AutoWork.Domain.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -13,5 +14,23 @@ internal static class EntityConfigurationExtensions
         builder.Property(e => e.CreatedAt).IsRequired();
         builder.Property(e => e.IsDeleted).HasDefaultValue(false);
         builder.HasIndex(e => e.IsDeleted);
+    }
+
+    /// <summary>
+    /// Cấu hình dùng chung cho các bảng lookup đơn giản chỉ có 1 cột tên duy nhất
+    /// (VD: BrandStyle.StyleName, Hashtag.Tag, CampaignGoal.GoalName...).
+    /// Gom lại để tránh lặp ToTable + ConfigureBaseEntity + MaxLength + Unique Index
+    /// ở từng Configuration riêng lẻ.
+    /// </summary>
+    public static void ConfigureSimpleLookup<T>(
+        this EntityTypeBuilder<T> builder,
+        string tableName,
+        Expression<Func<T, string>> nameSelector,
+        int maxLength) where T : BaseEntity
+    {
+        builder.ToTable(tableName);
+        builder.ConfigureBaseEntity();
+        var property = builder.Property(nameSelector).HasMaxLength(maxLength).IsRequired();
+        builder.HasIndex(property.Metadata.Name).IsUnique();
     }
 }

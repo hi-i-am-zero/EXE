@@ -88,6 +88,8 @@ public static class DependencyInjection
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<ICreditService, CreditService>();
         services.AddScoped<IAiContentService, AiContentService>();
+        services.AddHttpClient<IProductVisionService, ProductVisionService>();
+        services.AddScoped<ITimelineContentService, TimelineContentService>();
         services.AddScoped<IFacebookService, FacebookService>();
         services.AddScoped<IWordPressService, WordPressService>();
         services.AddScoped<IZaloService, ZaloService>();

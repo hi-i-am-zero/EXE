@@ -26,9 +26,9 @@ public class PostsController : ApiControllerBase
 
     [HttpGet]
     public async Task<ActionResult<ApiResponse<PaginatedResult<PostDto>>>> GetPosts(
-        [FromQuery] int page = 1, [FromQuery] int pageSize = 20, [FromQuery] int? status = null)
+        [FromQuery] int page = 1, [FromQuery] int pageSize = 20, [FromQuery] int? status = null, [FromQuery] Guid? timelineId = null)
     {
-        var result = await _mediator.Send(new GetPostsQuery { PageNumber = page, PageSize = pageSize, Status = status });
+        var result = await _mediator.Send(new GetPostsQuery { PageNumber = page, PageSize = pageSize, Status = status, TimelineId = timelineId });
         return OkResponse(PaginatedResult<PostDto>.Create(result.Items, result.TotalCount, result.PageNumber, result.PageSize));
     }
 
@@ -71,16 +71,38 @@ public class PostsController : ApiControllerBase
         return OkResponse("Post deleted.");
     }
 
+    /// <summary>Đăng bài thật lên các nền tảng đã chọn — hiện tại Facebook gọi Graph API thật,
+    /// các nền tảng khác trả lỗi rõ ràng "chưa hỗ trợ" (sẽ bổ sung ở giai đoạn sau).</summary>
+    [HttpPost("{id:guid}/publish")]
+    public async Task<ActionResult<ApiResponse<PublishPostResponse>>> Publish(Guid id)
+    {
+        var result = await _mediator.Send(new PublishPostCommand { PostId = id });
+        return OkResponse(result, "Đã xử lý yêu cầu đăng bài.");
+    }
+
     private static PostDto MapPost(Domain.Entities.Post post) => new()
     {
         Id = post.Id,
         ProjectId = post.ProjectId,
         ChannelAccountId = post.ChannelAccountId ?? Guid.Empty,
+        TimelineId = post.TimelineId,
         Title = post.Title,
         Status = post.Status,
         ExternalPostId = post.ExternalPostId,
         PublishedUrl = post.PublishedUrl,
         PublishedAt = post.PublishedAt,
-        CreatedAt = post.CreatedAt
+        CreatedAt = post.CreatedAt,
+        Hashtags = post.PostHashtags.Select(ph => ph.Hashtag.Tag).ToList(),
+        Channels = post.PostChannelAccounts.Select(pca => new Application.DTOs.Posts.PostChannelAccountDto
+        {
+            Id = pca.Id,
+            ChannelAccountId = pca.ChannelAccountId,
+            ChannelName = pca.ChannelAccount.Channel.Name,
+            ChannelAccountName = pca.ChannelAccount.Name,
+            Status = pca.Status,
+            ExternalPostId = pca.ExternalPostId,
+            PublishedUrl = pca.PublishedUrl,
+            PublishedAt = pca.PublishedAt
+        }).ToList()
     };
 }

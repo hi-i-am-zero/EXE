@@ -29,11 +29,65 @@ public class PublishPostJob
         try
         {
             var content = post.Contents.OrderBy(c => c.SortOrder).FirstOrDefault()?.Content ?? post.Title;
+
+            // FlowMate v2: nếu bài viết chọn nhiều nền tảng (PostChannelAccounts), đăng lên TỪNG nền
+            // tảng và cập nhật trạng thái riêng cho từng cái. Nếu là bài viết cũ chỉ có 1 kênh đơn lẻ
+            // (post.ChannelAccount, trước khi có tính năng đa nền tảng), giữ nguyên luồng cũ làm fallback.
+            if (post.PostChannelAccounts.Count > 0)
+            {
+                var anySuccess = false;
+                var anyFailure = false;
+
+                foreach (var target in post.PostChannelAccounts)
+                {
+                    try
+                    {
+                        if (string.IsNullOrWhiteSpace(target.ChannelAccount.ExternalId))
+                        {
+                            throw new InvalidOperationException("Channel not linked.");
+                        }
+
+                        var externalId = await PublishAsync(
+                            target.ChannelAccount.UserId,
+                            target.ChannelAccount.Channel?.Code ?? string.Empty,
+                            Guid.Parse(target.ChannelAccount.ExternalId!),
+                            post.Title, content, cancellationToken);
+
+                        target.Status = (int)PostStatus.Published;
+                        target.ExternalPostId = externalId;
+                        target.PublishedAt = DateTime.UtcNow;
+                        anySuccess = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        target.Status = (int)PostStatus.Failed;
+                        anyFailure = true;
+                        _logger.LogError(ex, "Publish failed for post {PostId} on channel account {ChannelAccountId}", postId, target.ChannelAccountId);
+                    }
+                }
+
+                post.Status = anySuccess ? (int)PostStatus.Published : (int)PostStatus.Failed;
+                post.PublishedAt = anySuccess ? DateTime.UtcNow : post.PublishedAt;
+                post.UpdatedAt = DateTime.UtcNow;
+
+                schedule.Status = anyFailure && !anySuccess
+                    ? (schedule.RetryCount >= 3 ? (int)PostScheduleStatus.Failed : (int)PostScheduleStatus.Pending)
+                    : (int)PostScheduleStatus.Completed;
+                if (anyFailure) schedule.RetryCount++;
+                schedule.ExecutedAt = DateTime.UtcNow;
+                schedule.UpdatedAt = DateTime.UtcNow;
+
+                await _unitOfWork.Posts.UpdateAsync(post, cancellationToken);
+                await _unitOfWork.Schedules.UpdateAsync(schedule, cancellationToken);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+                return;
+            }
+
             if (string.IsNullOrWhiteSpace(post.ChannelAccount?.ExternalId))
                 throw new InvalidOperationException("Channel not linked.");
             var channelAccount = post.ChannelAccount!;
-            var externalId = await PublishAsync(channelAccount.UserId, channelAccount.Channel?.Code ?? string.Empty, Guid.Parse(channelAccount.ExternalId!), post.Title, content, cancellationToken);
-            post.ExternalPostId = externalId; post.PublishedAt = DateTime.UtcNow; post.Status = (int)PostStatus.Published; post.UpdatedAt = DateTime.UtcNow;
+            var legacyExternalId = await PublishAsync(channelAccount.UserId, channelAccount.Channel?.Code ?? string.Empty, Guid.Parse(channelAccount.ExternalId!), post.Title, content, cancellationToken);
+            post.ExternalPostId = legacyExternalId; post.PublishedAt = DateTime.UtcNow; post.Status = (int)PostStatus.Published; post.UpdatedAt = DateTime.UtcNow;
             schedule.Status = (int)PostScheduleStatus.Completed; schedule.ExecutedAt = DateTime.UtcNow; schedule.UpdatedAt = DateTime.UtcNow;
             await _unitOfWork.Posts.UpdateAsync(post, cancellationToken);
             await _unitOfWork.Schedules.UpdateAsync(schedule, cancellationToken);

@@ -25,7 +25,10 @@ public class UnitOfWork : IUnitOfWork
         INotificationRepository notifications,
         IMediaRepository media,
         IProjectRepository projects,
-        IAuditLogRepository auditLogs)
+        IAuditLogRepository auditLogs,
+        IBrandProfileRepository brandProfiles,
+        ICampaignRepository campaigns,
+        ITimelineRepository timelines)
     {
         _context = context;
         Users = users;
@@ -43,6 +46,9 @@ public class UnitOfWork : IUnitOfWork
         Media = media;
         Projects = projects;
         AuditLogs = auditLogs;
+        BrandProfiles = brandProfiles;
+        Campaigns = campaigns;
+        Timelines = timelines;
     }
 
     public IUserRepository Users { get; }
@@ -60,6 +66,9 @@ public class UnitOfWork : IUnitOfWork
     public IMediaRepository Media { get; }
     public IProjectRepository Projects { get; }
     public IAuditLogRepository AuditLogs { get; }
+    public IBrandProfileRepository BrandProfiles { get; }
+    public ICampaignRepository Campaigns { get; }
+    public ITimelineRepository Timelines { get; }
 
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
         await _context.SaveChangesAsync(cancellationToken);

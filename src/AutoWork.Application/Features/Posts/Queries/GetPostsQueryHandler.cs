@@ -34,8 +34,8 @@ public class GetPostsQueryHandler : IRequestHandler<GetPostsQuery, PaginatedList
         var pageNumber = Math.Max(1, request.PageNumber);
         var pageSize = Math.Clamp(request.PageSize, 1, 100);
 
-        var posts = await _unitOfWork.Posts.GetPagedAsync(userId, pageNumber, pageSize, request.Status, cancellationToken);
-        var totalCount = await _unitOfWork.Posts.CountByUserIdAsync(userId, request.Status, cancellationToken);
+        var posts = await _unitOfWork.Posts.GetPagedAsync(userId, pageNumber, pageSize, request.Status, request.TimelineId, cancellationToken);
+        var totalCount = await _unitOfWork.Posts.CountByUserIdAsync(userId, request.Status, request.TimelineId, cancellationToken);
         var dtos = _mapper.Map<IReadOnlyList<PostDto>>(posts);
 
         return PaginatedList<PostDto>.Create(dtos, totalCount, pageNumber, pageSize);

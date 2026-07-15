@@ -17,6 +17,9 @@ public interface IUnitOfWork : IDisposable
     IMediaRepository Media { get; }
     IProjectRepository Projects { get; }
     IAuditLogRepository AuditLogs { get; }
+    IBrandProfileRepository BrandProfiles { get; }
+    ICampaignRepository Campaigns { get; }
+    ITimelineRepository Timelines { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     Task BeginTransactionAsync(CancellationToken cancellationToken = default);
     Task CommitTransactionAsync(CancellationToken cancellationToken = default);

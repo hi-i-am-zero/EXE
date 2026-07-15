@@ -7,6 +7,10 @@ public class FacebookAccount : BaseEntity
 {
     public Guid UserId { get; set; }
 
+    /// <summary>Workspace mà liên kết Facebook này thuộc về — dùng để tự động tạo ChannelAccount
+    /// tương ứng cho từng Fanpage, giúp Post/Campaign (theo ProjectId) chọn được nền tảng này.</summary>
+    public Guid ProjectId { get; set; }
+
     public string FacebookUserId { get; set; } = string.Empty;
 
     public string Name { get; set; } = string.Empty;

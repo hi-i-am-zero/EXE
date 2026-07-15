@@ -26,4 +26,13 @@ public class Project : BaseEntity
     public ICollection<AiGeneratedContent> AiGeneratedContents { get; set; } = new List<AiGeneratedContent>();
 
     public ICollection<MediaFile> MediaFiles { get; set; } = new List<MediaFile>();
+
+    public ICollection<ProjectMember> ProjectMembers { get; set; } = new List<ProjectMember>();
+
+    /// <summary>Brand Memory — 1-1 với Project (nằm trong Hồ sơ tài khoản).</summary>
+    public BrandProfile? BrandProfile { get; set; }
+
+    public ICollection<Campaign> Campaigns { get; set; } = new List<Campaign>();
+
+    public ICollection<Timeline> Timelines { get; set; } = new List<Timeline>();
 }

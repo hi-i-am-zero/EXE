@@ -1,4 +1,10 @@
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\bin\Debug\net8.0\CoverletSourceRootsMapping_AutoWork.IntegrationTests
+D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\AutoWork.IntegrationTests.csproj.AssemblyReference.cache
+D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\AutoWork.IntegrationTests.GeneratedMSBuildEditorConfig.editorconfig
+D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\AutoWork.IntegrationTests.AssemblyInfoInputs.cache
+D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\AutoWork.IntegrationTests.AssemblyInfo.cs
+D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\AutoWork.IntegrationTests.csproj.CoreCompileInputs.cache
+D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\AutoWork.IntegrationTests.sourcelink.json
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\bin\Debug\net8.0\testhost.dll
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\bin\Debug\net8.0\AutoWork.API.deps.json
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\bin\Debug\net8.0\AutoWork.API.runtimeconfig.json
@@ -207,15 +213,9 @@ D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\bin\Debug\net8.0\A
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\bin\Debug\net8.0\AutoWork.Infrastructure.pdb
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\bin\Debug\net8.0\AutoWork.Persistence.pdb
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\bin\Debug\net8.0\AutoWork.Shared.pdb
-D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\AutoWork.IntegrationTests.csproj.AssemblyReference.cache
-D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\AutoWork.IntegrationTests.GeneratedMSBuildEditorConfig.editorconfig
-D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\AutoWork.IntegrationTests.AssemblyInfoInputs.cache
-D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\AutoWork.IntegrationTests.AssemblyInfo.cs
-D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\AutoWork.IntegrationTests.csproj.CoreCompileInputs.cache
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\AutoWork.5AAD3FBB.Up2Date
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\AutoWork.IntegrationTests.dll
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\refint\AutoWork.IntegrationTests.dll
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\AutoWork.IntegrationTests.pdb
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\AutoWork.IntegrationTests.genruntimeconfig.cache
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\ref\AutoWork.IntegrationTests.dll
-D:\EXE01\AIMarketingAssistant\tests\AutoWork.IntegrationTests\obj\Debug\net8.0\AutoWork.IntegrationTests.sourcelink.json

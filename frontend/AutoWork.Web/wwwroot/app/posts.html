@@ -18,48 +18,88 @@
     renderAppLayout('/app/posts.html');
     setPageTitle('Tạo bài viết đơn', `<button class="btn-primary btn-sm" onclick="createNewPost()"><i class="bi bi-plus"></i> Bài viết mới</button>`);
 
-    let posts = [];
-    let currentPage = 1;
-    let selectedPost = null;
-    let selectedImages = [];
+    const qs = new URLSearchParams(location.search);
+    let projects = [];
+    let projectId = qs.get('projectId') || null;
+    let timelineIdFromQuery = qs.get('timelineId') || null;
 
-    async function loadPosts() {
-      setPageContent('<div class="empty-state">Đang tải danh sách bài viết...</div>');
-      try {
-        const json = await apiGet(`/api/Posts?page=${currentPage}&pageSize=10`);
-        if (!json.success) throw new Error(json.message || 'Không tải được bài viết');
-        posts = json.data?.items || [];
-        if (!selectedPost || !posts.some(p => p.id === selectedPost.id)) {
-          selectedPost = posts.length ? { ...posts[0] } : createDraft();
-        }
-        renderComposer();
-      } catch (e) {
-        setPageContent(`<div class="empty-state">Lỗi: ${e.message}</div>`);
-      }
+    let channelAccounts = [];
+    let voiceSamples = [];
+    let posts = [];
+    let selectedPost = null;
+    let selectedImages = [];   // { id, url (blob preview), file }
+    let selectedChannelIds = [];
+    let hashtagList = [];
+    let selectedVoiceSampleId = null;
+
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;').replaceAll("'", '&#039;');
     }
 
     function createDraft() {
-      return {
-        id: null,
-        title: '',
-        content: '',
-        status: 0,
-        createdAt: new Date().toISOString(),
-        isDraftLocal: true
-      };
+      return { id: null, title: '', content: '', status: 0, createdAt: new Date().toISOString() };
+    }
+
+    async function bootstrap() {
+      const p = await apiGet('/api/workspace/projects');
+      if (!p.success || !(p.data || []).length) {
+        return setPageContent('<div class="empty-state">Chưa có workspace. Hãy tạo workspace trước trong trang Workspace.</div>');
+      }
+      projects = p.data;
+      projectId = projectId && projects.some(x => x.id === projectId) ? projectId : projects[0].id;
+
+      const [ca, lk] = await Promise.all([
+        apiGet(`/api/channel-accounts/projects/${projectId}`),
+        apiGet('/api/brand-memory/lookup-options')
+      ]);
+      channelAccounts = ca.success ? ca.data : [];
+      voiceSamples = lk.success ? (lk.data.voiceSamples || []) : [];
+
+      await loadPosts();
+    }
+
+    async function loadPosts() {
+      const timelineFilter = timelineIdFromQuery ? `&timelineId=${timelineIdFromQuery}` : '';
+      const json = await apiGet(`/api/Posts?page=1&pageSize=30${timelineFilter}`);
+      posts = json.success ? (json.data?.items || []) : [];
+      if (!selectedPost || !posts.some(p => p.id === selectedPost.id)) {
+        selectedPost = posts.length ? { ...posts[0] } : createDraft();
+        selectedChannelIds = (selectedPost.channels || []).map(c => c.channelAccountId);
+        hashtagList = selectedPost.hashtags || [];
+      }
+      renderComposer();
     }
 
     function createNewPost() {
       selectedPost = createDraft();
       selectedImages = [];
+      selectedChannelIds = channelAccounts.length ? [channelAccounts[0].id] : [];
+      hashtagList = [];
+      selectedVoiceSampleId = voiceSamples[0]?.id || null;
       renderComposer();
     }
 
     function selectPost(id) {
       const p = posts.find(x => x.id === id);
       if (!p) return;
-      selectedPost = { ...p, content: '' };
+      selectedPost = { ...p };
       selectedImages = [];
+      selectedChannelIds = (p.channels || []).map(c => c.channelAccountId);
+      hashtagList = p.hashtags || [];
+      renderComposer();
+    }
+
+    function changeProject(id) {
+      projectId = id;
+      selectedPost = createDraft();
+      bootstrap();
+    }
+
+    function toggleChannel(id) {
+      const i = selectedChannelIds.indexOf(id);
+      i >= 0 ? selectedChannelIds.splice(i, 1) : selectedChannelIds.push(id);
       renderComposer();
     }
 
@@ -68,11 +108,25 @@
       const options = posts.map(x => `
         <div onclick="selectPost('${x.id}')" style="cursor:pointer;border:1px solid ${p.id === x.id ? '#bdb5ff' : '#e8ebf6'};background:${p.id === x.id ? '#f6f4ff' : '#fff'};padding:10px;border-radius:12px;">
           <div style="font-size:.78rem;color:#8f95aa">${formatDate(x.createdAt)}</div>
-          <div style="font-weight:600;margin:4px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${x.title || 'Không tiêu đề'}</div>
+          <div style="font-weight:600;margin:4px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(x.title || 'Không tiêu đề')}</div>
           <span class="badge ${postStatusClass(x.status)}">${postStatusLabel(x.status)}</span>
         </div>`).join('');
 
       setPageContent(`
+        <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+          <select class="form-control" style="max-width:280px" onchange="changeProject(this.value)">
+            ${projects.map(pr => `<option value="${pr.id}" ${pr.id === projectId ? 'selected' : ''}>${escapeHtml(pr.name)}</option>`).join('')}
+          </select>
+        </div>
+        ${timelineIdFromQuery ? `
+          <div class="data-card" style="padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;background:#f6f4ff;border-color:#c8c0ff;">
+            <div>
+              <div style="font-weight:700;"><i class="bi bi-calendar-check"></i> Đang xem timeline (${posts.length} bài viết)</div>
+              <div style="font-size:.82rem;color:#6b7280;">Kiểm tra lại từng bài (nội dung, ảnh) rồi bấm "Xác nhận & Đăng bài" để lên lịch tự động cho cả timeline.</div>
+            </div>
+            <button class="btn-success" onclick="confirmAndScheduleTimeline()"><i class="bi bi-send"></i> Xác nhận &amp; Đăng bài</button>
+          </div>
+        ` : ''}
         <div style="display:grid;grid-template-columns:260px 1fr 340px;gap:12px;align-items:start;">
           <div class="data-card" style="padding:10px;display:grid;gap:8px;max-height:72vh;overflow:auto;">
             <div style="font-size:.92rem;font-weight:700;color:#525a73">Bài viết gần đây</div>
@@ -81,11 +135,13 @@
 
           <div class="data-card" style="padding:14px;">
             <div class="form-group">
-              <label>Bài viết hiển thị</label>
-              <div class="action-bar">
-                <button class="btn-outline btn-sm">Facebook</button>
-                <button class="btn-outline btn-sm">Instagram</button>
-                <button class="btn-outline btn-sm">Thêm nền tảng</button>
+              <label>1. Nền tảng đăng (chọn 1 hoặc nhiều)</label>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                ${channelAccounts.length ? channelAccounts.map(c => `
+                  <button type="button" class="${selectedChannelIds.includes(c.id) ? 'btn-primary' : 'btn-outline'} btn-sm" onclick="toggleChannel('${c.id}')">
+                    ${escapeHtml(c.channelName)} — ${escapeHtml(c.name)}
+                  </button>
+                `).join('') : '<span style="font-size:.85rem;color:#8f95aa;">Chưa có kênh — thêm ở Brand Memory (mục Kênh bán hàng).</span>'}
               </div>
             </div>
 
@@ -99,39 +155,33 @@
               <textarea id="pContent" class="form-control" placeholder="Nhập nội dung...">${escapeHtml(p.content || '')}</textarea>
             </div>
 
-            <div class="action-bar" style="margin-bottom:10px;">
-              <button class="btn-outline btn-sm"><i class="bi bi-lightning-charge"></i> Gợi ý nội dung</button>
-              <button class="btn-outline btn-sm"><i class="bi bi-hash"></i> Thêm hashtag</button>
-              <button class="btn-outline btn-sm"><i class="bi bi-emoji-smile"></i> Thêm emoji</button>
-              <button class="btn-outline btn-sm"><i class="bi bi-magic"></i> Viết lại</button>
-            </div>
-
             <div class="form-group">
-              <label>Hình ảnh / Video</label>
-              <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;" id="imageList"></div>
+              <label>Hình ảnh / Video (tối đa 4 ảnh)</label>
+              <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;" id="imageList"></div>
               <label class="btn-outline w-100" style="margin-top:8px;text-align:center;cursor:pointer;">
                 <i class="bi bi-plus-lg"></i> Thêm ảnh
                 <input id="imgPicker" type="file" accept="image/*" multiple style="display:none" />
               </label>
+              <p style="font-size:.76rem;color:#8f95aa;margin-top:4px;">Lưu ý: hiện chỉ ảnh đầu tiên được đính kèm vào bài viết khi lưu (giới hạn kỹ thuật hiện tại).</p>
             </div>
 
             <div class="form-group">
-              <label for="hashtags">Hashtag</label>
-              <input id="hashtags" class="form-control" value="#FlowMate #Fashion #Summer2025" />
+              <label for="hashtagInput">Hashtag (Enter để thêm, không cần gõ #)</label>
+              <input id="hashtagInput" class="form-control" placeholder="VD: FlowMate, VayHoaNhi, Summer2025" onkeydown="onHashtagKeydown(event)" />
+              <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;">
+                ${hashtagList.map((h, i) => `
+                  <span class="badge badge-secondary" style="cursor:pointer;" onclick="removeHashtag(${i})">#${escapeHtml(h)} ✕</span>
+                `).join('')}
+              </div>
             </div>
 
             <div class="form-group">
               <label>Giọng văn</label>
               <div style="display:grid;gap:8px;">
-                ${[
-                  'Hàng mới về nè cả nhà ơi, xinh xỉu luôn á',
-                  'Bộ sưu tập mới đã có mặt tại cửa hàng',
-                  'Chào đón thiết kế mới, tinh giản và hiện đại',
-                  'Form dáng chuẩn, chất liệu bền, dễ phối'
-                ].map((t, i) => `
-                  <label style="display:flex;gap:8px;align-items:flex-start;padding:9px;border:1px solid #e5e8f4;border-radius:10px;background:${i === 0 ? '#f1efff' : '#fff'};">
-                    <input type="radio" name="tone" ${i === 0 ? 'checked' : ''} />
-                    <span style="font-size:.9rem">${t}</span>
+                ${voiceSamples.map(v => `
+                  <label style="display:flex;gap:8px;align-items:flex-start;padding:9px;border:1px solid #e5e8f4;border-radius:10px;background:${v.id === selectedVoiceSampleId ? '#f1efff' : '#fff'};">
+                    <input type="radio" name="tone" ${v.id === selectedVoiceSampleId ? 'checked' : ''} onchange="selectVoiceSample('${v.id}')" />
+                    <span style="font-size:.9rem">${escapeHtml(v.sampleText)}</span>
                   </label>
                 `).join('')}
               </div>
@@ -139,8 +189,8 @@
 
             <div class="action-bar">
               <button class="btn-primary" onclick="savePost()"><i class="bi bi-save"></i> Lưu bài viết</button>
-              <button class="btn-success" onclick="publishPost()"><i class="bi bi-send"></i> Đăng bài</button>
-              <button class="btn-outline" onclick="schedulePost()"><i class="bi bi-clock"></i> Lên lịch</button>
+              <button class="btn-outline" onclick="schedulePost()"><i class="bi bi-clock"></i> Lên lịch đăng tự động</button>
+              <button class="btn-success" onclick="publishNow()"><i class="bi bi-send"></i> Đăng ngay</button>
               ${p.id ? `<button class="btn-danger" onclick="deletePost()"><i class="bi bi-trash"></i> Xóa</button>` : ''}
             </div>
           </div>
@@ -173,44 +223,74 @@
       updatePreview();
     }
 
-    function escapeHtml(str) {
-      return String(str || '')
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#039;');
+    async function confirmAndScheduleTimeline() {
+      if (!timelineIdFromQuery) return;
+      showModal('Xác nhận & Đăng bài', `
+        <p>Toàn bộ ${posts.length} bài viết trong timeline sẽ được lên lịch đăng tự động đúng ngày AI đã đề xuất.</p>
+        <div class="form-group" style="margin-top:10px;">
+          <label style="display:flex;align-items:center;gap:8px;">
+            <input type="checkbox" id="publishFirstNow" />
+            Đăng NGAY LẬP TỨC bài đầu tiên (thay vì chờ tới lịch)
+          </label>
+        </div>
+      `, `
+        <button class="btn-outline btn-sm" onclick="closeModal()">Hủy</button>
+        <button class="btn-primary btn-sm" id="doConfirmSchedule">Xác nhận</button>
+      `);
+      document.getElementById('doConfirmSchedule')?.addEventListener('click', async () => {
+        const publishFirstImmediately = document.getElementById('publishFirstNow').checked;
+        closeModal();
+        showToast('Đang lên lịch đăng bài cho cả timeline...', 'info');
+        const json = await apiPost(`/api/timelines/${timelineIdFromQuery}/schedule`, { publishFirstImmediately });
+        if (json.success) {
+          const d = json.data;
+          let msg = `Đã lên lịch ${d.scheduledCount} bài viết.`;
+          if (publishFirstImmediately) {
+            msg += d.firstPublishedImmediately ? ' Bài đầu tiên đã đăng ngay thành công!' : ` Bài đầu tiên đăng ngay thất bại: ${d.firstPublishError || 'lỗi không xác định'} — đã chuyển sang lên lịch bình thường.`;
+          }
+          showToast(msg, d.firstPublishError ? 'info' : 'success');
+          await loadPosts();
+        } else {
+          showToast(json.message || 'Không lên lịch được cho timeline', 'error');
+        }
+      });
     }
+
+    function onHashtagKeydown(e) {
+      if (e.key !== 'Enter') return;
+      e.preventDefault();
+      const raw = e.target.value.trim().replace(/^#/, '');
+      if (raw) { hashtagList.push(raw); e.target.value = ''; renderComposer(); }
+    }
+    function removeHashtag(i) { hashtagList.splice(i, 1); renderComposer(); }
+    function selectVoiceSample(id) { selectedVoiceSampleId = id; }
 
     function onPickImages(e) {
       const files = Array.from(e.target.files || []);
       for (const file of files) {
         if (selectedImages.length >= 4) break;
-        selectedImages.push({ id: crypto.randomUUID(), url: URL.createObjectURL(file), name: file.name });
+        selectedImages.push({ id: crypto.randomUUID(), url: URL.createObjectURL(file), file });
       }
       renderImages();
       updatePreview();
     }
-
     function removeImage(id) {
       selectedImages = selectedImages.filter(i => i.id !== id);
       renderImages();
       updatePreview();
     }
-
     function renderImages() {
       const list = document.getElementById('imageList');
       if (!list) return;
       list.innerHTML = selectedImages.length
         ? selectedImages.map(i => `
           <div style="position:relative;border:1px solid #e8ebf6;border-radius:10px;overflow:hidden;">
-            <img src="${i.url}" alt="${i.name}" style="width:100%;height:70px;object-fit:cover" />
+            <img src="${i.url}" style="width:100%;height:70px;object-fit:cover" />
             <button class="btn-danger btn-sm" style="position:absolute;top:4px;right:4px;padding:1px 5px;" onclick="removeImage('${i.id}')">x</button>
           </div>
         `).join('')
         : '<div class="empty-state" style="grid-column:1/-1;padding:12px;">Chưa có ảnh</div>';
     }
-
     function updatePreview() {
       const t = document.getElementById('pTitle')?.value || 'Tiêu đề bài viết';
       const c = document.getElementById('pContent')?.value || 'Nội dung xem trước sẽ hiển thị ở đây...';
@@ -226,17 +306,41 @@
       }
     }
 
+    // Upload ảnh đầu tiên (nếu có) qua /api/Media/upload, trả về mediaFileId để đính vào Post
+    async function uploadFirstImageIfAny() {
+      if (!selectedImages.length) return null;
+      await apiReady;
+      const fd = new FormData();
+      fd.append('file', selectedImages[0].file);
+      const token = localStorage.getItem('accessToken');
+      const res = await fetch(apiUrl('/api/Media/upload'), {
+        method: 'POST',
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        body: fd
+      });
+      const json = await res.json();
+      return json.success ? json.data?.id : null;
+    }
+
     async function savePost() {
       const title = document.getElementById('pTitle')?.value?.trim();
       const content = document.getElementById('pContent')?.value?.trim();
       if (!title || !content) return showToast('Nhập tiêu đề và nội dung trước khi lưu', 'error');
+      if (!selectedChannelIds.length) return showToast('Chọn ít nhất 1 nền tảng để đăng bài', 'error');
+
+      const mediaFileId = await uploadFirstImageIfAny();
 
       const body = {
-        projectId: DEMO.PROJECT_ID,
-        channelAccountId: DEMO.CHANNEL_FB,
+        projectId,
+        channelAccountId: selectedChannelIds[0],
+        channelAccountIds: selectedChannelIds,
+        timelineId: timelineIdFromQuery || null,
+        voiceSampleId: selectedVoiceSampleId || null,
         title,
         content,
-        contentType: 1
+        contentType: 1,
+        mediaFileId,
+        hashtags: hashtagList
       };
 
       try {
@@ -246,35 +350,27 @@
 
         if (json.success) {
           showToast(selectedPost?.id ? 'Đã cập nhật bài viết' : 'Đã tạo bài viết', 'success');
+          selectedPost = json.data;
           await loadPosts();
         } else {
-          showToast(json.message || 'Lưu bài thất bại', 'error');
+          showToast(json.message || (json.errors || []).join(', ') || 'Lưu bài thất bại', 'error');
         }
       } catch (e) {
         showToast('Lỗi lưu bài viết: ' + e.message, 'error');
       }
     }
 
-    function publishPost() {
-      if (!selectedPost?.id) return showToast('Lưu bài trước khi đăng', 'error');
-      confirmAction('Đăng bài lên kênh đã chọn ngay?', async () => {
-        showToast('Demo: Đang đăng bài...', 'info');
-        await new Promise(r => setTimeout(r, 900));
-        showToast('Đã đăng bài thành công!', 'success');
-        DemoStore.addNotification('Đăng bài', selectedPost.title || 'Bài viết', 'post');
-      });
-    }
-
     function schedulePost() {
       if (!selectedPost?.id) return showToast('Lưu bài trước khi lên lịch', 'error');
-      showModal('Lên lịch đăng', `
+      showModal('Lên lịch đăng tự động', `
         <div class="form-group">
           <label>Thời gian đăng</label>
           <input id="schAt" type="datetime-local" class="form-control" />
         </div>
+        <p style="font-size:.8rem;color:#8f95aa;">Hệ thống sẽ tự động đăng bài lên các nền tảng đã chọn đúng giờ này (qua Facebook Graph API thật với các trang đã kết nối).</p>
       `, `
         <button class="btn-outline btn-sm" onclick="closeModal()">Hủy</button>
-        <button class="btn-primary btn-sm" id="doSchedule">Xác nhận</button>
+        <button class="btn-primary btn-sm" id="doSchedule">Xác nhận lên lịch</button>
       `);
       document.getElementById('doSchedule')?.addEventListener('click', async () => {
         const t = document.getElementById('schAt').value;
@@ -286,11 +382,31 @@
         });
         closeModal();
         if (json.success) {
-          showToast('Đã lên lịch', 'success');
+          showToast('Đã lên lịch — bài viết sẽ tự động đăng đúng giờ.', 'success');
           await loadPosts();
         } else {
           showToast(json.message || 'Lên lịch thất bại', 'error');
         }
+      });
+    }
+
+    async function publishNow() {
+      if (!selectedPost?.id) return showToast('Lưu bài trước khi đăng', 'error');
+      confirmAction('Đăng bài lên các nền tảng đã chọn ngay bây giờ?', async () => {
+        const json = await apiPost(`/api/Posts/${selectedPost.id}/publish`, {});
+        if (!json.success) {
+          return showToast(json.message || 'Đăng bài thất bại', 'error');
+        }
+        const results = json.data?.results || [];
+        const okCount = results.filter(r => r.success).length;
+        const failMsgs = results.filter(r => !r.success).map(r => `${r.channelAccountName}: ${r.errorMessage}`);
+        if (okCount > 0) {
+          showToast(`Đã đăng thành công lên ${okCount}/${results.length} nền tảng.`, okCount === results.length ? 'success' : 'info');
+        }
+        if (failMsgs.length) {
+          showToast(failMsgs.join(' | '), 'error');
+        }
+        await loadPosts();
       });
     }
 
@@ -312,7 +428,7 @@
       selectedPost = createDraft();
     }
 
-    loadPosts();
+    bootstrap();
   </script>
 </body>
 </html>

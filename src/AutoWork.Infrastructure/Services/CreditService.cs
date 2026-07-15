@@ -32,8 +32,11 @@ public class CreditService : ICreditService
 
     public async Task<bool> HasSufficientCreditsAsync(Guid userId, int amount, CancellationToken cancellationToken = default)
     {
-        var credit = await GetOrCreateCreditAsync(userId, cancellationToken);
-        return credit.Balance >= amount;
+        // DEMO PHASE: luôn cho phép, chưa chặn theo credit — billing/giới hạn số lần dùng sẽ làm ở
+        // bản cập nhật sau khi các tính năng chính (Brand Memory, Chiến dịch tự động, đăng bài) đã
+        // demo ổn. Việc trừ credit vẫn ghi nhận bình thường (xem DeductCreditsAsync) để không mất
+        // dữ liệu lịch sử dùng — chỉ tắt phần CHẶN khi không đủ.
+        return true;
     }
 
     public async Task<CreditTransactionDto> DeductCreditsAsync(
@@ -51,9 +54,15 @@ public class CreditService : ICreditService
         }
 
         var credit = await GetOrCreateCreditAsync(userId, cancellationToken);
+
+        // DEMO PHASE: không chặn khi thiếu credit (xem ghi chú ở HasSufficientCreditsAsync) —
+        // vẫn trừ bình thường (có thể âm), để lịch sử CreditTransaction phản ánh đúng mức đã dùng,
+        // phục vụ việc bật lại billing thật ở bản cập nhật sau mà không cần sửa logic tính toán.
         if (credit.Balance < amount)
         {
-            throw new BadRequestException("Insufficient credits.");
+            _logger.LogWarning(
+                "User {UserId} deducting {Amount} credits with insufficient balance {Balance} — allowed in demo phase.",
+                userId, amount, credit.Balance);
         }
 
         credit.Balance -= amount;

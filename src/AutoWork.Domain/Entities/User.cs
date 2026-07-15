@@ -43,6 +43,9 @@ public class User : BaseEntity
 
     public ICollection<Project> Projects { get; set; } = new List<Project>();
 
+    /// <summary>Các workspace mà user này là thành viên (không phải chủ sở hữu).</summary>
+    public ICollection<ProjectMember> ProjectMemberships { get; set; } = new List<ProjectMember>();
+
     public ICollection<ChannelAccount> ChannelAccounts { get; set; } = new List<ChannelAccount>();
 
     public ICollection<FacebookAccount> FacebookAccounts { get; set; } = new List<FacebookAccount>();

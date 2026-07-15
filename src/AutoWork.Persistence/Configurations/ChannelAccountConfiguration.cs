@@ -16,6 +16,12 @@ public class ChannelAccountConfiguration : IEntityTypeConfiguration<ChannelAccou
         builder.Property(ca => ca.ProfileUrl).HasMaxLength(500);
         builder.Property(ca => ca.AvatarUrl).HasMaxLength(500);
 
+        // Token OAuth để đăng bài qua API — để trống (null) ở giai đoạn hiện tại,
+        // sẽ được điền khi làm tính năng liên kết Facebook/Zalo API thật (giai đoạn 2).
+        builder.Property(ca => ca.AccessToken).HasColumnType("nvarchar(max)");
+        builder.Property(ca => ca.RefreshToken).HasColumnType("nvarchar(max)");
+        builder.Property(ca => ca.Scope).HasMaxLength(500);
+
         builder.HasIndex(ca => new { ca.ProjectId, ca.ChannelId, ca.ExternalId });
 
         builder.HasOne(ca => ca.Project)
@@ -31,6 +37,13 @@ public class ChannelAccountConfiguration : IEntityTypeConfiguration<ChannelAccou
         builder.HasOne(ca => ca.User)
             .WithMany(u => u.ChannelAccounts)
             .HasForeignKey(ca => ca.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Phân cấp: 1 tài khoản Facebook cha quản lý nhiều Fanpage con
+        builder.HasOne(ca => ca.ParentChannelAccount)
+            .WithMany(ca => ca.ChildChannelAccounts)
+            .HasForeignKey(ca => ca.ParentChannelAccountId)
+            .IsRequired(false)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

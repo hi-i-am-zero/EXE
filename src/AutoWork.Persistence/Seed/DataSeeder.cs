@@ -27,6 +27,7 @@ public static partial class DataSeeder
         await SeedRolePermissionsMatrixAsync(context, cancellationToken);
         await SeedPlansAsync(context, cancellationToken);
         await SeedChannelsAsync(context, cancellationToken);
+        await SeedFlowMateLookupsAsync(context, cancellationToken);
         await SeedSettingsAsync(context, cancellationToken);
         await SeedAiPromptsAsync(context, cancellationToken);
         await SeedExtendedAiPromptsAsync(context, cancellationToken);

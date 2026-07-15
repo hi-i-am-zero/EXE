@@ -1,5 +1,6 @@
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\bin\Debug\net8.0\appsettings.Development.json
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\bin\Debug\net8.0\appsettings.json
+D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\bin\Debug\net8.0\AutoWork.Web.staticwebassets.runtime.json
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\bin\Debug\net8.0\AutoWork.Web.staticwebassets.endpoints.json
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\bin\Debug\net8.0\AutoWork.Web.exe
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\bin\Debug\net8.0\AutoWork.Web.deps.json
@@ -15,6 +16,7 @@ D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\AutoWork.We
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\AutoWork.Web.AssemblyInfo.cs
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\AutoWork.Web.csproj.CoreCompileInputs.cache
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\AutoWork.Web.MvcApplicationPartsAssemblyInfo.cache
+D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\AutoWork.Web.sourcelink.json
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\rjimswa.dswa.cache.json
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
@@ -24,12 +26,10 @@ D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\staticwebas
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\staticwebassets.development.json
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\swae.build.ex.cache
+D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\AutoWork.8DAF167B.Up2Date
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\AutoWork.Web.dll
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\refint\AutoWork.Web.dll
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\AutoWork.Web.pdb
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\AutoWork.Web.genruntimeconfig.cache
 D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\ref\AutoWork.Web.dll
-D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\bin\Debug\net8.0\AutoWork.Web.staticwebassets.runtime.json
-D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\AutoWork.Web.sourcelink.json
-D:\EXE01\AIMarketingAssistant\frontend\AutoWork.Web\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

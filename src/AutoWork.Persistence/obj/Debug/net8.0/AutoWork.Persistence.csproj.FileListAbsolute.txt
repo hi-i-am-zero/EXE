@@ -3,6 +3,7 @@ D:\EXE01\AIMarketingAssistant\src\AutoWork.Persistence\obj\Debug\net8.0\AutoWork
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Persistence\obj\Debug\net8.0\AutoWork.Persistence.AssemblyInfoInputs.cache
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Persistence\obj\Debug\net8.0\AutoWork.Persistence.AssemblyInfo.cs
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Persistence\obj\Debug\net8.0\AutoWork.Persistence.csproj.CoreCompileInputs.cache
+D:\EXE01\AIMarketingAssistant\src\AutoWork.Persistence\obj\Debug\net8.0\AutoWork.Persistence.sourcelink.json
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Persistence\bin\Debug\net8.0\AutoWork.Persistence.deps.json
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Persistence\bin\Debug\net8.0\AutoWork.Persistence.runtimeconfig.json
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Persistence\bin\Debug\net8.0\AutoWork.Persistence.dll
@@ -19,4 +20,3 @@ D:\EXE01\AIMarketingAssistant\src\AutoWork.Persistence\obj\Debug\net8.0\refint\A
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Persistence\obj\Debug\net8.0\AutoWork.Persistence.pdb
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Persistence\obj\Debug\net8.0\AutoWork.Persistence.genruntimeconfig.cache
 D:\EXE01\AIMarketingAssistant\src\AutoWork.Persistence\obj\Debug\net8.0\ref\AutoWork.Persistence.dll
-D:\EXE01\AIMarketingAssistant\src\AutoWork.Persistence\obj\Debug\net8.0\AutoWork.Persistence.sourcelink.json
