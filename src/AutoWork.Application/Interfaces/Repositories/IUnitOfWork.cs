@@ -21,6 +21,7 @@ public interface IUnitOfWork : IDisposable
     ICampaignRepository Campaigns { get; }
     ITimelineRepository Timelines { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+    IPendingRegistrationRepository PendingRegistrations { get; }
     Task BeginTransactionAsync(CancellationToken cancellationToken = default);
     Task CommitTransactionAsync(CancellationToken cancellationToken = default);
     Task RollbackTransactionAsync(CancellationToken cancellationToken = default);

@@ -18,4 +18,9 @@ public interface IUserRepository : IRepository<User>
     Task AddPasswordResetTokenAsync(PasswordResetToken token, CancellationToken cancellationToken = default);
     void UpdatePasswordResetToken(PasswordResetToken token);
     Task RevokeUserRefreshTokensAsync(Guid userId, CancellationToken cancellationToken = default);
+    Task AddEmailVerificationTokenAsync(EmailVerificationToken token, CancellationToken cancellationToken = default);
+    Task<EmailVerificationToken?> GetEmailVerificationTokenAsync(string token, CancellationToken cancellationToken = default);
+    void UpdateEmailVerificationToken(EmailVerificationToken token);
+    Task InvalidateEmailVerificationTokensAsync(Guid userId, CancellationToken cancellationToken = default);
+    Task DeleteUnverifiedUserAsync(Guid userId, CancellationToken cancellationToken = default);
 }

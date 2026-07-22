@@ -4,47 +4,54 @@ using AutoWork.Application.DTOs.Auth;
 using AutoWork.Application.Interfaces.Repositories;
 using AutoWork.Application.Interfaces.Services;
 using AutoWork.Domain.Entities;
-using AutoWork.Shared.Enums;
 using MediatR;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace AutoWork.Application.Features.Auth.Commands;
 
-public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthResponse>
+public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IJwtTokenService _jwtTokenService;
     private readonly IEmailService _emailService;
+    private readonly IHostEnvironment _environment;
     private readonly ILogger<RegisterCommandHandler> _logger;
 
     public RegisterCommandHandler(
         IUnitOfWork unitOfWork,
-        IJwtTokenService jwtTokenService,
         IEmailService emailService,
+        IHostEnvironment environment,
         ILogger<RegisterCommandHandler> logger)
     {
         _unitOfWork = unitOfWork;
-        _jwtTokenService = jwtTokenService;
         _emailService = emailService;
+        _environment = environment;
         _logger = logger;
     }
 
-    public async Task<AuthResponse> Handle(RegisterCommand command, CancellationToken cancellationToken)
+    public async Task<RegisterResponse> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
         var request = command.Request;
+        var email = request.Email.Trim().ToLowerInvariant();
 
-        if (await _unitOfWork.Users.EmailExistsAsync(request.Email, cancellationToken))
+        var existingUser = await _unitOfWork.Users.GetByEmailAsync(email, cancellationToken);
+        if (existingUser is not null)
         {
-            throw new BadRequestException("Email is already registered.");
+            if (existingUser.EmailVerified)
+                throw new BadRequestException("Email đã được đăng ký.");
+
+            await _unitOfWork.Users.DeleteUnverifiedUserAsync(existingUser.Id, cancellationToken);
         }
 
         var normalizedPhone = PhoneHelper.Normalize(request.Phone)
-            ?? throw new BadRequestException("Phone number is required.");
+            ?? throw new BadRequestException("Số điện thoại là bắt buộc.");
 
         if (await _unitOfWork.Users.PhoneExistsAsync(normalizedPhone, cancellationToken: cancellationToken))
-        {
-            throw new BadRequestException("Phone number is already registered.");
-        }
+            throw new BadRequestException("Số điện thoại đã được đăng ký.");
+
+        var pendingByPhone = await _unitOfWork.PendingRegistrations.GetActiveByPhoneAsync(normalizedPhone, cancellationToken);
+        if (pendingByPhone is not null && !string.Equals(pendingByPhone.Email, email, StringComparison.OrdinalIgnoreCase))
+            throw new BadRequestException("Số điện thoại đã được đăng ký.");
 
         Guid? referredByUserId = null;
         if (!string.IsNullOrWhiteSpace(request.ReferralCode))
@@ -53,65 +60,62 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
             referredByUserId = referrer?.Id;
         }
 
-        var user = new User
+        await _unitOfWork.PendingRegistrations.RemoveActiveByEmailAsync(email, cancellationToken);
+
+        var verificationToken = Guid.NewGuid().ToString("N");
+        var pending = new PendingRegistration
         {
-            Email = request.Email.Trim().ToLowerInvariant(),
+            Email = email,
             PasswordHash = PasswordHelper.Hash(request.Password),
             FirstName = request.FirstName.Trim(),
             LastName = request.LastName.Trim(),
             Phone = normalizedPhone,
             ReferralCode = GenerateReferralCode(),
             ReferredByUserId = referredByUserId,
-            IsActive = true
+            Token = verificationToken,
+            ExpiresAt = DateTime.UtcNow.AddHours(24)
         };
 
-        await _unitOfWork.Users.AddAsync(user, cancellationToken);
-
-        var credit = new Credit
-        {
-            UserId = user.Id,
-            Balance = 100,
-            TotalEarned = 100,
-            TotalUsed = 0
-        };
-
-        await _unitOfWork.Credits.AddAsync(credit, cancellationToken);
-
-        var roles = new List<string> { UserRoleType.User.ToString() };
-        var accessToken = _jwtTokenService.GenerateAccessToken(user, roles);
-        var refreshTokenValue = _jwtTokenService.GenerateRefreshToken();
-
-        var refreshToken = new RefreshToken
-        {
-            UserId = user.Id,
-            Token = refreshTokenValue,
-            ExpiresAt = DateTime.UtcNow.AddDays(7)
-        };
-
-        await _unitOfWork.Users.AddRefreshTokenAsync(refreshToken, cancellationToken);
+        await _unitOfWork.PendingRegistrations.AddAsync(pending, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+        var verifyUrl = _emailService.BuildEmailVerificationUrl(verificationToken);
 
         try
         {
-            await _emailService.SendWelcomeEmailAsync(user.Email, user.FirstName, cancellationToken);
+            await _emailService.SendEmailVerificationAsync(
+                pending.Email,
+                pending.FirstName,
+                verifyUrl,
+                cancellationToken);
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Could not send registration email to {Email}", user.Email);
+            _logger.LogError(ex, "Failed to send verification email to {Email}", pending.Email);
+
+            if (!_environment.IsDevelopment())
+            {
+                await _unitOfWork.PendingRegistrations.RemoveActiveByEmailAsync(email, cancellationToken);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+                throw new BadRequestException(
+                    "Không gửi được email xác nhận. Kiểm tra cấu hình Brevo hoặc SMTP.");
+            }
+
+            return new RegisterResponse
+            {
+                Email = pending.Email,
+                RequiresEmailVerification = true,
+                EmailSent = false,
+                DeliveryMessage = ex.Message,
+                DevVerificationUrl = verifyUrl
+            };
         }
 
-        return new AuthResponse
+        return new RegisterResponse
         {
-            UserId = user.Id,
-            Email = user.Email,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            Phone = user.Phone,
-            AvatarUrl = user.AvatarUrl,
-            AccessToken = accessToken,
-            RefreshToken = refreshTokenValue,
-            ExpiresAt = _jwtTokenService.GetAccessTokenExpiration(),
-            Roles = roles
+            Email = pending.Email,
+            RequiresEmailVerification = true,
+            EmailSent = true
         };
     }
 

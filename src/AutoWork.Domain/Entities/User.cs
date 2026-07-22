@@ -19,6 +19,8 @@ public class User : BaseEntity
 
     public bool IsActive { get; set; } = true;
 
+    public bool EmailVerified { get; set; }
+
     public DateTime? LastLoginAt { get; set; }
 
     public string? GoogleId { get; set; }
@@ -73,6 +75,8 @@ public class User : BaseEntity
     public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 
     public ICollection<PasswordResetToken> PasswordResetTokens { get; set; } = new List<PasswordResetToken>();
+
+    public ICollection<EmailVerificationToken> EmailVerificationTokens { get; set; } = new List<EmailVerificationToken>();
 
     public ICollection<AuditLog> AuditLogs { get; set; } = new List<AuditLog>();
 

@@ -114,4 +114,54 @@ public class UserRepository : Repository<User>, IUserRepository
             token.UpdatedAt = DateTime.UtcNow;
         }
     }
+
+    public async Task AddEmailVerificationTokenAsync(
+        EmailVerificationToken token,
+        CancellationToken cancellationToken = default) =>
+        await Context.EmailVerificationTokens.AddAsync(token, cancellationToken);
+
+    public async Task<EmailVerificationToken?> GetEmailVerificationTokenAsync(
+        string token,
+        CancellationToken cancellationToken = default) =>
+        await Context.EmailVerificationTokens
+            .Include(t => t.User)
+            .FirstOrDefaultAsync(t => t.Token == token, cancellationToken);
+
+    public void UpdateEmailVerificationToken(EmailVerificationToken token) =>
+        Context.EmailVerificationTokens.Update(token);
+
+    public async Task InvalidateEmailVerificationTokensAsync(
+        Guid userId,
+        CancellationToken cancellationToken = default)
+    {
+        var tokens = await Context.EmailVerificationTokens
+            .Where(t => t.UserId == userId && t.UsedAt == null && t.ExpiresAt > DateTime.UtcNow)
+            .ToListAsync(cancellationToken);
+
+        foreach (var token in tokens)
+        {
+            token.UsedAt = DateTime.UtcNow;
+            token.UpdatedAt = DateTime.UtcNow;
+        }
+    }
+
+    public async Task DeleteUnverifiedUserAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        var credits = await Context.Credits.Where(c => c.UserId == userId).ToListAsync(cancellationToken);
+        Context.Credits.RemoveRange(credits);
+
+        var emailTokens = await Context.EmailVerificationTokens
+            .Where(t => t.UserId == userId)
+            .ToListAsync(cancellationToken);
+        Context.EmailVerificationTokens.RemoveRange(emailTokens);
+
+        var refreshTokens = await Context.RefreshTokens
+            .Where(t => t.UserId == userId)
+            .ToListAsync(cancellationToken);
+        Context.RefreshTokens.RemoveRange(refreshTokens);
+
+        var user = await DbSet.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+        if (user is not null)
+            DbSet.Remove(user);
+    }
 }

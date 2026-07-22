@@ -38,6 +38,7 @@ public static class DependencyInjection
         services.AddScoped<IBrandProfileRepository, BrandProfileRepository>();
         services.AddScoped<ICampaignRepository, CampaignRepository>();
         services.AddScoped<ITimelineRepository, TimelineRepository>();
+        services.AddScoped<IPendingRegistrationRepository, PendingRegistrationRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
@@ -481,6 +482,65 @@ public static class DependencyInjection
             """
             IF OBJECT_ID('dbo.PostAnalytics') IS NOT NULL AND NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_PostAnalytics_PostChannelAccountId')
                 CREATE UNIQUE INDEX IX_PostAnalytics_PostChannelAccountId ON dbo.PostAnalytics(PostChannelAccountId);
+            """,
+            """
+            IF COL_LENGTH('dbo.Users', 'EmailVerified') IS NULL
+                ALTER TABLE dbo.Users ADD EmailVerified BIT NOT NULL CONSTRAINT DF_Users_EmailVerified DEFAULT(0);
+            """,
+            """
+            IF COL_LENGTH('dbo.Users', 'EmailVerified') IS NOT NULL
+                UPDATE dbo.Users SET EmailVerified = 1;
+            """,
+            """
+            IF OBJECT_ID('dbo.EmailVerificationTokens') IS NULL
+            CREATE TABLE dbo.EmailVerificationTokens (
+                Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+                UserId UNIQUEIDENTIFIER NOT NULL,
+                Token NVARCHAR(128) NOT NULL,
+                ExpiresAt DATETIME2 NOT NULL,
+                UsedAt DATETIME2 NULL,
+                CreatedAt DATETIME2 NOT NULL,
+                UpdatedAt DATETIME2 NULL,
+                CreatedBy UNIQUEIDENTIFIER NULL,
+                UpdatedBy UNIQUEIDENTIFIER NULL,
+                IsDeleted BIT NOT NULL DEFAULT 0,
+                CONSTRAINT FK_EmailVerificationTokens_Users FOREIGN KEY (UserId) REFERENCES dbo.Users(Id) ON DELETE CASCADE);
+            """,
+            """
+            IF OBJECT_ID('dbo.EmailVerificationTokens') IS NOT NULL AND NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_EmailVerificationTokens_Token')
+                CREATE UNIQUE INDEX IX_EmailVerificationTokens_Token ON dbo.EmailVerificationTokens(Token);
+            """,
+            """
+            IF OBJECT_ID('dbo.EmailVerificationTokens') IS NOT NULL AND NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_EmailVerificationTokens_UserId')
+                CREATE INDEX IX_EmailVerificationTokens_UserId ON dbo.EmailVerificationTokens(UserId);
+            """,
+            """
+            IF OBJECT_ID('dbo.PendingRegistrations') IS NULL
+            CREATE TABLE dbo.PendingRegistrations (
+                Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+                Email NVARCHAR(256) NOT NULL,
+                PasswordHash NVARCHAR(512) NOT NULL,
+                FirstName NVARCHAR(100) NOT NULL,
+                LastName NVARCHAR(100) NOT NULL,
+                Phone NVARCHAR(20) NOT NULL,
+                ReferralCode NVARCHAR(32) NOT NULL,
+                ReferredByUserId UNIQUEIDENTIFIER NULL,
+                Token NVARCHAR(128) NOT NULL,
+                ExpiresAt DATETIME2 NOT NULL,
+                UsedAt DATETIME2 NULL,
+                CreatedAt DATETIME2 NOT NULL,
+                UpdatedAt DATETIME2 NULL,
+                CreatedBy UNIQUEIDENTIFIER NULL,
+                UpdatedBy UNIQUEIDENTIFIER NULL,
+                IsDeleted BIT NOT NULL DEFAULT 0);
+            """,
+            """
+            IF OBJECT_ID('dbo.PendingRegistrations') IS NOT NULL AND NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_PendingRegistrations_Token')
+                CREATE UNIQUE INDEX IX_PendingRegistrations_Token ON dbo.PendingRegistrations(Token);
+            """,
+            """
+            IF OBJECT_ID('dbo.PendingRegistrations') IS NOT NULL AND NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_PendingRegistrations_Email')
+                CREATE INDEX IX_PendingRegistrations_Email ON dbo.PendingRegistrations(Email);
             """
         };
 

@@ -28,7 +28,8 @@ public class UnitOfWork : IUnitOfWork
         IAuditLogRepository auditLogs,
         IBrandProfileRepository brandProfiles,
         ICampaignRepository campaigns,
-        ITimelineRepository timelines)
+        ITimelineRepository timelines,
+        IPendingRegistrationRepository pendingRegistrations)
     {
         _context = context;
         Users = users;
@@ -49,6 +50,7 @@ public class UnitOfWork : IUnitOfWork
         BrandProfiles = brandProfiles;
         Campaigns = campaigns;
         Timelines = timelines;
+        PendingRegistrations = pendingRegistrations;
     }
 
     public IUserRepository Users { get; }
@@ -69,6 +71,7 @@ public class UnitOfWork : IUnitOfWork
     public IBrandProfileRepository BrandProfiles { get; }
     public ICampaignRepository Campaigns { get; }
     public ITimelineRepository Timelines { get; }
+    public IPendingRegistrationRepository PendingRegistrations { get; }
 
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
         await _context.SaveChangesAsync(cancellationToken);

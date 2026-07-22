@@ -26,7 +26,12 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
 
         if (user is null || !user.IsActive || !PasswordHelper.Verify(request.Password, user.PasswordHash))
         {
-            throw new UnauthorizedException("Invalid email or password.");
+            throw new UnauthorizedException("Email hoặc mật khẩu không đúng.");
+        }
+
+        if (!user.EmailVerified)
+        {
+            throw new UnauthorizedException("Vui lòng xác nhận email trước khi đăng nhập. Kiểm tra hộp thư (cả Spam).");
         }
 
         user.LastLoginAt = DateTime.UtcNow;

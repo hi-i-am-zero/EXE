@@ -1,5 +1,6 @@
 using AspNetCoreRateLimit;
 using AutoWork.API.Authorization;
+using AutoWork.API.Configuration;
 using AutoWork.API.Filters;
 using AutoWork.API.Middleware;
 using AutoWork.Application;
@@ -12,6 +13,7 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddEmailPropertiesFile("email.properties");
 builder.Configuration.AddJsonFile("appsettings.Development.local.json", optional: true, reloadOnChange: true);
 
 Log.Logger = new LoggerConfiguration()
@@ -121,23 +123,40 @@ app.Run();
 
 static void LogEmailConfiguration(IConfiguration configuration, bool isDevelopment)
 {
+    var provider = configuration["EmailSettings:Provider"] ?? "Auto";
+    var brevoKey = configuration["EmailSettings:BrevoApiKey"];
     var host = configuration["EmailSettings:SmtpHost"];
     var user = configuration["EmailSettings:Username"];
     var pass = configuration["EmailSettings:Password"];
     var from = configuration["EmailSettings:FromEmail"];
+    var devFallback = configuration["EmailSettings:UseDevFileFallback"];
+
+    if (!string.IsNullOrWhiteSpace(brevoKey) && !string.IsNullOrWhiteSpace(from ?? user))
+    {
+        Log.Information("Email Brevo configured — gửi được tới mọi địa chỉ người dùng (From: {From})", from ?? user);
+        return;
+    }
 
     if (!string.IsNullOrWhiteSpace(host)
         && !string.IsNullOrWhiteSpace(user)
         && !string.IsNullOrWhiteSpace(pass)
         && (!string.IsNullOrWhiteSpace(from) || !string.IsNullOrWhiteSpace(user)))
     {
-        Log.Information("Email SMTP configured: {Host} as {User}", host, user);
+        Log.Information("Email SMTP configured: {Host} as {User} — gửi tới bất kỳ email người dùng nào", host, user);
+        return;
+    }
+
+    if (isDevelopment && !string.Equals(devFallback, "false", StringComparison.OrdinalIgnoreCase))
+    {
+        Log.Warning(
+            "Email chưa cấu hình Brevo/SMTP — dùng DevFile: lưu email vào logs/emails/ (mọi địa chỉ người dùng). " +
+            "Để gửi mail thật: cập nhật src/AutoWork.API/email.properties hoặc chạy scripts/configure-email.ps1");
         return;
     }
 
     Log.Warning(
-        "Email SMTP chưa cấu hình — email đăng ký / quên mật khẩu sẽ KHÔNG được gửi. " +
-        "Điền EmailSettings vào appsettings.Development.local.json hoặc chạy scripts/configure-email.ps1");
+        "Email chưa cấu hình — không gửi được mail xác nhận/OTP. " +
+        "Cập nhật email.properties hoặc appsettings.Development.local.json");
 }
 
 public partial class Program;

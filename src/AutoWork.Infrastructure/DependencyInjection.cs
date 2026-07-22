@@ -83,8 +83,9 @@ public static class DependencyInjection
         services.AddHttpClient<WordPressService>();
         services.AddHttpClient<ZaloService>();
 
-        services.AddScoped<IJwtTokenService, JwtTokenService>();
-        services.AddScoped<IEmailService, EmailService>();
+        services.AddHttpClient(nameof(BrevoEmailSender));
+
+        services.AddScoped<IJwtTokenService, JwtTokenService>();        services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<ICreditService, CreditService>();
         services.AddScoped<IAiContentService, AiContentService>();

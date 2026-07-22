@@ -385,7 +385,33 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.Auth.AuthResponse, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.Auth.RegisterResponse, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.AuthController",
+    "Method": "ResendVerification",
+    "RelativePath": "api/auth/resend-verification",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AutoWork.Application.DTOs.Auth.ResendVerificationRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.Auth.RegisterResponse, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -479,6 +505,32 @@
         "Name": "request",
         "Type": "AutoWork.API.Controllers.AuthSocialController\u002BGoogleSocialLoginRequest",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "AutoWork.Shared.Models.ApiResponse\u00601[[AutoWork.Application.DTOs.Auth.AuthResponse, AutoWork.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "AutoWork.API.Controllers.AuthController",
+    "Method": "VerifyEmail",
+    "RelativePath": "api/auth/verify-email",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "token",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [

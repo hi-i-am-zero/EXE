@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AutoWork.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a0fad934921b5f9797cc63a9bdc2a9fea11c0b89")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e8a734c05f546c8a9a9f969174042211e4242a45")]
 [assembly: System.Reflection.AssemblyProductAttribute("AutoWork.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AutoWork.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
