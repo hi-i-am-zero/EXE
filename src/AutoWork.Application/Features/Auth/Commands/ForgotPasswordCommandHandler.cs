@@ -50,19 +50,27 @@ public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordComman
         await _unitOfWork.Users.AddPasswordResetTokenAsync(passwordResetToken, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
+        var emailSent = false;
+        string? deliveryMessage = null;
+
         try
         {
             await _emailService.SendPasswordResetEmailAsync(user.Email, otpCode, resetToken, cancellationToken);
+            emailSent = true;
+            _logger.LogInformation("Password reset OTP email sent to {Email}", user.Email);
         }
         catch (Exception ex)
         {
+            deliveryMessage = ex.Message;
             _logger.LogWarning(ex, "Could not send password reset email to {Email}", user.Email);
         }
 
         return new ForgotPasswordResponse
         {
             ResetToken = resetToken,
-            DevOtpCode = _environment.IsDevelopment() ? otpCode : null
+            EmailSent = emailSent,
+            DeliveryMessage = deliveryMessage,
+            DevOtpCode = !emailSent && _environment.IsDevelopment() ? otpCode : null
         };
     }
 }

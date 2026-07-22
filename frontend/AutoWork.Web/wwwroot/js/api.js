@@ -75,7 +75,7 @@ async function parseApiResponse(res) {
 async function apiFetch(path, options = {}) {
   await apiReady;
 
-  const isPublicAuth = /^\/api\/auth\/(login|register|refresh|forgot-password|reset-password)/i.test(path);
+  const isPublicAuth = /^\/api\/auth\/(login|register|refresh|forgot-password|reset-password|verify-email|resend-verification)/i.test(path);
   const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
   const token = localStorage.getItem('accessToken');
 

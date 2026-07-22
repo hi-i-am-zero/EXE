@@ -44,6 +44,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
     public DbSet<PasswordResetToken> PasswordResetTokens => Set<PasswordResetToken>();
+    public DbSet<EmailVerificationToken> EmailVerificationTokens => Set<EmailVerificationToken>();
+    public DbSet<PendingRegistration> PendingRegistrations => Set<PendingRegistration>();
 
     // ===== FlowMate v2: Workspace collaboration =====
     public DbSet<ProjectMember> ProjectMembers => Set<ProjectMember>();

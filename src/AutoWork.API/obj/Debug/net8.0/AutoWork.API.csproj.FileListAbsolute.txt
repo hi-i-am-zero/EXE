@@ -212,3 +212,4 @@ D:\EXE01\AIMarketingAssistant\src\AutoWork.API\obj\Debug\net8.0\refint\AutoWork.
 D:\EXE01\AIMarketingAssistant\src\AutoWork.API\obj\Debug\net8.0\AutoWork.API.pdb
 D:\EXE01\AIMarketingAssistant\src\AutoWork.API\obj\Debug\net8.0\AutoWork.API.genruntimeconfig.cache
 D:\EXE01\AIMarketingAssistant\src\AutoWork.API\obj\Debug\net8.0\ref\AutoWork.API.dll
+D:\EXE01\AIMarketingAssistant\src\AutoWork.API\bin\Debug\net8.0\email.properties

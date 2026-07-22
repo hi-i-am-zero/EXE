@@ -21,7 +21,7 @@ if (isDev)
     app.Use(async (ctx, next) =>
     {
         var path = ctx.Request.Path.Value?.TrimEnd('/') ?? string.Empty;
-        if (path is "" or "/index.html" or "/login.html" or "/register.html")
+        if (path is "" or "/index.html" or "/login.html" or "/register.html" or "/verify-email.html")
         {
             var fileName = path is "" ? "index.html" : path.TrimStart('/');
             var filePath = Path.Combine(webRoot, fileName);

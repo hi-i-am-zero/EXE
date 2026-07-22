@@ -17,6 +17,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.LastName).HasMaxLength(100).IsRequired();
         builder.Property(u => u.AvatarUrl).HasMaxLength(500);
         builder.Property(u => u.Phone).HasMaxLength(20);
+        builder.Property(u => u.EmailVerified).HasDefaultValue(false);
         builder.Property(u => u.GoogleId).HasMaxLength(128);
         builder.Property(u => u.FacebookId).HasMaxLength(128);
         builder.Property(u => u.ReferralCode).HasMaxLength(32);

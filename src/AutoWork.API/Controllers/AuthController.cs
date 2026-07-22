@@ -16,8 +16,27 @@ public class AuthController : ApiControllerBase
 
     [HttpPost("register")]
     [AllowAnonymous]
-    public async Task<ActionResult<ApiResponse<AuthResponse>>> Register([FromBody] RegisterRequest request) =>
-        OkResponse(await _mediator.Send(new RegisterCommand { Request = request }), "Registration successful.");
+    public async Task<ActionResult<ApiResponse<RegisterResponse>>> Register([FromBody] RegisterRequest request)
+    {
+        var result = await _mediator.Send(new RegisterCommand { Request = request });
+        return OkResponse(result, "Đăng ký thành công. Vui lòng kiểm tra email để xác nhận tài khoản.");
+    }
+
+    [HttpGet("verify-email")]
+    [AllowAnonymous]
+    public async Task<ActionResult<ApiResponse<AuthResponse>>> VerifyEmail([FromQuery] string token)
+    {
+        var result = await _mediator.Send(new VerifyEmailCommand { Token = token });
+        return OkResponse(result, "Xác nhận email thành công.");
+    }
+
+    [HttpPost("resend-verification")]
+    [AllowAnonymous]
+    public async Task<ActionResult<ApiResponse<RegisterResponse>>> ResendVerification([FromBody] ResendVerificationRequest request)
+    {
+        var result = await _mediator.Send(new ResendVerificationEmailCommand { Email = request.Email });
+        return OkResponse(result, "Nếu email chưa xác nhận, chúng tôi đã gửi lại link xác nhận.");
+    }
 
     [HttpPost("login")]
     [AllowAnonymous]

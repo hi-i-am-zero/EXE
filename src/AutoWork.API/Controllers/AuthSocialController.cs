@@ -251,6 +251,7 @@ public class AuthSocialController : ApiControllerBase
                 FirstName = string.IsNullOrWhiteSpace(firstName) ? "Social" : firstName.Trim(),
                 LastName = string.IsNullOrWhiteSpace(lastName) ? "User" : lastName.Trim(),
                 IsActive = true,
+                EmailVerified = true,
                 ReferralCode = GenerateReferralCode()
             };
 

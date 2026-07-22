@@ -19,6 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="email.properties">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AutoWork.Application\AutoWork.Application.csproj" />
     <ProjectReference Include="..\AutoWork.Infrastructure\AutoWork.Infrastructure.csproj" />
     <ProjectReference Include="..\AutoWork.Persistence\AutoWork.Persistence.csproj" />

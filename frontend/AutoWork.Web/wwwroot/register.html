@@ -17,8 +17,8 @@
           <a href="/" class="auth-brand">
             <span class="auth-brand-icon">⚡</span> FlowMate
           </a>
-          <h1>Đăng kí</h1>
-          <p class="subtitle">Tạo tài khoản mới để bắt đầu chiến dịch của bạn.</p>
+          <h1 id="authTitle">Đăng kí</h1>
+          <p class="subtitle" id="authSubtitle">Tạo tài khoản mới để bắt đầu chiến dịch của bạn.</p>
 
           <form id="registerForm">
             <div class="form-row">
@@ -73,6 +73,17 @@
             <br />
             <a href="/" style="color:#8b90a8;font-size:.85rem;margin-top:8px;display:inline-block">← Về trang chủ</a>
           </p>
+
+          <div id="verifySentPanel" class="auth-panel-hidden">
+            <div class="data-card" style="padding:20px;margin-top:8px;text-align:center">
+              <div style="font-size:2rem;margin-bottom:8px">📧</div>
+              <h2 style="font-size:1.25rem;margin-bottom:8px">Kiểm tra email của bạn</h2>
+              <p style="color:#646b80;margin-bottom:12px">Chúng tôi đã gửi link xác nhận tới <strong id="verifyEmailLabel"></strong>.</p>
+              <div id="devVerifyBox" class="auth-dev-hint auth-panel-hidden"></div>
+              <button type="button" class="btn-outline btn-sm" id="btnResendVerify">Gửi lại email xác nhận</button>
+            </div>
+          </div>
+          <div id="registerExtras">
           <div style="display:flex;align-items:center;gap:10px;margin:14px 0;color:#9ca2b8;font-size:.88rem">
             <div style="height:1px;background:#e9ecf8;flex:1"></div>
             hoặc
@@ -85,6 +96,7 @@
             <button class="btn-outline w-100" type="button" id="btnFacebookSocial">
               <i class="bi bi-facebook"></i> Facebook
             </button>
+          </div>
           </div>
         </div>
       </div>
@@ -111,6 +123,63 @@
   <script src="/js/social-auth.js"></script>
   <script>
     Auth.redirectIfLoggedIn();
+
+    let pendingVerifyEmail = '';
+
+    function showVerifySentPanel(email, data) {
+      pendingVerifyEmail = email;
+      const emailSent = data?.emailSent ?? data?.EmailSent ?? false;
+      const deliveryMessage = data?.deliveryMessage ?? data?.DeliveryMessage ?? '';
+      const devUrl = data?.devVerificationUrl ?? data?.DevVerificationUrl ?? null;
+
+      document.getElementById('registerForm').classList.add('auth-panel-hidden');
+      document.querySelector('.auth-footer')?.classList.add('auth-panel-hidden');
+      document.getElementById('registerExtras')?.classList.add('auth-panel-hidden');
+      document.getElementById('verifyEmailLabel').textContent = email;
+      document.getElementById('verifySentPanel').classList.remove('auth-panel-hidden');
+      document.getElementById('authTitle').textContent = 'Xác nhận email';
+      document.getElementById('authSubtitle').textContent = emailSent
+        ? 'Chúng tôi đã gửi link xác nhận tới email của bạn.'
+        : 'Không gửi được email tự động — xem hướng dẫn bên dưới.';
+
+      const devBox = document.getElementById('devVerifyBox');
+      if (devUrl) {
+        const reason = deliveryMessage
+          ? deliveryMessage.replace(/Brevo gửi email thất bại \(\d+\): /, '')
+          : 'Không gửi được email qua Brevo/SMTP.';
+        devBox.innerHTML = `<strong>Lưu ý:</strong> ${escapeHtml(reason)}<br/><br/>` +
+          `<a href="${devUrl}">Bấm xác nhận tạm tại đây</a> để vào dashboard (dev).`;
+        devBox.classList.remove('auth-panel-hidden');
+      } else {
+        devBox.classList.add('auth-panel-hidden');
+      }
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    document.getElementById('btnResendVerify')?.addEventListener('click', async () => {
+      if (!pendingVerifyEmail) return;
+      const btn = document.getElementById('btnResendVerify');
+      btn.disabled = true;
+      try {
+        const json = await apiPost('/api/auth/resend-verification', { email: pendingVerifyEmail });
+        alert(json.success ? 'Đã gửi lại email xác nhận (nếu tài khoản chưa xác nhận).' : formatApiError(json, 'Gửi lại thất bại'));
+        const devUrl = json.data?.devVerificationUrl || json.data?.DevVerificationUrl;
+        if (devUrl) {
+          const devBox = document.getElementById('devVerifyBox');
+          devBox.innerHTML = `<strong>Dev:</strong> <a href="${devUrl}">Link xác nhận</a>`;
+          devBox.classList.remove('auth-panel-hidden');
+        }
+      } finally {
+        btn.disabled = false;
+      }
+    });
 
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -156,8 +225,8 @@
         });
 
         if (json.success && json.data) {
-          Auth.saveSession(json.data);
-          window.location.href = '/app/dashboard.html';
+          const email = json.data.email || json.data.Email || document.getElementById('email').value;
+          showVerifySentPanel(email, json.data);
         } else {
           err.textContent = formatApiError(json, 'Đăng ký thất bại');
           err.style.display = 'block';

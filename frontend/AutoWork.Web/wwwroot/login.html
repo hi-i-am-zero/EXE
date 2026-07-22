@@ -152,6 +152,14 @@
       document.getElementById('stepStatus').textContent = msg;
     }
 
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
     function applyRememberLogin() {
       const saved = Auth.loadRememberLogin();
       if (!saved) return;
@@ -216,10 +224,16 @@
 
         setStep(1, 'Bước 1: Kiểm tra lại thông tin đăng nhập');
         const msg = json.message || 'Email hoặc mật khẩu không đúng';
-        err.textContent = msg.includes('Invalid email or password')
+        const displayMsg = msg.includes('Invalid email or password')
           ? 'Email hoặc mật khẩu không đúng'
           : msg;
+        err.textContent = displayMsg;
         err.style.display = 'block';
+
+        if (/xác nhận email/i.test(displayMsg)) {
+          err.innerHTML = displayMsg + ' <a href="/register.html" style="color:#5b4df2;font-weight:600">Gửi lại email xác nhận</a>';
+        }
+
         btn.textContent = 'Đăng nhập';
         btn.disabled = false;
       } catch (ex) {
@@ -239,6 +253,12 @@
 
     let resetToken = '';
 
+    function updateSendOtpButtonLabel() {
+      const btn = document.getElementById('btnSendOtp');
+      if (!btn) return;
+      btn.textContent = resetToken ? 'Gửi lại mã OTP' : 'Gửi mã OTP';
+    }
+
     function showLoginPanel() {
       document.getElementById('loginPanel').classList.remove('auth-panel-hidden');
       document.getElementById('forgotPanel').classList.add('auth-panel-hidden');
@@ -257,6 +277,7 @@
       document.getElementById('forgotDevHint').classList.add('auth-panel-hidden');
       document.getElementById('resetFields').classList.add('auth-panel-hidden');
       resetToken = '';
+      updateSendOtpButtonLabel();
     }
 
     document.getElementById('btnShowForgot')?.addEventListener('click', (e) => {
@@ -287,7 +308,7 @@
       }
 
       btn.disabled = true;
-      btn.textContent = 'Đang gửi...';
+      btn.textContent = resetToken ? 'Đang gửi lại...' : 'Đang gửi...';
 
       try {
         const json = await apiPost('/api/auth/forgot-password', { email });
@@ -301,23 +322,37 @@
         }
 
         document.getElementById('resetFields').classList.remove('auth-panel-hidden');
-        ok.textContent = resetToken
-          ? 'Đã gửi mã OTP. Kiểm tra email và nhập mã bên dưới.'
-          : 'Nếu email tồn tại, mã OTP đã được gửi. Kiểm tra hộp thư.';
-        ok.style.display = 'block';
 
+        const emailSent = data.emailSent ?? data.EmailSent ?? false;
         const devOtp = data.devOtpCode || data.DevOtpCode;
-        if (devOtp) {
-          devHint.innerHTML = `<strong>Môi trường dev:</strong> Mã OTP là <strong>${devOtp}</strong> (SMTP chưa cấu hình).`;
+        const deliveryMessage = data.deliveryMessage || data.DeliveryMessage || '';
+
+        if (emailSent) {
+          ok.textContent = 'Đã gửi mã OTP tới email của bạn. Kiểm tra hộp thư (kể cả Spam/Quảng cáo) và nhập mã bên dưới.';
+          devHint.classList.add('auth-panel-hidden');
+          document.getElementById('otpCode').value = '';
+        } else if (devOtp) {
+          ok.textContent = 'Không gửi được email OTP. Dùng mã tạm bên dưới (chỉ môi trường dev).';
+          const reason = deliveryMessage
+            ? deliveryMessage.replace(/Brevo gửi email thất bại \(\d+\): /, '')
+            : 'Email chưa gửi được.';
+          devHint.innerHTML = `<strong>Dev:</strong> Mã OTP tạm: <strong>${devOtp}</strong><br/><span style="font-size:.85rem">${escapeHtml(reason)}</span>`;
           devHint.classList.remove('auth-panel-hidden');
           document.getElementById('otpCode').value = devOtp;
+        } else {
+          ok.textContent = resetToken
+            ? 'Nếu email tồn tại, mã OTP đã được gửi. Kiểm tra hộp thư.'
+            : 'Nếu email tồn tại trong hệ thống, mã OTP đã được gửi.';
+          devHint.classList.add('auth-panel-hidden');
         }
+        ok.style.display = 'block';
+        updateSendOtpButtonLabel();
       } catch {
         err.textContent = 'Không kết nối được API. Hãy chạy AutoWork.API trước.';
         err.style.display = 'block';
       } finally {
         btn.disabled = false;
-        btn.textContent = 'Gửi mã OTP';
+        updateSendOtpButtonLabel();
       }
     });
 

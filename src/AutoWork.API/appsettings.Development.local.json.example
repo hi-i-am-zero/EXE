@@ -1,5 +1,6 @@
 {
   "EmailSettings": {
+    "Provider": "Auto",
     "SmtpHost": "smtp.gmail.com",
     "SmtpPort": 587,
     "UseSsl": true,
@@ -7,6 +8,8 @@
     "Password": "YOUR_GMAIL_APP_PASSWORD",
     "FromEmail": "YOUR_GMAIL@gmail.com",
     "FromName": "FlowMate",
-    "AppBaseUrl": "https://localhost:7264"
+    "AppBaseUrl": "https://localhost:7264",
+    "BrevoApiKey": "",
+    "UseDevFileFallback": true
   }
 }
