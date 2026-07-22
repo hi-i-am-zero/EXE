@@ -1,6 +1,16 @@
-function renderAppLayout(activePage) {
+function renderUserAvatar(user, className = 'user-avatar') {
+  const letter = (user?.firstName?.[0] || user?.email?.[0] || "U").toUpperCase();
+  const url = typeof resolveMediaUrl === 'function' ? resolveMediaUrl(user?.avatarUrl) : user?.avatarUrl;
+  if (url) {
+    return `<img src="${url}" alt="" class="${className} user-avatar-img" onerror="this.onerror=null;this.outerHTML='<div class=&quot;${className}&quot;>${letter}</div>';" />`;
+  }
+  return `<div class="${className}">${letter}</div>`;
+}
+
+function renderAppLayout(activePage, options = {}) {
   const user = Auth.getUser();
   const unread = typeof DemoStore !== "undefined" ? DemoStore.unreadCount() : 0;
+  const showUpgradeBanner = options.showUpgradeBanner !== false;
 
   const mainNav = [
     { href: "/app/dashboard.html", icon: "bi-house-door", label: "Trang chủ" },
@@ -27,15 +37,14 @@ function renderAppLayout(activePage) {
   document.body.innerHTML = `
     <div class="app-shell">
       <aside class="sidebar">
-        <a href="/" class="sidebar-brand">
+        <a href="/app/dashboard.html" class="sidebar-brand">
           <span class="brand-icon">⚡</span>
           <span>FlowMate</span>
-          <span class="demo-pill">DEMO</span>
         </a>
 
         <div class="sidebar-profile">
           <div class="user-chip">
-            <div class="user-avatar">${(user?.firstName?.[0] || user?.email?.[0] || "U").toUpperCase()}</div>
+            ${renderUserAvatar(user)}
             <div>
               <div class="user-name">${Auth.displayName()}</div>
               <div class="user-email">${user?.email || ""}</div>
@@ -78,24 +87,20 @@ function renderAppLayout(activePage) {
             <input type="text" placeholder="Tìm kiếm..." />
           </div>
           <div class="topbar-actions">
-            <button class="btn-outline btn-sm"><i class="bi bi-robot"></i> Hỏi Flowmate AI</button>
-            <button class="btn-outline btn-sm"><i class="bi bi-plus-circle"></i> Tạo nhanh</button>
-            <i class="bi bi-bell" style="color:#7d8499"></i>
+            <a href="/app/ai.html" class="btn-outline btn-sm"><i class="bi bi-robot"></i> Hỏi Flowmate AI</a>
+            <a href="/app/posts.html" class="btn-outline btn-sm"><i class="bi bi-plus-circle"></i> Tạo nhanh</a>
+            <a href="/app/notifications.html" class="topbar-icon-btn" title="Thông báo">
+              <i class="bi bi-bell"></i>
+              ${unread ? `<span class="topbar-badge">${unread}</span>` : ""}
+            </a>
           </div>
         </header>
 
+        ${showUpgradeBanner ? `
         <div class="workspace-banner">
-          <span>Bạn đang dùng bản FREE với tính năng giới hạn. Nâng cấp ngay để khai thác toàn bộ sức mạnh của Flowmate.</span>
-          <button class="btn-outline btn-sm">Xem và chọn gói</button>
-        </div>
-
-        <div class="workspace-tabs">
-          <a class="workspace-tab active" href="#">Tổng quan</a>
-          <a class="workspace-tab" href="#">Thành viên</a>
-          <a class="workspace-tab" href="#">Nhóm của tôi</a>
-          <a class="workspace-tab" href="#">Lĩnh vực, dự án</a>
-          <button class="btn-primary btn-sm" style="margin-left:auto"><i class="bi bi-plus"></i> Thêm thành viên</button>
-        </div>
+          <span>Bạn đang dùng bản FREE với tính năng giới hạn. Nâng cấp để khai thác toàn bộ sức mạnh FlowMate.</span>
+          <a href="/app/plans.html" class="btn-outline btn-sm">Xem và chọn gói</a>
+        </div>` : ""}
 
         <section class="page-wrap">
           <header class="app-header">
@@ -123,10 +128,22 @@ function setPageContent(html) {
   if (el) el.innerHTML = html;
 }
 
+function refreshSidebarProfile() {
+  const user = Auth.getUser();
+  const chip = document.querySelector(".sidebar-profile .user-chip");
+  if (!chip) return;
+  chip.innerHTML = `
+    ${renderUserAvatar(user)}
+    <div>
+      <div class="user-name">${Auth.displayName()}</div>
+      <div class="user-email">${user?.email || ""}</div>
+    </div>`;
+}
+
 function appScripts() {
   return `
-    <script src="/js/api.js"><\/script>
-    <script src="/js/auth.js"><\/script>
+    <script src="/js/api.js?v=3"><\/script>
+    <script src="/js/auth.js?v=3"><\/script>
     <script src="/js/demo.js"><\/script>
-    <script src="/js/layout.js"><\/script>`;
+    <script src="/js/layout.js?v=3"><\/script>`;
 }

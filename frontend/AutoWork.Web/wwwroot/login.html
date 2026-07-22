@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>Đăng nhập - FlowMate</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
@@ -13,12 +16,14 @@
     <div class="auth-split">
       <div class="auth-left">
         <div class="auth-card">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-weight:800;font-size:1.4rem;">
-            <span style="color:#6b63ff">⚡</span> FlowMate
-          </div>
-          <h1>Đăng nhập</h1>
-          <p class="subtitle">Vui lòng đăng nhập tài khoản của bạn.</p>
+          <a href="/" class="auth-back-link"><i class="bi bi-arrow-left"></i> Quay lại trang chủ</a>
+          <a href="/" class="auth-brand">
+            <span class="auth-brand-icon">⚡</span> FlowMate
+          </a>
+          <h1 id="authTitle">Đăng nhập</h1>
+          <p class="subtitle" id="authSubtitle">Vui lòng đăng nhập tài khoản của bạn.</p>
 
+          <div id="loginPanel">
           <ol class="login-steps" id="loginSteps">
             <li id="step1" class="active">1. Nhập tài khoản</li>
             <li id="step2">2. Xác thực</li>
@@ -29,15 +34,16 @@
           <form id="loginForm">
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" id="email" class="form-control" placeholder="demo@autowork.com" required />
+              <input type="email" id="email" name="email" class="form-control" placeholder="Nhập email của bạn" autocomplete="username" required />
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" id="password" class="form-control" placeholder="••••••••" required />
+              <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" autocomplete="current-password" required />
             </div>
             <div style="display:flex;align-items:center;gap:8px;margin:8px 0 16px;color:#646b80;font-size:.92rem">
               <input type="checkbox" id="remember" />
               <label for="remember" style="margin:0;cursor:pointer">Ghi nhớ mật khẩu</label>
+              <a href="#" class="auth-forgot-link" id="btnShowForgot">Quên mật khẩu?</a>
             </div>
 
             <button type="submit" class="btn-primary w-100" id="btnSubmit">Đăng nhập</button>
@@ -58,11 +64,45 @@
               <i class="bi bi-facebook"></i> Facebook
             </button>
           </div>
+          </div>
+
+          <div id="forgotPanel" class="auth-panel-hidden">
+            <form id="forgotForm">
+              <div class="form-group">
+                <label for="forgotEmail">Email</label>
+                <input type="email" id="forgotEmail" class="form-control" placeholder="Nhập email của bạn" required />
+              </div>
+              <button type="button" class="btn-outline w-100" id="btnSendOtp">Gửi mã OTP</button>
+              <div id="forgotDevHint" class="auth-dev-hint auth-panel-hidden"></div>
+
+              <div id="resetFields" class="auth-panel-hidden" style="margin-top:16px">
+                <div class="form-group">
+                  <label for="otpCode">Mã OTP (6 số)</label>
+                  <input type="text" id="otpCode" class="form-control" maxlength="6" inputmode="numeric" placeholder="123456" />
+                </div>
+                <div class="form-group">
+                  <label for="newPassword">Mật khẩu mới</label>
+                  <input type="password" id="newPassword" class="form-control" minlength="8" autocomplete="new-password" />
+                </div>
+                <div class="form-group">
+                  <label for="confirmNewPassword">Xác nhận mật khẩu mới</label>
+                  <input type="password" id="confirmNewPassword" class="form-control" minlength="8" autocomplete="new-password" />
+                </div>
+                <button type="submit" class="btn-primary w-100" id="btnResetPassword">Đặt lại mật khẩu</button>
+              </div>
+
+              <div id="forgotError" class="form-error" style="display:none;margin-top:12px;"></div>
+              <div id="forgotSuccess" class="form-error" style="display:none;margin-top:12px;color:#166534;background:#ecfdf3;border:1px solid #bbf7d0;"></div>
+            </form>
+            <p class="auth-footer" style="margin-top:14px">
+              <a href="#" id="btnBackLogin" style="color:#5b4df2;font-weight:600">← Quay lại đăng nhập</a>
+            </p>
+          </div>
 
           <p class="auth-footer">
             Chưa có tài khoản? <a href="/register.html" style="color:#5b4df2;font-weight:600">Tạo tài khoản mới</a>
             <br />
-            <a href="/login.html?fresh=1&demo=demo" style="font-size:.85rem;color:#8b90a8">Dùng tài khoản demo điền sẵn</a>
+            <a href="/" style="color:#8b90a8;font-size:.85rem;margin-top:8px;display:inline-block">← Về trang chủ</a>
           </p>
         </div>
       </div>
@@ -82,14 +122,19 @@
     </div>
   </div>
 
-  <script src="/js/api.js"></script>
-  <script src="/js/auth.js"></script>
+  <script src="/js/api.js?v=3"></script>
+  <script src="/js/auth.js?v=3"></script>
   <script src="/js/demo.js"></script>
   <script src="/js/social-auth.js"></script>
   <script>
     const params = new URLSearchParams(location.search);
     const returnUrl = params.get('return') || '/app/dashboard.html?welcome=1';
     const isFresh = params.has('fresh') || params.has('logout');
+
+    // Luôn xóa token hết hạn để không chặn đăng nhập lại
+    if (!Auth.isLoggedIn()) {
+      Auth.clearSession();
+    }
 
     if (isFresh) {
       Auth.clearSession();
@@ -107,13 +152,29 @@
       document.getElementById('stepStatus').textContent = msg;
     }
 
+    function applyRememberLogin() {
+      const saved = Auth.loadRememberLogin();
+      if (!saved) return;
+      emailEl.value = saved.email;
+      passwordEl.value = saved.password;
+      rememberEl.checked = true;
+    }
+
     setStep(1, 'Bước 1: Nhập email và mật khẩu');
 
-    if (params.get('demo') === 'demo') {
-      document.getElementById('email').value = 'demo@autowork.com';
-      document.getElementById('password').value = 'Demo@123!';
-      document.getElementById('stepStatus').textContent = 'Tài khoản demo đã điền sẵn - nhấn Đăng nhập';
-    }
+    const emailEl = document.getElementById('email');
+    const passwordEl = document.getElementById('password');
+    const rememberEl = document.getElementById('remember');
+
+    applyRememberLogin();
+
+    rememberEl.addEventListener('change', () => {
+      if (rememberEl.checked) {
+        Auth.saveRememberLogin(emailEl.value, passwordEl.value);
+      } else {
+        Auth.clearRememberLogin();
+      }
+    });
 
     const wait = ms => new Promise(r => setTimeout(r, ms));
 
@@ -127,28 +188,45 @@
       btn.textContent = 'Đang xác thực...';
 
       try {
-        const json = await apiPost('/api/auth/login', {
-          email: document.getElementById('email').value,
-          password: document.getElementById('password').value
-        });
+        const email = emailEl.value.trim();
+        const password = passwordEl.value;
+
+        if (rememberEl.checked) {
+          Auth.saveRememberLogin(email, password);
+        } else {
+          Auth.clearRememberLogin();
+        }
+
+        const json = await apiPost('/api/auth/login', { email, password });
 
         if (json.success && json.data) {
           Auth.saveSession(json.data);
-          DemoStore.addNotification('Chào mừng!', 'Bạn đã đăng nhập FlowMate Demo', 'system');
+
+          if (!Auth.isLoggedIn()) {
+            throw new Error('Không lưu được phiên đăng nhập. Hãy thử Ctrl+Shift+R để tải lại trang.');
+          }
+
+          DemoStore.addNotification('Chào mừng!', 'Bạn đã đăng nhập FlowMate', 'system');
           setStep(3, 'Bước 3: Đăng nhập thành công, đang chuyển trang...');
           btn.textContent = 'Thành công';
           await wait(650);
           window.location.href = returnUrl;
-        } else {
-          setStep(1, 'Bước 1: Kiểm tra lại thông tin đăng nhập');
-          err.textContent = json.message || 'Email hoặc mật khẩu không đúng';
-          err.style.display = 'block';
-          btn.textContent = 'Đăng nhập';
-          btn.disabled = false;
+          return;
         }
+
+        setStep(1, 'Bước 1: Kiểm tra lại thông tin đăng nhập');
+        const msg = json.message || 'Email hoặc mật khẩu không đúng';
+        err.textContent = msg.includes('Invalid email or password')
+          ? 'Email hoặc mật khẩu không đúng'
+          : msg;
+        err.style.display = 'block';
+        btn.textContent = 'Đăng nhập';
+        btn.disabled = false;
       } catch (ex) {
-        setStep(1, 'Bước 1: Kiểm tra API đang chạy');
-        err.textContent = 'Không kết nối được API. Hãy chạy AutoWork.API trước rồi thử lại.';
+        setStep(1, 'Bước 1: Kiểm tra kết nối API');
+        err.textContent = ex.message?.includes('Failed to fetch') || ex.message?.includes('NetworkError')
+          ? 'Không kết nối được API. Hãy chạy AutoWork.API và AutoWork.Web cùng lúc (F5 profile API + Web).'
+          : (ex.message || 'Không kết nối được API. Hãy chạy AutoWork.API trước rồi thử lại.');
         err.style.display = 'block';
         btn.textContent = 'Đăng nhập';
         btn.disabled = false;
@@ -158,6 +236,141 @@
 
     document.getElementById('btnGoogleLogin')?.addEventListener('click', () => socialLogin('google', { redirectUrl: returnUrl }));
     document.getElementById('btnFacebookLogin')?.addEventListener('click', () => socialLogin('facebook', { redirectUrl: returnUrl }));
+
+    let resetToken = '';
+
+    function showLoginPanel() {
+      document.getElementById('loginPanel').classList.remove('auth-panel-hidden');
+      document.getElementById('forgotPanel').classList.add('auth-panel-hidden');
+      document.getElementById('authTitle').textContent = 'Đăng nhập';
+      document.getElementById('authSubtitle').textContent = 'Vui lòng đăng nhập tài khoản của bạn.';
+    }
+
+    function showForgotPanel() {
+      document.getElementById('loginPanel').classList.add('auth-panel-hidden');
+      document.getElementById('forgotPanel').classList.remove('auth-panel-hidden');
+      document.getElementById('authTitle').textContent = 'Quên mật khẩu';
+      document.getElementById('authSubtitle').textContent = 'Nhập email để nhận mã OTP đặt lại mật khẩu.';
+      document.getElementById('forgotEmail').value = emailEl.value.trim();
+      document.getElementById('forgotError').style.display = 'none';
+      document.getElementById('forgotSuccess').style.display = 'none';
+      document.getElementById('forgotDevHint').classList.add('auth-panel-hidden');
+      document.getElementById('resetFields').classList.add('auth-panel-hidden');
+      resetToken = '';
+    }
+
+    document.getElementById('btnShowForgot')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      showForgotPanel();
+    });
+
+    document.getElementById('btnBackLogin')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      showLoginPanel();
+    });
+
+    document.getElementById('btnSendOtp')?.addEventListener('click', async () => {
+      const btn = document.getElementById('btnSendOtp');
+      const err = document.getElementById('forgotError');
+      const ok = document.getElementById('forgotSuccess');
+      const devHint = document.getElementById('forgotDevHint');
+      const email = document.getElementById('forgotEmail').value.trim();
+
+      err.style.display = 'none';
+      ok.style.display = 'none';
+      devHint.classList.add('auth-panel-hidden');
+
+      if (!email) {
+        err.textContent = 'Vui lòng nhập email';
+        err.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Đang gửi...';
+
+      try {
+        const json = await apiPost('/api/auth/forgot-password', { email });
+        const data = json.data || {};
+        resetToken = data.resetToken || data.ResetToken || '';
+
+        if (!json.success) {
+          err.textContent = json.message || 'Không gửi được mã OTP';
+          err.style.display = 'block';
+          return;
+        }
+
+        document.getElementById('resetFields').classList.remove('auth-panel-hidden');
+        ok.textContent = resetToken
+          ? 'Đã gửi mã OTP. Kiểm tra email và nhập mã bên dưới.'
+          : 'Nếu email tồn tại, mã OTP đã được gửi. Kiểm tra hộp thư.';
+        ok.style.display = 'block';
+
+        const devOtp = data.devOtpCode || data.DevOtpCode;
+        if (devOtp) {
+          devHint.innerHTML = `<strong>Môi trường dev:</strong> Mã OTP là <strong>${devOtp}</strong> (SMTP chưa cấu hình).`;
+          devHint.classList.remove('auth-panel-hidden');
+          document.getElementById('otpCode').value = devOtp;
+        }
+      } catch {
+        err.textContent = 'Không kết nối được API. Hãy chạy AutoWork.API trước.';
+        err.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Gửi mã OTP';
+      }
+    });
+
+    document.getElementById('forgotForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const err = document.getElementById('forgotError');
+      const ok = document.getElementById('forgotSuccess');
+      const btn = document.getElementById('btnResetPassword');
+      const newPassword = document.getElementById('newPassword').value;
+      const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+      const otpCode = document.getElementById('otpCode').value.trim();
+
+      err.style.display = 'none';
+
+      if (!resetToken) {
+        err.textContent = 'Hãy gửi mã OTP trước khi đặt lại mật khẩu';
+        err.style.display = 'block';
+        return;
+      }
+      if (newPassword !== confirmNewPassword) {
+        err.textContent = 'Mật khẩu xác nhận không khớp';
+        err.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Đang xử lý...';
+
+      try {
+        const json = await apiPost('/api/auth/reset-password', {
+          token: resetToken,
+          otpCode,
+          newPassword,
+          confirmPassword: confirmNewPassword
+        });
+
+        if (json.success) {
+          ok.textContent = 'Đặt lại mật khẩu thành công. Bạn có thể đăng nhập.';
+          ok.style.display = 'block';
+          setTimeout(showLoginPanel, 1500);
+          return;
+        }
+
+        err.textContent = json.message || 'Đặt lại mật khẩu thất bại';
+        err.style.display = 'block';
+      } catch {
+        err.textContent = 'Không kết nối được API';
+        err.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Đặt lại mật khẩu';
+      }
+    });
   </script>
 </body>
 </html>

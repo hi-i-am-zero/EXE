@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("autowork-api-local-dev")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("AutoWork.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+672ee8be1a36157757258ab4bee4c176efa54730")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a0fad934921b5f9797cc63a9bdc2a9fea11c0b89")]
 [assembly: System.Reflection.AssemblyProductAttribute("AutoWork.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AutoWork.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

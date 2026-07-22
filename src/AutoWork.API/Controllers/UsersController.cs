@@ -3,6 +3,7 @@ using AutoWork.Application.Common.Helpers;
 using AutoWork.Application.DTOs.Users;
 using AutoWork.Application.Features.Users.Queries;
 using AutoWork.Application.Interfaces.Repositories;
+using AutoWork.Application.Interfaces.Services;
 using AutoWork.Domain.Entities;
 using AutoWork.Shared.Constants;
 using AutoWork.Shared.Models;
@@ -17,11 +18,13 @@ public class UsersController : ApiControllerBase
 {
     private readonly IMediator _mediator;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ICurrentUserService _currentUser;
 
-    public UsersController(IMediator mediator, IUnitOfWork unitOfWork)
+    public UsersController(IMediator mediator, IUnitOfWork unitOfWork, ICurrentUserService currentUser)
     {
         _mediator = mediator;
         _unitOfWork = unitOfWork;
+        _currentUser = currentUser;
     }
 
     [HttpGet]
@@ -39,27 +42,72 @@ public class UsersController : ApiControllerBase
         return OkResponse(PaginatedResult<UserDto>.Create(result.Items, result.TotalCount, result.PageNumber, result.PageSize));
     }
 
+    [HttpGet("me")]
+    public async Task<ActionResult<ApiResponse<UserDto>>> GetCurrentUser()
+    {
+        if (_currentUser.UserId is null)
+            throw new UnauthorizedAccessException();
+
+        var user = await _unitOfWork.Users.GetByIdWithRolesAsync(_currentUser.UserId.Value)
+            ?? throw new NotFoundException("User", _currentUser.UserId.Value);
+
+        return OkResponse(MapUserDto(user));
+    }
+
+    [HttpPut("me")]
+    public async Task<ActionResult<ApiResponse<UserDto>>> UpdateCurrentUser([FromBody] UpdateProfileDto request)
+    {
+        if (_currentUser.UserId is null)
+            throw new UnauthorizedAccessException();
+
+        var user = await _unitOfWork.Users.GetByIdWithRolesAsync(_currentUser.UserId.Value)
+            ?? throw new NotFoundException("User", _currentUser.UserId.Value);
+
+        user.FirstName = request.FirstName.Trim();
+        user.LastName = request.LastName.Trim();
+
+        if (string.IsNullOrWhiteSpace(request.Phone))
+            return FailResponse<UserDto>("Phone number is required.");
+
+        var normalizedPhone = PhoneHelper.Normalize(request.Phone);
+        if (!PhoneHelper.IsValid(normalizedPhone))
+            return FailResponse<UserDto>("Invalid phone number. Use 10 digits starting with 0.");
+
+        if (await _unitOfWork.Users.PhoneExistsAsync(normalizedPhone!, user.Id))
+            return FailResponse<UserDto>("Phone number is already registered.");
+
+        user.Phone = normalizedPhone;
+        user.AvatarUrl = string.IsNullOrWhiteSpace(request.AvatarUrl) ? null : request.AvatarUrl.Trim();
+
+        await _unitOfWork.Users.UpdateAsync(user);
+        await _unitOfWork.SaveChangesAsync();
+
+        return OkResponse(MapUserDto(user), "Profile updated.");
+    }
+
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<ApiResponse<UserDto>>> GetUser(Guid id)
     {
         var user = await _unitOfWork.Users.GetByIdWithRolesAsync(id)
             ?? throw new NotFoundException("User", id);
 
-        return OkResponse(new UserDto
-        {
-            Id = user.Id,
-            Email = user.Email,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            AvatarUrl = user.AvatarUrl,
-            Phone = user.Phone,
-            IsActive = user.IsActive,
-            LastLoginAt = user.LastLoginAt,
-            ReferralCode = user.ReferralCode,
-            CreatedAt = user.CreatedAt,
-            Roles = user.UserRoles.Select(ur => ur.Role.Name).ToList()
-        });
+        return OkResponse(MapUserDto(user));
     }
+
+    private static UserDto MapUserDto(User user) => new()
+    {
+        Id = user.Id,
+        Email = user.Email,
+        FirstName = user.FirstName,
+        LastName = user.LastName,
+        AvatarUrl = user.AvatarUrl,
+        Phone = user.Phone,
+        IsActive = user.IsActive,
+        LastLoginAt = user.LastLoginAt,
+        ReferralCode = user.ReferralCode,
+        CreatedAt = user.CreatedAt,
+        Roles = user.UserRoles?.Select(ur => ur.Role.Name).ToList() ?? []
+    };
 
     [HttpPost]
     [Authorize(Roles = $"{AppRoles.SuperAdmin},{AppRoles.Admin}")]
@@ -118,6 +166,7 @@ public class UsersController : ApiControllerBase
             FirstName = user.FirstName,
             LastName = user.LastName,
             Phone = user.Phone,
+            AvatarUrl = user.AvatarUrl,
             IsActive = user.IsActive,
             CreatedAt = user.CreatedAt
         }, "User updated.");

@@ -3,31 +3,36 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dashboard - FlowMate</title>
+  <title>Trang chủ - FlowMate</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <link rel="stylesheet" href="/css/app.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
-  <script src="/js/api.js"></script>
-  <script src="/js/auth.js"></script>
+  <script src="/js/api.js?v=3"></script>
+  <script src="/js/auth.js?v=3"></script>
   <script src="/js/demo.js"></script>
-  <script src="/js/layout.js"></script>
+  <script src="/js/layout.js?v=3"></script>
   <script>
     if (!Auth.requireAuth()) throw new Error('auth');
-    renderAppLayout('/app/dashboard.html');
-    setPageTitle('Tổng quan');
+    renderAppLayout('/app/dashboard.html', { showUpgradeBanner: false });
+
+    const user = Auth.getUser();
+    const hour = new Date().getHours();
+    const greeting = hour < 12 ? 'Buổi sáng' : hour < 18 ? 'Buổi chiều' : 'Buổi tối';
+    const displayName = Auth.displayName();
+    setPageTitle(`${greeting}, ${displayName.split(' ')[0] || 'bạn'}!`);
 
     const quickActions = [
-      { icon: 'bi-diagram-3', label: 'Chiến dịch tự động', href: '/app/schedules.html' },
-      { icon: 'bi-pencil-square', label: 'Tạo bài viết đơn', href: '/app/posts.html' },
-      { icon: 'bi-stars', label: 'AI Content', href: '/app/ai.html' },
-      { icon: 'bi-share', label: 'Kết nối kênh', href: '/app/channels.html' }
+      { icon: 'bi-diagram-3', label: 'Chiến dịch tự động', desc: 'Lên lịch đăng bài', href: '/app/schedules.html', color: '#6366f1' },
+      { icon: 'bi-pencil-square', label: 'Tạo bài viết', desc: 'Soạn & đăng đa kênh', href: '/app/posts.html', color: '#0ea5e9' },
+      { icon: 'bi-stars', label: 'Tạo nội dung AI', desc: 'Mô tả & hình ảnh AI', href: '/app/ai.html', color: '#8b5cf6' },
+      { icon: 'bi-share', label: 'Kết nối kênh', desc: 'Facebook, Zalo...', href: '/app/channels.html', color: '#10b981' }
     ];
 
     (async () => {
-      setPageContent('<div class="empty-state">Đang tải dashboard...</div>');
+      setPageContent('<div class="empty-state">Đang tải trang chủ...</div>');
       try {
         const json = await apiGet('/api/dashboard/stats');
         const s = json.data || {};
@@ -38,52 +43,61 @@
         const aiData = s.aiUsageChart?.length ? s.aiUsageChart : postsData;
 
         setPageContent(`
+          <div class="home-welcome">
+            <div>
+              <div class="home-welcome-badge"><i class="bi bi-stars"></i> FlowMate Dashboard</div>
+              <h2 class="home-welcome-title">${greeting}, ${displayName}!</h2>
+              <p class="home-welcome-sub">Tổng quan marketing hôm nay — ${new Date().toLocaleDateString('vi-VN', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+            </div>
+            <div class="home-welcome-actions">
+              <a href="/app/posts.html" class="btn-primary btn-sm"><i class="bi bi-plus-lg"></i> Tạo bài mới</a>
+              <a href="/app/plans.html" class="btn-outline btn-sm"><i class="bi bi-gem"></i> Nâng cấp gói</a>
+            </div>
+          </div>
+
           <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr));">
-            <div class="stat-card"><div class="stat-label">Thời gian làm việc còn lại</div><div class="stat-value">${s.remainingWorkHours ?? 0}<span style="font-size:.95rem">h</span></div></div>
             <div class="stat-card"><div class="stat-label">Bài đăng hôm nay</div><div class="stat-value">${s.postsToday ?? 0}</div></div>
             <div class="stat-card"><div class="stat-label">Tổng bài viết</div><div class="stat-value">${s.totalPosts ?? 0}</div></div>
             <div class="stat-card"><div class="stat-label">AI đã tạo</div><div class="stat-value">${s.aiGenerations ?? 0}</div></div>
-            <div class="stat-card"><div class="stat-label">Credits</div><div class="stat-value">${s.creditsRemaining ?? 0}</div></div>
+            <div class="stat-card"><div class="stat-label">Credits còn lại</div><div class="stat-value">${s.creditsRemaining ?? 0}</div></div>
+            <div class="stat-card"><div class="stat-label">Hiệu suất ngày</div><div class="stat-value">${s.dailyPerformance ?? 100}<span style="font-size:.95rem">%</span></div></div>
           </div>
 
-          <div class="quick-grid">
-            ${quickActions.map(a => `<a href="${a.href}" class="quick-card"><i class="bi ${a.icon}"></i><span>${a.label}</span></a>`).join('')}
+          <div>
+            <h3 class="section-title">Bắt đầu nhanh</h3>
+            <div class="quick-grid">
+              ${quickActions.map(a => `
+                <a href="${a.href}" class="quick-card home-quick-card">
+                  <span class="home-quick-icon" style="background:${a.color}20;color:${a.color}"><i class="bi ${a.icon}"></i></span>
+                  <span class="home-quick-label">${a.label}</span>
+                  <span class="home-quick-desc">${a.desc}</span>
+                </a>`).join('')}
+            </div>
           </div>
 
           <div style="display:grid;grid-template-columns:2fr 1fr;gap:12px;">
             <div class="data-card" style="padding:14px;">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                <h3 style="font-size:1.02rem">Công việc đã hoàn thành</h3>
-                <div class="tabs">
-                  <button class="tab-btn active">Đã hoàn thành</button>
-                  <button class="tab-btn">Công việc mới</button>
-                </div>
-              </div>
-              <div id="activityWrap" class="empty-state">Đang tải hoạt động...</div>
+              <h3 class="section-title" style="margin-bottom:10px;">Hoạt động gần đây</h3>
+              <div id="activityWrap" class="empty-state">Đang tải...</div>
             </div>
-            <div style="display:grid;gap:12px;">
-              <div class="data-card" style="padding:14px;">
-                <div class="stat-label">Hiệu suất trong ngày</div>
-                <div style="font-size:2rem;font-weight:800;color:#4f46e5">${s.dailyPerformance ?? 100}%</div>
-                <p>Tối ưu theo lịch đăng và mức tương tác gần nhất.</p>
-              </div>
-              <div class="data-card" style="padding:14px;">
-                <div class="stat-label">Lịch mini</div>
-                <div style="font-weight:700;margin-bottom:8px">Tháng ${new Date().getMonth() + 1}, ${new Date().getFullYear()}</div>
-                <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px;font-size:.76rem;color:#6f768f;">
-                  ${Array.from({length: 35}).map((_, i) => `<div style="padding:6px 0;text-align:center;border-radius:8px;background:${i % 6 === 0 ? '#ece9ff' : '#f7f8fd'}">${i + 1 <= 31 ? i + 1 : ''}</div>`).join('')}
-                </div>
-              </div>
+            <div class="data-card" style="padding:14px;">
+              <h3 class="section-title" style="margin-bottom:10px;">Gợi ý hôm nay</h3>
+              <ul class="home-tips">
+                <li><i class="bi bi-check2-circle"></i> Tạo 1 bài AI cho sản phẩm bán chạy</li>
+                <li><i class="bi bi-check2-circle"></i> Lên lịch đăng ít nhất 2 kênh</li>
+                <li><i class="bi bi-check2-circle"></i> Kiểm tra Brand Memory trước khi đăng</li>
+              </ul>
+              <a href="/app/brand-memory.html" class="btn-outline btn-sm w-100" style="margin-top:12px;text-align:center;display:block;">Mở Brand Memory</a>
             </div>
           </div>
 
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
             <div class="data-card" style="padding:14px;">
-              <h3 style="font-size:1.02rem;margin-bottom:10px;">Bài viết 7 ngày</h3>
+              <h3 class="section-title" style="margin-bottom:10px;">Bài viết 7 ngày</h3>
               <canvas id="postsChart"></canvas>
             </div>
             <div class="data-card" style="padding:14px;">
-              <h3 style="font-size:1.02rem;margin-bottom:10px;">AI Usage</h3>
+              <h3 class="section-title" style="margin-bottom:10px;">AI Usage</h3>
               <canvas id="aiChart"></canvas>
             </div>
           </div>
@@ -96,7 +110,7 @@
           ? `<table class="data-table"><thead><tr><th>Hoạt động</th><th>Thời gian</th></tr></thead><tbody>
             ${acts.map(a => `<tr><td>${a.description || a.action || '—'}</td><td>${formatDate(a.createdAt)}</td></tr>`).join('')}
             </tbody></table>`
-          : '<div class="empty-state">Chưa có hoạt động</div>';
+          : '<div class="empty-state">Chưa có hoạt động — bắt đầu tạo bài viết đầu tiên!</div>';
 
         const chartOpts = {
           responsive: true,
@@ -129,10 +143,21 @@
         });
 
         if (new URLSearchParams(location.search).get('welcome')) {
-          showToast('Chào mừng bạn quay lại FlowMate!', 'success');
+          showToast(`Chào mừng ${displayName.split(' ')[0] || 'bạn'} quay lại FlowMate!`, 'success');
+          history.replaceState(null, '', '/app/dashboard.html');
         }
       } catch (e) {
-        setPageContent(`<div class="empty-state">Lỗi tải dashboard: ${e.message}. Hãy chạy API trước.</div>`);
+        setPageContent(`
+          <div class="home-welcome">
+            <div>
+              <h2 class="home-welcome-title">${greeting}, ${displayName}!</h2>
+              <p class="home-welcome-sub">Không tải được dữ liệu thống kê. Bạn vẫn có thể dùng các tính năng bên dưới.</p>
+            </div>
+          </div>
+          <div class="quick-grid">
+            ${quickActions.map(a => `<a href="${a.href}" class="quick-card"><i class="bi ${a.icon}"></i><span>${a.label}</span></a>`).join('')}
+          </div>
+          <div class="empty-state" style="margin-top:12px">${e.message || 'Hãy chạy AutoWork.API trước.'}</div>`);
       }
     })();
   </script>

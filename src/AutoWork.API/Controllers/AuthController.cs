@@ -31,10 +31,10 @@ public class AuthController : ApiControllerBase
 
     [HttpPost("forgot-password")]
     [AllowAnonymous]
-    public async Task<ActionResult<ApiResponse>> ForgotPassword([FromBody] ForgotPasswordRequest request)
+    public async Task<ActionResult<ApiResponse<ForgotPasswordResponse>>> ForgotPassword([FromBody] ForgotPasswordRequest request)
     {
-        await _mediator.Send(new ForgotPasswordCommand { Email = request.Email });
-        return OkResponse("If the email exists, a reset code has been sent.");
+        var result = await _mediator.Send(new ForgotPasswordCommand { Email = request.Email });
+        return OkResponse(result, "If the email exists, a reset code has been sent.");
     }
 
     [HttpPost("reset-password")]
@@ -49,5 +49,18 @@ public class AuthController : ApiControllerBase
             ConfirmPassword = request.ConfirmPassword
         });
         return OkResponse("Password reset successful.");
+    }
+
+    [HttpPost("change-password")]
+    [Authorize]
+    public async Task<ActionResult<ApiResponse>> ChangePassword([FromBody] ChangePasswordRequest request)
+    {
+        await _mediator.Send(new ChangePasswordCommand
+        {
+            CurrentPassword = request.CurrentPassword,
+            NewPassword = request.NewPassword,
+            ConfirmPassword = request.ConfirmPassword
+        });
+        return OkResponse("Password changed successfully.");
     }
 }

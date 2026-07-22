@@ -12,7 +12,9 @@ public class UserRepository : Repository<User>, IUserRepository
     }
 
     public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default) =>
-        await DbSet.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+        await DbSet.FirstOrDefaultAsync(
+            u => u.Email.ToLower() == email.ToLower(),
+            cancellationToken);
 
     public async Task<User?> GetByIdWithRolesAsync(Guid id, CancellationToken cancellationToken = default) =>
         await DbSet
@@ -22,6 +24,18 @@ public class UserRepository : Repository<User>, IUserRepository
 
     public async Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken = default) =>
         await DbSet.AnyAsync(u => u.Email == email, cancellationToken);
+
+    public async Task<bool> PhoneExistsAsync(
+        string phone,
+        Guid? excludeUserId = null,
+        CancellationToken cancellationToken = default)
+    {
+        var query = DbSet.Where(u => u.Phone == phone);
+        if (excludeUserId.HasValue)
+            query = query.Where(u => u.Id != excludeUserId.Value);
+
+        return await query.AnyAsync(cancellationToken);
+    }
 
     public async Task<User?> GetByReferralCodeAsync(string referralCode, CancellationToken cancellationToken = default) =>
         await DbSet.FirstOrDefaultAsync(u => u.ReferralCode == referralCode, cancellationToken);

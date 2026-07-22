@@ -59,6 +59,8 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
             Email = user.Email,
             FirstName = user.FirstName,
             LastName = user.LastName,
+            Phone = user.Phone,
+            AvatarUrl = user.AvatarUrl,
             AccessToken = accessToken,
             RefreshToken = refreshTokenValue,
             ExpiresAt = _jwtTokenService.GetAccessTokenExpiration(),

@@ -3,29 +3,32 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>FlowMate - Trợ lí marketing cho shop</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-  <link rel="stylesheet" href="/css/app.css" />
+  <link rel="stylesheet" href="/css/app.css?v=3" />
 </head>
 <body>
   <div class="landing-shell">
     <header class="landing-header">
-      <a href="/" style="display:flex;align-items:center;gap:8px;font-size:1.3rem;font-weight:800;">
-        <span style="color:#6b63ff">⚡</span> FlowMate
+      <a href="/" class="landing-brand">
+        <span class="landing-brand-icon">⚡</span> FlowMate
       </a>
-      <div style="display:flex;gap:10px;align-items:center;">
+      <nav class="landing-nav" id="landingNav">
         <a class="btn-outline btn-sm" href="#features">Tính năng</a>
         <a class="btn-outline btn-sm" href="#pricing">Bảng giá</a>
-        <a class="btn-outline btn-sm" href="/login.html?fresh=1">Đăng nhập</a>
-        <a class="btn-primary btn-sm" href="/register.html">Dùng thử miễn phí</a>
-      </div>
+        <a class="btn-outline btn-sm" href="/login.html?fresh=1" id="navLogin">Đăng nhập</a>
+        <a class="btn-primary btn-sm" href="/register.html" id="navRegister">Dùng thử miễn phí</a>
+      </nav>
     </header>
 
     <section class="landing-hero">
       <div>
-        <div style="display:inline-flex;gap:8px;align-items:center;background:#ece9ff;color:#5b4df2;border-radius:999px;padding:4px 12px;font-size:.82rem;font-weight:600;">
+        <div class="landing-badge">
           <i class="bi bi-stars"></i> AI Marketing Assistant
         </div>
         <h1 class="hero-title">Trợ lí marketing cho shop vừa và nhỏ,<br />lo từ ý tưởng đến hiệu suất.</h1>
@@ -33,32 +36,29 @@
           FlowMate giúp bạn xây timeline, tạo nội dung AI, lên lịch đăng đa kênh và theo dõi hiệu quả chiến dịch
           trong một giao diện đơn giản, dễ dùng.
         </p>
-        <div class="hero-actions">
-          <a href="/register.html" class="btn-primary">Bắt đầu ngay</a>
-          <a href="/login.html?fresh=1&demo=demo" class="btn-outline">Xem demo</a>
+        <div class="hero-actions" id="heroActions">
+          <a href="/register.html" class="btn-primary" id="heroPrimary">Bắt đầu ngay</a>
+          <a href="/login.html?fresh=1" class="btn-outline" id="heroSecondary">Đăng nhập</a>
         </div>
-        <p style="margin-top:12px;font-size:.86rem;">
-          Demo account: <code>demo@autowork.com</code> / <code>Demo@123!</code>
-        </p>
       </div>
 
-      <div class="soft-card" style="padding:14px;display:grid;gap:10px;">
-        <div class="soft-card" style="padding:12px;border-radius:12px">
-          <div style="font-size:.78rem;color:#9aa1b8;">Chiến dịch tuần này</div>
-          <div style="margin-top:4px;font-weight:700;font-size:1.25rem;">12 bài - 4 kênh</div>
+      <div class="landing-preview soft-card">
+        <div class="landing-preview-item">
+          <div class="landing-preview-label">Chiến dịch tuần này</div>
+          <div class="landing-preview-value">12 bài · 4 kênh</div>
         </div>
-        <div class="soft-card" style="padding:12px;border-radius:12px">
-          <div style="font-size:.78rem;color:#9aa1b8;">AI content generated</div>
-          <div style="margin-top:4px;font-weight:700;font-size:1.25rem;">322 nội dung</div>
+        <div class="landing-preview-item">
+          <div class="landing-preview-label">Nội dung AI đã tạo</div>
+          <div class="landing-preview-value">322 nội dung</div>
         </div>
-        <div class="soft-card" style="padding:12px;border-radius:12px">
-          <div style="font-size:.78rem;color:#9aa1b8;">Tương tác tăng</div>
-          <div style="margin-top:4px;font-weight:700;font-size:1.25rem;color:#4f46e5;">+38%</div>
+        <div class="landing-preview-item">
+          <div class="landing-preview-label">Tương tác tăng</div>
+          <div class="landing-preview-value accent">+38%</div>
         </div>
       </div>
     </section>
 
-    <section id="features" style="margin-top:16px;display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));">
+    <section id="features" class="landing-features">
       <article class="feature-card">
         <div class="feature-icon"><i class="bi bi-diagram-3"></i></div>
         <h3>Timeline chiến dịch</h3>
@@ -67,12 +67,12 @@
       <article class="feature-card">
         <div class="feature-icon"><i class="bi bi-robot"></i></div>
         <h3>AI mô tả sản phẩm</h3>
-        <p>Upload ảnh và sinh mô tả ngắn/gọn theo giọng thương hiệu.</p>
+        <p>Upload ảnh và sinh mô tả ngắn gọn theo giọng thương hiệu.</p>
       </article>
       <article class="feature-card">
         <div class="feature-icon"><i class="bi bi-pencil-square"></i></div>
         <h3>Composer đa kênh</h3>
-        <p>Soạn nội dung Facebook/Instagram/Zalo với preview trực quan.</p>
+        <p>Soạn nội dung Facebook, Instagram, Zalo với preview trực quan.</p>
       </article>
       <article class="feature-card">
         <div class="feature-icon"><i class="bi bi-gem"></i></div>
@@ -81,29 +81,62 @@
       </article>
     </section>
 
-    <section id="pricing" style="margin-top:18px;">
-      <h2 style="font-size:1.6rem;margin-bottom:6px;color:#3f3ab8;">Bảng giá đơn giản, phù hợp shop nhỏ</h2>
-      <p style="margin-bottom:12px;">Lựa chọn gói theo mục tiêu tăng trưởng của bạn.</p>
+    <section id="pricing" class="landing-pricing">
+      <h2>Bảng giá đơn giản, phù hợp shop nhỏ</h2>
+      <p>Lựa chọn gói theo mục tiêu tăng trưởng của bạn.</p>
       <div id="pricingGrid" class="pricing-grid">
         <div class="empty-state">Đang tải bảng giá...</div>
       </div>
     </section>
+
+    <footer class="landing-footer">
+      <span>© 2026 FlowMate · Trợ lí marketing cho shop</span>
+      <div class="landing-footer-links">
+        <a href="/login.html?fresh=1">Đăng nhập</a>
+        <a href="/register.html">Đăng ký</a>
+      </div>
+    </footer>
   </div>
 
-  <script src="/js/api.js"></script>
+  <script src="/js/api.js?v=3"></script>
+  <script src="/js/auth.js?v=3"></script>
   <script>
-    (async () => {
-      await apiReady;
-      try {
-        const res = await fetch(`${API_BASE}/api/plans`);
-        const json = await res.json();
-        const plans = json.data || [];
-        const grid = document.getElementById('pricingGrid');
+    function setupLoggedInNav() {
+      if (!Auth.isLoggedIn()) return;
 
-        if (!plans.length) {
-          grid.innerHTML = '<div class="empty-state">Chưa có gói dịch vụ. Hãy chạy API để seed dữ liệu.</div>';
+      const name = Auth.displayName();
+      document.getElementById('navLogin').outerHTML =
+        `<a class="btn-outline btn-sm" href="/app/dashboard.html"><i class="bi bi-grid"></i> Vào ứng dụng</a>`;
+      document.getElementById('navRegister').outerHTML =
+        `<span class="landing-user-chip">${name}</span>`;
+
+      document.getElementById('heroPrimary').href = '/app/dashboard.html';
+      document.getElementById('heroPrimary').textContent = 'Vào ứng dụng';
+      const logoutBtn = document.getElementById('heroSecondary');
+      logoutBtn.textContent = 'Đăng xuất';
+      logoutBtn.href = '#';
+      logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        Auth.logout('/login.html?fresh=1');
+      });
+    }
+
+    setupLoggedInNav();
+
+    (async () => {
+      const grid = document.getElementById('pricingGrid');
+      try {
+        await apiReady;
+        const json = await apiGet('/api/plans');
+        const plans = json.data || [];
+
+        if (!json.success || !plans.length) {
+          grid.innerHTML = '<div class="empty-state">Chưa có gói dịch vụ.</div>';
           return;
         }
+
+        const ctaHref = Auth.isLoggedIn() ? '/app/plans.html' : '/register.html';
+        const ctaText = Auth.isLoggedIn() ? 'Xem gói' : 'Đăng ký ngay';
 
         grid.innerHTML = plans.map((p, i) => `
           <div class="plan-card ${i === 1 ? 'featured' : ''}">
@@ -117,11 +150,10 @@
               <li>${p.maxChannels} kênh kết nối</li>
               <li>${p.maxPostsPerMonth} bài / tháng</li>
             </ul>
-            <a href="/register.html" class="btn-primary w-100" style="text-align:center;display:block;">Đăng ký ngay</a>
+            <a href="${ctaHref}" class="btn-primary w-100" style="text-align:center;display:block;">${ctaText}</a>
           </div>`).join('');
       } catch {
-        document.getElementById('pricingGrid').innerHTML =
-          '<div class="empty-state">Không kết nối được API. Hãy chạy <strong>AutoWork.API</strong> trước.</div>';
+        grid.innerHTML = '<div class="empty-state">Không tải được bảng giá. Hãy chạy <strong>AutoWork.API</strong> cùng <strong>AutoWork.Web</strong>.</div>';
       }
     })();
   </script>

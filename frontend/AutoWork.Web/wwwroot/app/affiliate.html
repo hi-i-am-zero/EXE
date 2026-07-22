@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Affiliate — AutoWork Demo</title>
+  <title>Affiliate — FlowMate</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <link rel="stylesheet" href="/css/app.css" />
 </head>
 <body>
-  <script src="/js/api.js"></script>
-  <script src="/js/auth.js"></script>
+  <script src="/js/api.js?v=3"></script>
+  <script src="/js/auth.js?v=3"></script>
   <script src="/js/demo.js"></script>
-  <script src="/js/layout.js"></script>
+  <script src="/js/layout.js?v=3"></script>
   <script>
     if (!Auth.requireAuth()) throw new Error('auth');
     renderAppLayout('/app/affiliate.html');
@@ -53,7 +53,7 @@
         </div>
         <div class="action-bar">
           <button class="btn-primary btn-sm" onclick="createLink()"><i class="bi bi-plus"></i> Tạo link chiến dịch</button>
-          <button class="btn-outline btn-sm" onclick="withdrawDemo()"><i class="bi bi-cash"></i> Rút tiền (demo)</button>
+          <button class="btn-outline btn-sm" onclick="withdrawDemo()"><i class="bi bi-cash"></i> Rút tiền</button>
         </div>
         <div class="data-card">
           <div style="padding:16px 20px;border-bottom:1px solid var(--color-border);font-weight:600">Lịch sử hoa hồng</div>
@@ -88,16 +88,16 @@
         const json = await apiPost('/api/Affiliates/links', { name: document.getElementById('campName').value, campaign: 'demo' });
         closeModal();
         if (json.success) { showToast('Đã tạo link!', 'success'); load(); }
-        else { DemoStore.addNotification('Affiliate', 'Link chiến dịch demo đã tạo', 'affiliate'); showToast('Demo: Link đã tạo', 'success'); load(); }
+        else { DemoStore.addNotification('Affiliate', 'Link chiến dịch đã tạo', 'affiliate'); showToast('Link đã tạo', 'success'); load(); }
       });
     }
 
     function withdrawDemo() {
       showModal('Rút tiền Affiliate', `
-        <p>Số dư khả dụng: <strong>0đ</strong> (demo)</p>
+        <p>Số dư khả dụng: <strong>0đ</strong></p>
         <div class="form-group"><label>Số tiền rút</label><input class="form-control" type="number" value="500000" /></div>
         <div class="form-group"><label>Tài khoản ngân hàng</label><input class="form-control" placeholder="STK + Ngân hàng" /></div>`,
-        `<button class="btn-primary btn-sm" onclick="closeModal();showToast('Demo: Yêu cầu rút tiền đã gửi!','success')">Gửi yêu cầu</button>`);
+        `<button class="btn-primary btn-sm" onclick="closeModal();showToast('Yêu cầu rút tiền đã gửi!','success')">Gửi yêu cầu</button>`);
     }
 
     load();

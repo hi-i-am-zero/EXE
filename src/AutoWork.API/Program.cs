@@ -12,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("appsettings.Development.local.json", optional: true, reloadOnChange: true);
 
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
@@ -91,6 +92,8 @@ builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>()
 
 var app = builder.Build();
 
+LogEmailConfiguration(app.Configuration, app.Environment.IsDevelopment());
+
 await app.Services.InitializeDatabaseAsync();
 
 if (app.Environment.IsDevelopment())
@@ -115,5 +118,26 @@ app.UseHangfireDashboard("/hangfire", new DashboardOptions { Authorization = [] 
 app.UseInfrastructure();
 
 app.Run();
+
+static void LogEmailConfiguration(IConfiguration configuration, bool isDevelopment)
+{
+    var host = configuration["EmailSettings:SmtpHost"];
+    var user = configuration["EmailSettings:Username"];
+    var pass = configuration["EmailSettings:Password"];
+    var from = configuration["EmailSettings:FromEmail"];
+
+    if (!string.IsNullOrWhiteSpace(host)
+        && !string.IsNullOrWhiteSpace(user)
+        && !string.IsNullOrWhiteSpace(pass)
+        && (!string.IsNullOrWhiteSpace(from) || !string.IsNullOrWhiteSpace(user)))
+    {
+        Log.Information("Email SMTP configured: {Host} as {User}", host, user);
+        return;
+    }
+
+    Log.Warning(
+        "Email SMTP chưa cấu hình — email đăng ký / quên mật khẩu sẽ KHÔNG được gửi. " +
+        "Điền EmailSettings vào appsettings.Development.local.json hoặc chạy scripts/configure-email.ps1");
+}
 
 public partial class Program;

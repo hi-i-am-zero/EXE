@@ -1,100 +1,441 @@
 <!DOCTYPE html>
+
 <html lang="vi">
+
 <head>
+
   <meta charset="utf-8" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cài đặt — AutoWork Demo</title>
+
+  <title>Cài đặt — FlowMate</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
   <link rel="stylesheet" href="/css/app.css" />
+
 </head>
+
 <body>
-  <script src="/js/api.js"></script>
-  <script src="/js/auth.js"></script>
+
+  <script src="/js/api.js?v=4"></script>
+
+  <script src="/js/auth.js?v=4"></script>
+
   <script src="/js/demo.js"></script>
-  <script src="/js/layout.js"></script>
+
+  <script src="/js/layout.js?v=4"></script>
+
   <script>
+
     if (!Auth.requireAuth()) throw new Error('auth');
+
+
+
+    let profile = Auth.getUser() || {};
+
+    let pendingAvatarUrl = profile.avatarUrl || '';
+
+
+
     renderAppLayout('/app/settings.html');
+
     setPageTitle('Cài đặt');
 
-    const user = Auth.getUser();
+    setPageContent('<div class="data-card" style="padding:24px">Đang tải hồ sơ...</div>');
 
-    setPageContent(`
-      <div class="tabs">
-        <button class="tab-btn active" data-tab="profile">Hồ sơ</button>
-        <button class="tab-btn" data-tab="security">Bảo mật</button>
-        <button class="tab-btn" data-tab="demo">Demo</button>
-      </div>
-      <div id="tabProfile" class="tab-panel active">
-        <div class="data-card" style="padding:24px">
-          <div class="form-group"><label>Email</label><input class="form-control" value="${user?.email || ''}" readonly /></div>
-          <div class="form-row">
-            <div class="form-group"><label>Họ</label><input id="firstName" class="form-control" value="${user?.firstName || ''}" /></div>
-            <div class="form-group"><label>Tên</label><input id="lastName" class="form-control" value="${user?.lastName || ''}" /></div>
-          </div>
-          <div class="form-group"><label>Vai trò</label><input class="form-control" value="${(user?.roles || []).join(', ')}" readonly /></div>
-          <button class="btn-primary btn-sm" onclick="saveProfile()"><i class="bi bi-save"></i> Lưu (demo)</button>
-        </div>
-      </div>
-      <div id="tabSecurity" class="tab-panel">
-        <div class="data-card" style="padding:24px">
-          <button class="btn-outline btn-sm" onclick="showChangePassword()"><i class="bi bi-key"></i> Đổi mật khẩu</button>
-          <button class="btn-outline btn-sm" style="margin-left:10px" onclick="showForgotPassword()"><i class="bi bi-envelope"></i> Quên mật khẩu (demo)</button>
-        </div>
-      </div>
-      <div id="tabDemo" class="tab-panel">
-        <div class="data-card" style="padding:24px">
-          <p style="color:var(--color-text-muted)">Reset dữ liệu demo cục bộ (kênh kết nối, media, thông báo).</p>
-          <button class="btn-danger btn-sm" onclick="resetDemo()"><i class="bi bi-arrow-counterclockwise"></i> Reset Demo Data</button>
-          <hr style="margin:20px 0;border:none;border-top:1px solid var(--color-border)" />
-          <p><strong>Tài khoản demo:</strong></p>
-          <ul style="color:var(--color-text-muted)">
-            <li>Admin: admin@autowork.com / Admin@123!</li>
-            <li>User: demo@autowork.com / Demo@123!</li>
-          </ul>
-        </div>
-      </div>`);
 
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      document.getElementById('tab' + btn.dataset.tab.charAt(0).toUpperCase() + btn.dataset.tab.slice(1))?.classList.add('active');
-    }));
 
-    function saveProfile() {
-      const u = Auth.getUser();
-      u.firstName = document.getElementById('firstName').value;
-      u.lastName = document.getElementById('lastName').value;
-      localStorage.setItem('user', JSON.stringify(u));
-      showToast('Đã lưu hồ sơ (demo — chưa gọi API)', 'success');
+    loadProfile();
+
+
+
+    async function loadProfile() {
+
+      try {
+
+        const json = await apiGet('/api/Users/me');
+
+        if (json.success && json.data) {
+
+          const p = json.data;
+
+          profile = {
+
+            ...profile,
+
+            email: p.email || p.Email || profile.email,
+
+            firstName: p.firstName || p.FirstName || '',
+
+            lastName: p.lastName || p.LastName || '',
+
+            phone: p.phone || p.Phone || '',
+
+            avatarUrl: p.avatarUrl || p.AvatarUrl || '',
+
+            roles: p.roles || p.Roles || profile.roles || []
+
+          };
+
+          pendingAvatarUrl = profile.avatarUrl || '';
+
+          Auth.updateUser(profile);
+
+        }
+
+      } catch {
+
+        showToast('Không tải được hồ sơ từ server', 'info');
+
+      }
+
+      renderSettings();
+
     }
+
+
+
+    function avatarPreviewHtml() {
+      const letter = (profile.firstName?.[0] || profile.email?.[0] || 'U').toUpperCase();
+      const url = typeof resolveMediaUrl === 'function' ? resolveMediaUrl(pendingAvatarUrl) : pendingAvatarUrl;
+      if (url) {
+        return `<img src="${url}" alt="" class="profile-avatar user-avatar-img" id="avatarPreview" onerror="this.onerror=null;this.outerHTML='<div class=&quot;profile-avatar&quot; id=&quot;avatarPreview&quot;>${letter}</div>';" />`;
+      }
+      return `<div class="profile-avatar" id="avatarPreview">${letter}</div>`;
+    }
+
+
+
+    function renderSettings() {
+
+      setPageContent(`
+
+        <div class="tabs">
+
+          <button class="tab-btn active" data-tab="profile">Hồ sơ</button>
+
+          <button class="tab-btn" data-tab="security">Bảo mật</button>
+
+        </div>
+
+        <div id="tabProfile" class="tab-panel active">
+
+          <div class="data-card" style="padding:24px">
+
+            <div class="profile-avatar-wrap">
+
+              ${avatarPreviewHtml()}
+
+              <div>
+
+                <div style="font-weight:700;margin-bottom:6px">Ảnh đại diện</div>
+
+                <input type="file" id="avatarFile" accept="image/*" hidden />
+
+                <button class="btn-outline btn-sm" type="button" onclick="document.getElementById('avatarFile').click()">
+
+                  <i class="bi bi-upload"></i> Tải ảnh lên
+
+                </button>
+
+                <div style="font-size:.82rem;color:#9299af;margin-top:6px">PNG, JPG tối đa 5MB</div>
+
+              </div>
+
+            </div>
+
+
+
+            <div class="form-group"><label>Email</label><input class="form-control" value="${profile.email || ''}" readonly /></div>
+
+            <div class="form-row">
+
+              <div class="form-group"><label>Họ</label><input id="firstName" class="form-control" value="${profile.firstName || ''}" /></div>
+
+              <div class="form-group"><label>Tên</label><input id="lastName" class="form-control" value="${profile.lastName || ''}" /></div>
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Số điện thoại</label>
+
+              <input id="phone" type="tel" class="form-control" value="${profile.phone || ''}" placeholder="0xxx xxx xxx" />
+
+            </div>
+
+            <div class="form-group"><label>Vai trò</label><input class="form-control" value="${(profile.roles || []).join(', ')}" readonly /></div>
+
+            <button class="btn-primary btn-sm" id="btnSaveProfile"><i class="bi bi-save"></i> Lưu hồ sơ</button>
+
+          </div>
+
+        </div>
+
+        <div id="tabSecurity" class="tab-panel">
+
+          <div class="data-card" style="padding:24px">
+
+            <p style="color:#646b80;margin-bottom:14px">Đổi mật khẩu khi bạn đã đăng nhập. Nếu quên mật khẩu, dùng mục Quên mật khẩu tại trang đăng nhập.</p>
+
+            <button class="btn-outline btn-sm" id="btnChangePassword"><i class="bi bi-key"></i> Đổi mật khẩu</button>
+
+          </div>
+
+        </div>`);
+
+
+
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => {
+
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+
+        document.getElementById('tab' + btn.dataset.tab.charAt(0).toUpperCase() + btn.dataset.tab.slice(1))?.classList.add('active');
+
+      }));
+
+
+
+      document.getElementById('avatarFile')?.addEventListener('change', uploadAvatar);
+
+      document.getElementById('btnSaveProfile')?.addEventListener('click', saveProfile);
+
+      document.getElementById('btnChangePassword')?.addEventListener('click', showChangePassword);
+
+    }
+
+
+
+    async function uploadAvatar(e) {
+
+      const file = e.target.files?.[0];
+
+      if (!file) return;
+
+
+
+      if (!file.type.startsWith('image/')) {
+
+        showToast('Vui lòng chọn file ảnh', 'info');
+
+        return;
+
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+
+        showToast('Ảnh tối đa 5MB', 'info');
+
+        return;
+
+      }
+
+
+
+      try {
+
+        const json = await apiUpload('/api/Media/upload?folder=avatars', file);
+
+        const url = json.data?.publicUrl || json.data?.PublicUrl;
+
+        if (!json.success || !url) {
+
+          showToast(json.message || 'Tải ảnh thất bại', 'info');
+
+          return;
+
+        }
+
+        pendingAvatarUrl = url;
+
+        renderSettings();
+
+        showToast('Đã tải ảnh. Nhấn Lưu hồ sơ để cập nhật.', 'success');
+
+      } catch {
+
+        showToast('Không tải được ảnh lên server', 'info');
+
+      } finally {
+
+        e.target.value = '';
+
+      }
+
+    }
+
+
+
+    async function saveProfile() {
+
+      const btn = document.getElementById('btnSaveProfile');
+
+      btn.disabled = true;
+
+      btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Đang lưu...';
+
+
+
+      try {
+
+        const json = await apiPut('/api/Users/me', {
+
+          firstName: document.getElementById('firstName').value.trim(),
+
+          lastName: document.getElementById('lastName').value.trim(),
+
+          phone: document.getElementById('phone').value.trim(),
+
+          avatarUrl: pendingAvatarUrl || null
+
+        });
+
+
+
+        if (!json.success) {
+
+          showToast(json.message || 'Lưu hồ sơ thất bại', 'info');
+
+          return;
+
+        }
+
+
+
+        const p = json.data || {};
+
+        profile = {
+
+          ...profile,
+
+          firstName: p.firstName || p.FirstName || profile.firstName,
+
+          lastName: p.lastName || p.LastName || profile.lastName,
+
+          phone: p.phone || p.Phone || profile.phone,
+
+          avatarUrl: p.avatarUrl || p.AvatarUrl || pendingAvatarUrl
+
+        };
+
+        pendingAvatarUrl = profile.avatarUrl || '';
+
+        Auth.updateUser(profile);
+
+        refreshSidebarProfile();
+
+        renderSettings();
+
+        showToast('Đã lưu hồ sơ', 'success');
+
+      } catch {
+
+        showToast('Không kết nối được API', 'info');
+
+      } finally {
+
+        btn.disabled = false;
+
+        btn.innerHTML = '<i class="bi bi-save"></i> Lưu hồ sơ';
+
+      }
+
+    }
+
+
 
     function showChangePassword() {
+
       showModal('Đổi mật khẩu', `
-        <div class="form-group"><label>Mật khẩu hiện tại</label><input type="password" class="form-control" /></div>
-        <div class="form-group"><label>Mật khẩu mới</label><input type="password" class="form-control" /></div>`,
-        `<button class="btn-primary btn-sm" onclick="closeModal();showToast('Demo: Mật khẩu đã đổi','success')">Đổi mật khẩu</button>`);
+
+        <div class="form-group"><label>Mật khẩu hiện tại</label><input type="password" id="currentPassword" class="form-control" autocomplete="current-password" /></div>
+
+        <div class="form-group"><label>Mật khẩu mới</label><input type="password" id="newPassword" class="form-control" autocomplete="new-password" /></div>
+
+        <div class="form-group"><label>Xác nhận mật khẩu mới</label><input type="password" id="confirmPassword" class="form-control" autocomplete="new-password" /></div>
+
+        <div id="changePwdError" class="form-error" style="display:none;"></div>`,
+
+        `<button class="btn-primary btn-sm" id="changePwdBtn">Đổi mật khẩu</button>`);
+
+
+
+      document.getElementById('changePwdBtn')?.addEventListener('click', async () => {
+
+        const err = document.getElementById('changePwdError');
+
+        const currentPassword = document.getElementById('currentPassword').value;
+
+        const newPassword = document.getElementById('newPassword').value;
+
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+
+
+        if (newPassword !== confirmPassword) {
+
+          err.textContent = 'Mật khẩu xác nhận không khớp';
+
+          err.style.display = 'block';
+
+          return;
+
+        }
+
+
+
+        const btn = document.getElementById('changePwdBtn');
+
+        btn.disabled = true;
+
+        err.style.display = 'none';
+
+
+
+        try {
+
+          const json = await apiPost('/api/auth/change-password', { currentPassword, newPassword, confirmPassword });
+
+          if (json.success) {
+
+            closeModal();
+
+            showToast('Đã đổi mật khẩu. Vui lòng đăng nhập lại.', 'success');
+
+            setTimeout(() => Auth.logout('/login.html?fresh=1'), 1200);
+
+          } else {
+
+            err.textContent = json.message || 'Đổi mật khẩu thất bại';
+
+            err.style.display = 'block';
+
+          }
+
+        } catch {
+
+          err.textContent = 'Không kết nối được API';
+
+          err.style.display = 'block';
+
+        } finally {
+
+          btn.disabled = false;
+
+        }
+
+      });
+
     }
 
-    function showForgotPassword() {
-      showModal('Quên mật khẩu', `
-        <div class="form-group"><label>Email</label><input id="fpEmail" class="form-control" value="${user?.email || ''}" /></div>`,
-        `<button class="btn-primary btn-sm" id="fpBtn">Gửi OTP</button>`);
-      document.getElementById('fpBtn')?.addEventListener('click', async () => {
-        const json = await apiPost('/api/auth/forgot-password', { email: document.getElementById('fpEmail').value });
-        closeModal();
-        showToast(json.success ? 'Đã gửi OTP (nếu SMTP đã cấu hình)' : (json.message || 'Demo: OTP đã gửi'), json.success ? 'success' : 'info');
-      });
-    }
-
-    function resetDemo() {
-      confirmAction('Reset toàn bộ dữ liệu demo cục bộ?', () => {
-        localStorage.removeItem(DEMO.STORAGE_KEY);
-        showToast('Đã reset demo data', 'success');
-        location.reload();
-      });
-    }
   </script>
+
 </body>
+
 </html>
+

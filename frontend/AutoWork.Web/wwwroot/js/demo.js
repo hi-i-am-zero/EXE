@@ -103,7 +103,7 @@ function mockAiContent(topic, channel = 'facebook') {
     seo: `Tiêu đề: ${topic} — Hướng dẫn chi tiết 2026\n\nMô tả meta: Khám phá ${topic} với bí quyết từ chuyên gia.\n\nNội dung đầy đủ 800 từ, chuẩn SEO, internal links...`
   };
   return {
-    title: `${topic} — AutoWork AI Demo`,
+    title: `${topic} — FlowMate AI`,
     content: templates[channel] || templates.facebook,
     hashtags: `#${topic.replace(/\s+/g, '')} #marketing #AI #AutoWork`,
     creditsUsed: 5,
@@ -120,7 +120,7 @@ async function tryApiOrDemo(apiFn, demoFn, successMsg) {
     return result;
   } catch (e) {
     const demo = demoFn();
-    showToast(`Demo: ${e.message || 'API chưa cấu hình'} — hiển thị kết quả mô phỏng`, 'info');
+    showToast(`${e.message || 'API chưa cấu hình'} — hiển thị kết quả mô phỏng`, 'info');
     return { success: true, data: demo, isDemo: true };
   }
 }

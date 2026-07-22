@@ -72,6 +72,8 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, A
             Email = user.Email,
             FirstName = user.FirstName,
             LastName = user.LastName,
+            Phone = user.Phone,
+            AvatarUrl = user.AvatarUrl,
             AccessToken = newAccessToken,
             RefreshToken = newRefreshTokenValue,
             ExpiresAt = _jwtTokenService.GetAccessTokenExpiration(),

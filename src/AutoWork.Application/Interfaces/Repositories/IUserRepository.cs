@@ -7,6 +7,7 @@ public interface IUserRepository : IRepository<User>
     Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
     Task<User?> GetByIdWithRolesAsync(Guid id, CancellationToken cancellationToken = default);
     Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken = default);
+    Task<bool> PhoneExistsAsync(string phone, Guid? excludeUserId = null, CancellationToken cancellationToken = default);
     Task<User?> GetByReferralCodeAsync(string referralCode, CancellationToken cancellationToken = default);
     Task<IReadOnlyList<User>> GetPagedAsync(int pageNumber, int pageSize, string? search = null, CancellationToken cancellationToken = default);
     Task<int> CountAsync(string? search = null, CancellationToken cancellationToken = default);

@@ -9,10 +9,10 @@
   <link rel="stylesheet" href="/css/app.css" />
 </head>
 <body>
-  <script src="/js/api.js"></script>
-  <script src="/js/auth.js"></script>
+  <script src="/js/api.js?v=3"></script>
+  <script src="/js/auth.js?v=3"></script>
   <script src="/js/demo.js"></script>
-  <script src="/js/layout.js"></script>
+  <script src="/js/layout.js?v=3"></script>
   <script>
     if (!Auth.requireAuth()) throw new Error('auth');
     renderAppLayout('/app/ai.html');
@@ -177,8 +177,8 @@
       lastResult = data;
       const content = (data.title ? data.title + '\n\n' : '') + (data.content || data.output || '') + (data.hashtags ? '\n\n' + data.hashtags : '');
       const out = document.getElementById('aiResult');
-      out.className = 'ai-output' + (data.isDemo ? ' demo' : '');
-      out.textContent = data.isDemo ? 'DEMO MODE\n\n' + content : content;
+      out.className = 'ai-output';
+      out.textContent = content;
       DemoStore.addNotification('AI đã tạo mô tả', topic, 'info');
 
       btn.disabled = false;

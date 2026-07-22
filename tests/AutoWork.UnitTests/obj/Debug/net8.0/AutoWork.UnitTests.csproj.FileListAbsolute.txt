@@ -16,6 +16,9 @@ D:\EXE01\AIMarketingAssistant\tests\AutoWork.UnitTests\bin\Debug\net8.0\MediatR.
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.UnitTests\bin\Debug\net8.0\Microsoft.VisualStudio.CodeCoverage.Shim.dll
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.UnitTests\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.UnitTests\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\EXE01\AIMarketingAssistant\tests\AutoWork.UnitTests\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
+D:\EXE01\AIMarketingAssistant\tests\AutoWork.UnitTests\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+D:\EXE01\AIMarketingAssistant\tests\AutoWork.UnitTests\bin\Debug\net8.0\Microsoft.Extensions.Hosting.Abstractions.dll
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.UnitTests\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.UnitTests\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
 D:\EXE01\AIMarketingAssistant\tests\AutoWork.UnitTests\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll

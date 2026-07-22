@@ -13,9 +13,10 @@
     <div class="auth-split">
       <div class="auth-left">
         <div class="auth-card">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-weight:800;font-size:1.4rem;">
-            <span style="color:#6b63ff">⚡</span> FlowMate
-          </div>
+          <a href="/" class="auth-back-link"><i class="bi bi-arrow-left"></i> Quay lại trang chủ</a>
+          <a href="/" class="auth-brand">
+            <span class="auth-brand-icon">⚡</span> FlowMate
+          </a>
           <h1>Đăng kí</h1>
           <p class="subtitle">Tạo tài khoản mới để bắt đầu chiến dịch của bạn.</p>
 
@@ -43,8 +44,14 @@
             </div>
 
             <div class="form-group">
+              <label for="phone">Số điện thoại</label>
+              <input type="tel" id="phone" class="form-control" placeholder="0xxx xxx xxx" autocomplete="tel" required />
+            </div>
+
+            <div class="form-group">
               <label for="password">Mật khẩu</label>
               <input type="password" id="password" class="form-control" minlength="8" required />
+              <div class="form-hint">Tối thiểu 8 ký tự, gồm chữ in hoa, chữ thường và số (vd: Qwe12345)</div>
             </div>
             <div class="form-group">
               <label for="confirmPassword">Xác nhận mật khẩu</label>
@@ -63,6 +70,8 @@
           <p class="auth-footer">
             Đã có tài khoản?
             <a href="/login.html?fresh=1" style="color:#5b4df2;font-weight:600">Đăng nhập</a>
+            <br />
+            <a href="/" style="color:#8b90a8;font-size:.85rem;margin-top:8px;display:inline-block">← Về trang chủ</a>
           </p>
           <div style="display:flex;align-items:center;gap:10px;margin:14px 0;color:#9ca2b8;font-size:.88rem">
             <div style="height:1px;background:#e9ecf8;flex:1"></div>
@@ -116,6 +125,20 @@
         return;
       }
 
+      const pwdIssues = validatePasswordRules(password);
+      if (pwdIssues.length) {
+        err.textContent = 'Mật khẩu cần: ' + pwdIssues.join(', ') + '.';
+        err.style.display = 'block';
+        return;
+      }
+
+      const phone = document.getElementById('phone').value.trim();
+      if (!/^0\d{9}$/.test(phone.replace(/\D/g, ''))) {
+        err.textContent = 'Số điện thoại không hợp lệ. Nhập 10 số bắt đầu bằng 0.';
+        err.style.display = 'block';
+        return;
+      }
+
       btn.disabled = true;
       btn.textContent = 'Đang tạo...';
       err.style.display = 'none';
@@ -126,6 +149,7 @@
           firstName: document.getElementById('firstName').value,
           lastName: document.getElementById('lastName').value,
           email: document.getElementById('email').value,
+          phone: document.getElementById('phone').value,
           password,
           confirmPassword: confirm,
           referralCode: referral || null
@@ -135,7 +159,7 @@
           Auth.saveSession(json.data);
           window.location.href = '/app/dashboard.html';
         } else {
-          err.textContent = json.message || (json.errors?.join(', ') ?? 'Đăng ký thất bại');
+          err.textContent = formatApiError(json, 'Đăng ký thất bại');
           err.style.display = 'block';
         }
       } catch {

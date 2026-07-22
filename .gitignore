@@ -1,0 +1,2 @@
+# Local secrets — do not commit
+src/AutoWork.API/appsettings.Development.local.json
